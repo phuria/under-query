@@ -30,7 +30,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $rootTable->setAlias('SRC');
         $rootTable->addSelect('MIN(SRC.id)');
 
-        static::assertSame('SELECT MIN(SRC.id) FROM test AS SRC', $rootTable->buildQuery()->getSQL());
+        static::assertSame('SELECT MIN(SRC.id) FROM test AS SRC', $qb->buildQuery()->getSQL());
     }
 
     public function testTwoSelects()
@@ -41,7 +41,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $rootTable->addSelect('test.id');
         $rootTable->addSelect('test.name');
 
-        static::assertSame('SELECT test.id, test.name FROM test', $rootTable->buildQuery()->getSQL());
+        static::assertSame('SELECT test.id, test.name FROM test', $qb->buildQuery()->getSQL());
     }
 
     public function testCreateUnknownTable()

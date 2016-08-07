@@ -16,6 +16,11 @@ class UnknownTable
     private $tableName;
 
     /**
+     * @var string $tableAlias
+     */
+    private $tableAlias;
+
+    /**
      * @var array $selectParts
      */
     private $selectParts = [];
@@ -30,6 +35,26 @@ class UnknownTable
         $this->tableName = $tableName;
 
         return $this;
+    }
+
+    /**
+     * @param string $alias
+     *
+     * @return $this
+     */
+    public function setAlias($alias)
+    {
+        $this->tableAlias = $alias;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAlias()
+    {
+        return $this->tableAlias;
     }
 
     /**

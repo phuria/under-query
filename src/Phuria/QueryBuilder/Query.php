@@ -9,16 +9,17 @@ use Phuria\QueryBuilder\Table\UnknownTable;
  */
 class Query
 {
-    public function __construct($select, $table)
+    public function __construct($select, UnknownTable $table)
     {
-        if ($table instanceof UnknownTable) {
-            $select = $table->getSelectParts();
-            $select = implode(',', $select);
-            $table = $table->getTableName();
+        $selectParts = $table->getSelectParts();
+        $select = implode(', ', $selectParts);
+        $tableName = $table->getTableName();
+
+        if ($alias = $table->getAlias()) {
+            $tableName .= ' AS ' . $alias;
         }
 
-        $this->sql = "SELECT $select FROM $table";
-
+        $this->sql = "SELECT $select FROM $tableName";
     }
 
     public function getSQL()
