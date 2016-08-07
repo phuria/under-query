@@ -51,4 +51,12 @@ class UnknownTable
 
         return $this;
     }
+
+    /**
+     * @return array
+     */
+    public function getSelectParts()
+    {
+        return $this->selectParts;
+    }
 }

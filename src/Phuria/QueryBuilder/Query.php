@@ -12,6 +12,8 @@ class Query
     public function __construct($select, $table)
     {
         if ($table instanceof UnknownTable) {
+            $select = $table->getSelectParts();
+            $select = implode(',', $select);
             $table = $table->getTableName();
         }
 
