@@ -2,6 +2,7 @@
 
 namespace Phuria\QueryBuilder;
 
+use Phuria\QueryBuilder\Expression\ColumnExpression;
 use Phuria\QueryBuilder\Expression\ExpressionInterface;
 use Phuria\QueryBuilder\Reference\ColumnReference;
 use Phuria\QueryBuilder\Table\AbstractTable;
@@ -35,6 +36,10 @@ class QueryBuilder
      */
     public function addSelect($clause)
     {
+        if ($clause instanceof ColumnReference) {
+            $clause = new ColumnExpression($clause);
+        }
+
         $this->selectClauses[] = $clause;
 
         return $this;
