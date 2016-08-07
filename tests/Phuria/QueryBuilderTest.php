@@ -5,6 +5,8 @@ namespace Phuria;
 use Phuria\QueryBuilder\Query;
 use Phuria\QueryBuilder\QueryBuilder;
 use Phuria\QueryBuilder\Table\UnknownTable;
+use Phuria\QueryBuilder\TableFactory;
+use Phuria\QueryBuilder\TableRegistry;
 use Phuria\QueryBuilder\Test\ExampleTable;
 
 /**
@@ -51,5 +53,18 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $rootTable = $qb->from('unknown_table');
 
         static::assertInstanceOf(UnknownTable::class, $rootTable);
+    }
+
+    public function testCreateExampleTable()
+    {
+        $tableRegistry = new TableRegistry();
+        $tableRegistry->registerTable(ExampleTable::class, 'example');
+
+        $tableFactory = new TableFactory($tableRegistry);
+        $qb = new QueryBuilder($tableFactory);
+
+        $rootTable = $qb->from('example');
+
+        static::assertInstanceOf(ExampleTable::class, $rootTable);
     }
 }
