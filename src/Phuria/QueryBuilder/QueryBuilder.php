@@ -2,6 +2,8 @@
 
 namespace Phuria\QueryBuilder;
 
+use Phuria\QueryBuilder\Table\AbstractTable;
+
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
@@ -36,6 +38,11 @@ class QueryBuilder
         return $this;
     }
 
+    /**
+     * @param mixed $table
+     *
+     * @return AbstractTable
+     */
     public function from($table)
     {
         $table = $this->tableFactory->createNewTable($table, $this);

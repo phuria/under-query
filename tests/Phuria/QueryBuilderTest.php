@@ -2,7 +2,6 @@
 
 namespace Phuria;
 
-use Phuria\QueryBuilder\Query;
 use Phuria\QueryBuilder\QueryBuilder;
 use Phuria\QueryBuilder\Table\UnknownTable;
 use Phuria\QueryBuilder\TableFactory;
@@ -14,6 +13,18 @@ use Phuria\QueryBuilder\Test\ExampleTable;
  */
 class QueryBuilderTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @return QueryBuilder
+     */
+    private function createQb()
+    {
+        $tableRegistry = new TableRegistry();
+        $tableRegistry->registerTable(ExampleTable::class, 'example');
+        $tableFactory = new TableFactory($tableRegistry);
+
+        return new QueryBuilder($tableFactory);
+    }
+
     public function testSimpleSelect()
     {
         $qb = new QueryBuilder();
@@ -57,14 +68,24 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateExampleTable()
     {
-        $tableRegistry = new TableRegistry();
-        $tableRegistry->registerTable(ExampleTable::class, 'example');
-
-        $tableFactory = new TableFactory($tableRegistry);
-        $qb = new QueryBuilder($tableFactory);
-
+        $qb = $this->createQb();
         $rootTable = $qb->from('example');
 
         static::assertInstanceOf(ExampleTable::class, $rootTable);
+    }
+
+    public function testSelectAndWhereExampleTable()
+    {
+        $qb = $this->createQb();
+
+        $rootTable = $qb->from('example');
+        $rootTable->addSelect('example.id');
+        $rootTable->addSelect('example.name');
+        $rootTable->where('example.id BETWEEN 1 AND 10');
+
+        static::assertSame(
+            'SELECT example.id, example.name FROM example WHERE example.id BETWEEN 1 AND 10',
+            $qb->buildQuery()->getSQL()
+        );
     }
 }

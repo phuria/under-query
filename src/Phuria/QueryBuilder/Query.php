@@ -2,14 +2,14 @@
 
 namespace Phuria\QueryBuilder;
 
-use Phuria\QueryBuilder\Table\UnknownTable;
+use Phuria\QueryBuilder\Table\AbstractTable;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
 class Query
 {
-    public function __construct($select, UnknownTable $table)
+    public function __construct($select, AbstractTable $table)
     {
         $selectParts = $table->getSelectParts();
         $select = implode(', ', $selectParts);
@@ -20,6 +20,10 @@ class Query
         }
 
         $this->sql = "SELECT $select FROM $tableName";
+
+        if ($where = $table->getWhere()) {
+            $this->sql .= ' WHERE ' . $where;
+        }
     }
 
     public function getSQL()
