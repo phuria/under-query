@@ -2,6 +2,7 @@
 
 namespace Phuria\QueryBuilder;
 
+use Phuria\QueryBuilder\Reference\ColumnReference;
 use Phuria\QueryBuilder\Table\AbstractTable;
 
 /**
@@ -61,6 +62,14 @@ class QueryBuilder
 
     public function buildQuery()
     {
-        return new Query(implode(', ', $this->selectClauses), $this->rootTable);
+        $selectClauses = array_map(function ($clause) {
+            if ($clause instanceof ColumnReference) {
+                return $clause->getFullName();
+            }
+
+            return $clause;
+        }, $this->selectClauses);
+
+        return new Query(implode(', ', $selectClauses), $this->rootTable);
     }
 }

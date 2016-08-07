@@ -11,8 +11,6 @@ class Query
 {
     public function __construct($select, AbstractTable $table)
     {
-        $selectParts = $table->getSelectParts();
-        $select = implode(', ', $selectParts);
         $tableName = $table->getTableName();
 
         if ($alias = $table->getAlias()) {

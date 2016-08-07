@@ -88,4 +88,29 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
             $qb->buildQuery()->getSQL()
         );
     }
+
+    public function testSelectColumnReference()
+    {
+        $qb = $this->createQb();
+
+        $rootTable = $qb->from('example');
+        $rootTable->addSelect($rootTable->column('id'));
+        $rootTable->addSelect($rootTable->column('name'));
+
+        static::assertSame('SELECT example.id, example.name FROM example', $qb->buildQuery()->getSQL());
+
+        $rootTable->setAlias('SRC');
+
+        static::assertSame('SELECT SRC.id, SRC.name FROM example AS SRC', $qb->buildQuery()->getSQL());
+    }
+
+    public function testSelectColumnReferenceFromColumn()
+    {
+        $qb = $this->createQb();
+
+        $rootTable = $qb->from('example');
+        $rootTable->column('id')->select();
+
+        static::assertSame('SELECT example.id FROM example', $qb->buildQuery()->getSQL());
+    }
 }

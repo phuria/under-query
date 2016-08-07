@@ -2,11 +2,19 @@
 
 namespace Phuria\QueryBuilder\Table;
 
+use Phuria\QueryBuilder\QueryBuilder;
+use Phuria\QueryBuilder\Reference\ColumnReference;
+
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
 abstract class AbstractTable
 {
+    /**
+     * @var QueryBuilder $qb
+     */
+    private $qb;
+
     /**
      * @var string $tableAlias
      */
@@ -21,6 +29,14 @@ abstract class AbstractTable
      * @var string $where
      */
     private $where;
+
+    /**
+     * @param QueryBuilder $qb
+     */
+    public function __construct(QueryBuilder $qb)
+    {
+        $this->qb = $qb;
+    }
 
     /**
      * @return string
@@ -48,23 +64,28 @@ abstract class AbstractTable
     }
 
     /**
+     * @return string
+     */
+    public function getAliasOrName()
+    {
+        return $this->getAlias() ?: $this->getTableName();
+    }
+
+    /**
      * @param string $clause
      *
      * @return $this
      */
     public function addSelect($clause)
     {
-        $this->selectParts[] = $clause;
+        $this->qb->addSelect($clause);
 
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function getSelectParts()
+    public function column($name)
     {
-        return $this->selectParts;
+        return new ColumnReference($this, $name);
     }
 
     public function where($clause)

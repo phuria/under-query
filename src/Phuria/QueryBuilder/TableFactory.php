@@ -2,6 +2,7 @@
 
 namespace Phuria\QueryBuilder;
 
+use Phuria\QueryBuilder\Table\AbstractTable;
 use Phuria\QueryBuilder\Table\UnknownTable;
 
 /**
@@ -23,6 +24,12 @@ class TableFactory
         $this->tableRecognizer = new TableRecognizer();
     }
 
+    /**
+     * @param mixed        $table
+     * @param QueryBuilder $qb
+     *
+     * @return AbstractTable
+     */
     public function createNewTable($table, QueryBuilder $qb)
     {
         $tableType = $this->tableRecognizer->recognizeType($table);
@@ -43,7 +50,7 @@ class TableFactory
                 break;
         }
 
-        $tableObject = new $tableClass();
+        $tableObject = new $tableClass($qb);
 
         if ($tableObject instanceof UnknownTable) {
             $tableObject->setTableName($table);
