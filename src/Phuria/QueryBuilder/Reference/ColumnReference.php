@@ -2,6 +2,8 @@
 
 namespace Phuria\QueryBuilder\Reference;
 
+use Phuria\QueryBuilder\Expr;
+use Phuria\QueryBuilder\Expression\ColumnExpression;
 use Phuria\QueryBuilder\Table\AbstractTable;
 
 /**
@@ -34,14 +36,14 @@ class ColumnReference
         $this->columnName = $columnName;
     }
 
-    /**
-     * @return $this
-     */
-    public function select()
+    public function max()
     {
-        $this->table->addSelect($this);
+        return Expr::max($this->toExpression());
+    }
 
-        return $this;
+    public function toExpression()
+    {
+        return new ColumnExpression($this);
     }
 
     public function alias($alias)

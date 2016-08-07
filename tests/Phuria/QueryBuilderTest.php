@@ -104,27 +104,25 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         static::assertSame('SELECT SRC.id, SRC.name FROM example AS SRC', $qb->buildQuery()->getSQL());
     }
 
-    public function testSelectColumnReferenceFromColumn()
-    {
-        $qb = $this->createQb();
-
-        $rootTable = $qb->from('example');
-        $rootTable->column('id')->select();
-
-        static::assertSame('SELECT example.id FROM example', $qb->buildQuery()->getSQL());
-
-        $rootTable->setAlias('SRC');
-
-        static::assertSame('SELECT SRC.id FROM example AS SRC', $qb->buildQuery()->getSQL());
-    }
-
     public function testSelectColumnReferenceAs()
     {
         $qb = $this->createQb();
 
         $rootTable = $qb->from('example');
-        $rootTable->column('id')->alias('primary_identity')->select();
+        $qb->addSelect($rootTable->column('id')->alias('primary_identity'));
 
         static::assertSame('SELECT example.id AS primary_identity FROM example', $qb->buildQuery()->getSQL());
     }
+
+    public function testSelectMax()
+    {
+        $qb = $this->createQb();
+
+        $rootTable = $qb->from('example');
+        $qb->addSelect($rootTable->column('points')->max());
+
+        static::assertSame('SELECT MAX(example.points) FROM example', $qb->buildQuery()->getSQL());
+    }
+
+
 }

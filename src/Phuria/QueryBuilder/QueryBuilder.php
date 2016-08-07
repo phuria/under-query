@@ -37,7 +37,7 @@ class QueryBuilder
     public function addSelect($clause)
     {
         if ($clause instanceof ColumnReference) {
-            $clause = new ColumnExpression($clause);
+            $clause = $clause->toExpression();
         }
 
         $this->selectClauses[] = $clause;

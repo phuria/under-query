@@ -2,7 +2,7 @@
 
 namespace Phuria\QueryBuilder;
 
-use Phuria\QueryBuilder\Expression\ConnectExpression;
+use Phuria\QueryBuilder\Expression\ImplodeExpression;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -10,12 +10,22 @@ use Phuria\QueryBuilder\Expression\ConnectExpression;
 class Expr
 {
     /**
-     * @return ConnectExpression
+     * @param mixed $expr
+     *
+     * @return ImplodeExpression
      */
-    public static function connect()
+    public static function max($expr)
+    {
+        return static::implode('MAX(', $expr, ')');
+    }
+
+    /**
+     * @return ImplodeExpression
+     */
+    public static function implode()
     {
         $args = func_get_args();
 
-        return new ConnectExpression($args);
+        return new ImplodeExpression($args);
     }
 }
