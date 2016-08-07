@@ -112,5 +112,9 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $rootTable->column('id')->select();
 
         static::assertSame('SELECT example.id FROM example', $qb->buildQuery()->getSQL());
+
+        $rootTable->setAlias('SRC');
+
+        static::assertSame('SELECT SRC.id FROM example AS SRC', $qb->buildQuery()->getSQL());
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Phuria\QueryBuilder;
 
+use Phuria\QueryBuilder\Expression\ExpressionInterface;
 use Phuria\QueryBuilder\Reference\ColumnReference;
 use Phuria\QueryBuilder\Table\AbstractTable;
 
@@ -63,8 +64,8 @@ class QueryBuilder
     public function buildQuery()
     {
         $selectClauses = array_map(function ($clause) {
-            if ($clause instanceof ColumnReference) {
-                return $clause->getFullName();
+            if ($clause instanceof ExpressionInterface) {
+                return $clause->compile();
             }
 
             return $clause;

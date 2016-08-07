@@ -2,8 +2,8 @@
 
 namespace Phuria\QueryBuilder\Table;
 
+use Phuria\QueryBuilder\Expression\ColumnExpression;
 use Phuria\QueryBuilder\QueryBuilder;
-use Phuria\QueryBuilder\Reference\ColumnReference;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -19,11 +19,6 @@ abstract class AbstractTable
      * @var string $tableAlias
      */
     private $tableAlias;
-
-    /**
-     * @var array $selectParts
-     */
-    private $selectParts = [];
 
     /**
      * @var string $where
@@ -85,7 +80,7 @@ abstract class AbstractTable
 
     public function column($name)
     {
-        return new ColumnReference($this, $name);
+        return new ColumnExpression($this, $name);
     }
 
     public function where($clause)
