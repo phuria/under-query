@@ -3,4 +3,4 @@ php:
   - '5.6'
   - '7.0'
   - nightly
-script: phpunit --bootstrap vendor/autoload.php --configuration phpunit.xml tests --teamcity
+script: phpunit --bootstrap phuria/sql-builder/vendor/autoload.php --configuration phuria/sql-builder/phpunit.xml phuria/sql-builder/tests --teamcity
