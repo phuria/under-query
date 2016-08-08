@@ -199,4 +199,27 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
 
         static::assertSame('SELECT * FROM example LEFT JOIN test ON test.id = example.test_id', $qb->buildSQL());
     }
+
+    public function testJoins()
+    {
+        $qb = $this->createQb();
+
+        $userTable = $qb->from('users');
+        $userTable->setAlias('u');
+        $qb->addSelect('*');
+
+        $contactTable = $qb->leftJoin('contact');
+        $contactTable->joinOn($userTable->column('id'), ' = ', $contactTable->column('user_id'));
+        $contactTable->setAlias('c');
+
+        $profileTable = $qb->innerJoin('profile');
+        $profileTable->joinOn($userTable->column('id'), ' = ', $profileTable->column('user_id'));
+        $profileTable->setAlias('p');
+
+        $expectedSQL = 'SELECT * FROM users AS u'
+            . ' LEFT JOIN contact AS c ON u.id = c.user_id'
+            . ' INNER JOIN profile AS p ON u.id = p.user_id';
+
+        static::assertSame($expectedSQL, $qb->buildSQL());
+    }
 }

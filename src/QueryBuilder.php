@@ -122,6 +122,16 @@ class QueryBuilder
     }
 
     /**
+     * @param string $table
+     *
+     * @return AbstractTable
+     */
+    public function innerJoin($table)
+    {
+        return $this->join(AbstractTable::INNER_JOIN, $table);
+    }
+
+    /**
      * @return string
      */
     public function buildSQL()

@@ -14,6 +14,7 @@ abstract class AbstractTable
 {
     const CROSS_JOIN = 'CROSS JOIN';
     const LEFT_JOIN = 'LEFT JOIN';
+    const INNER_JOIN = 'INNER JOIN';
 
     /**
      * @var QueryBuilder $qb
