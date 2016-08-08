@@ -2,7 +2,7 @@
 
 namespace Phuria\QueryBuilder;
 
-use Phuria\QueryBuilder\Expression\ExpressionInterface;
+use Phuria\QueryBuilder\Compiler\CompilerManager;
 use Phuria\QueryBuilder\Table\AbstractTable;
 
 /**
@@ -14,6 +14,16 @@ class QueryBuilder
      * @var TableFactory $tableFactory
      */
     private $tableFactory;
+
+    /**
+     * @var QueryType $queryType
+     */
+    private $queryType;
+
+    /**
+     * @var CompilerManager $compilerManager
+     */
+    private $compilerManager;
 
     /**
      * @var array $selectClauses
@@ -31,16 +41,24 @@ class QueryBuilder
     private $orderByClauses;
 
     /**
+     * @var array $setClauses
+     */
+    private $setClauses;
+
+    /**
      * @var AbstractTable[] $tables
      */
     private $tables = [];
 
     /**
-     * @param TableFactory $tableFactory
+     * @param TableFactory    $tableFactory
+     * @param CompilerManager $compilerManager
      */
-    public function __construct(TableFactory $tableFactory = null)
+    public function __construct(TableFactory $tableFactory = null, CompilerManager $compilerManager = null)
     {
         $this->tableFactory = $tableFactory ?: new TableFactory();
+        $this->compilerManager = $compilerManager ?: new CompilerManager();
+        $this->queryType = new QueryType();
         $this->selectClauses = [];
         $this->whereClauses = [];
         $this->orderByClauses = [];
@@ -67,6 +85,21 @@ class QueryBuilder
     }
 
     /**
+     * @param $table
+     *
+     * @return AbstractTable
+     */
+    private function addRootTable($table)
+    {
+        $table = $this->tableFactory->createNewTable($table, $this);
+        $table->setRoot(true);
+
+        $this->tables[] = $table;
+
+        return $table;
+    }
+
+    /**
      * @param mixed $table
      *
      * @return AbstractTable
@@ -83,12 +116,21 @@ class QueryBuilder
      */
     public function addFrom($table)
     {
-        $table = $this->tableFactory->createNewTable($table, $this);
-        $table->setFrom(true);
+        $this->queryType->setSelect(true);
 
-        $this->tables[] = $table;
+        return $this->addRootTable($table);
+    }
 
-        return $table;
+    /**
+     * @param mixed $table
+     *
+     * @return AbstractTable
+     */
+    public function update($table)
+    {
+        $this->queryType->setUpdate(true);
+
+        return $this->addRootTable($table);
     }
 
     /**
@@ -148,41 +190,21 @@ class QueryBuilder
     }
 
     /**
+     * @return $this
+     */
+    public function addSet()
+    {
+        $this->setClauses[] = Expr::implode(...func_get_args());
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function buildSQL()
     {
-        $compiler = new ExpressionCompiler();
-
-        $rootTables = array_filter($this->tables, function (AbstractTable $table) {
-            return $table->isFrom();
-        });
-
-        $joinTables = array_filter($this->tables, function (AbstractTable $table) {
-            return $table->isJoin();
-        });
-
-        $select = $compiler->compileSelect($this->selectClauses);
-        $where = $compiler->compileWhere($this->whereClauses);
-        $from = $compiler->compileFrom($rootTables);
-        $join = $compiler->compileJoin($joinTables);
-        $orderBy = $compiler->compileOrderBy($this->orderByClauses);
-
-        $sql = "SELECT $select FROM $from";
-
-        if ($join) {
-            $sql .= ' ' . $join;
-        }
-
-        if ($where) {
-            $sql .= ' WHERE ' . $where;
-        }
-
-        if ($orderBy) {
-            $sql .= ' ORDER BY ' . $orderBy;
-        }
-
-        return $sql;
+        return $this->compilerManager->compile($this);
     }
 
     /**
@@ -191,5 +213,73 @@ class QueryBuilder
     public function buildQuery()
     {
         return new Query($this->buildSQL());
+    }
+
+    /**
+     * @return QueryType
+     */
+    public function getQueryType()
+    {
+        return $this->queryType;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSelectClauses()
+    {
+        return $this->selectClauses;
+    }
+
+    /**
+     * @return array
+     */
+    public function getWhereClauses()
+    {
+        return $this->whereClauses;
+    }
+
+    /**
+     * @return array
+     */
+    public function getOrderByClauses()
+    {
+        return $this->orderByClauses;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSetClauses()
+    {
+        return $this->setClauses;
+    }
+
+    /**
+     * @return AbstractTable[]
+     */
+    public function getTables()
+    {
+        return $this->tables;
+    }
+
+    /**
+     * @return AbstractTable[]
+     */
+    public function getRootTables()
+    {
+        return array_filter($this->getTables(), function (AbstractTable $table) {
+            return $table->isRoot();
+        });
+    }
+
+    /**
+     * @return AbstractTable[]
+     */
+    public function getJoinTables()
+    {
+        return array_filter($this->getTables(), function (AbstractTable $table) {
+            return $table->isJoin();
+        });
     }
 }

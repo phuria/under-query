@@ -37,9 +37,9 @@ abstract class AbstractTable
     private $joinOn = [];
 
     /**
-     * @var bool $from
+     * @var bool $root
      */
-    private $from = false;
+    private $root = false;
 
     /**
      * @var bool $join
@@ -111,19 +111,19 @@ abstract class AbstractTable
     /**
      * @return bool
      */
-    public function isFrom()
+    public function isRoot()
     {
-        return $this->from;
+        return $this->root;
     }
 
     /**
-     * @param bool $from
+     * @param bool $root
      *
      * @return $this
      */
-    public function setFrom($from)
+    public function setRoot($root)
     {
-        $this->from = $from;
+        $this->root = $root;
 
         return $this;
     }
