@@ -2,7 +2,6 @@
 
 namespace Phuria\QueryBuilder;
 
-use Phuria\QueryBuilder\Expression\ColumnExpression;
 use Phuria\QueryBuilder\Expression\ExpressionInterface;
 use Phuria\QueryBuilder\Reference\ColumnReference;
 use Phuria\QueryBuilder\Table\AbstractTable;
@@ -22,11 +21,19 @@ class QueryBuilder
      */
     private $selectClauses;
 
+    /**
+     * @var array $whereClauses
+     */
+    private $whereClauses;
 
+    /**
+     * @param TableFactory $tableFactory
+     */
     public function __construct(TableFactory $tableFactory = null)
     {
         $this->tableFactory = $tableFactory ?: new TableFactory();
         $this->selectClauses = [];
+        $this->whereClauses = [];
     }
 
     /**
@@ -41,6 +48,16 @@ class QueryBuilder
         }
 
         $this->selectClauses[] = $clause;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function andWhere()
+    {
+        $this->whereClauses[] = Expr::implode(...func_get_args());
 
         return $this;
     }
@@ -76,6 +93,6 @@ class QueryBuilder
             return $clause;
         }, $this->selectClauses);
 
-        return new Query(implode(', ', $selectClauses), $this->rootTable);
+        return new Query(implode(', ', $selectClauses), $this->rootTable, $this->whereClauses);
     }
 }

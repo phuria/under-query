@@ -3,6 +3,7 @@
 namespace Phuria\QueryBuilder;
 
 use Phuria\QueryBuilder\Expression\ImplodeExpression;
+use Phuria\QueryBuilder\Reference\ColumnReference;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -25,7 +26,16 @@ class Expr
     public static function implode()
     {
         $args = func_get_args();
+        $expressions = [];
 
-        return new ImplodeExpression($args);
+        foreach ($args as $arg) {
+            if ($arg instanceof ColumnReference) {
+                $arg = $arg->toExpression();
+            }
+
+            $expressions[] = $arg;
+        }
+
+        return new ImplodeExpression($expressions);
     }
 }

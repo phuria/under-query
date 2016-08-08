@@ -81,7 +81,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $rootTable = $qb->from('example');
         $rootTable->addSelect('example.id');
         $rootTable->addSelect('example.name');
-        $rootTable->where('example.id BETWEEN 1 AND 10');
+        $qb->andWhere('example.id BETWEEN 1 AND 10');
 
         static::assertSame(
             'SELECT example.id, example.name FROM example WHERE example.id BETWEEN 1 AND 10',
@@ -126,5 +126,20 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $rootTable->setAlias('SRC');
 
         static::assertSame('SELECT MAX(SRC.points) FROM example AS SRC', $qb->buildQuery()->getSQL());
+    }
+
+    public function testWhereColumn()
+    {
+        $qb = $this->createQb();
+
+        $rootTable = $qb->from('example');
+        $qb->addSelect($rootTable->column('*'));
+        $qb->andWhere($rootTable->column('name'), ' IS NOT NULL');
+
+        static::assertSame('SELECT example.* FROM example WHERE example.name IS NOT NULL', $qb->buildQuery()->getSQL());
+
+        $rootTable->setAlias('SRC');
+
+        static::assertSame('SELECT SRC.* FROM example AS SRC WHERE SRC.name IS NOT NULL', $qb->buildQuery()->getSQL());
     }
 }

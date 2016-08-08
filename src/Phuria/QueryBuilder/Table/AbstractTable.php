@@ -2,7 +2,6 @@
 
 namespace Phuria\QueryBuilder\Table;
 
-use Phuria\QueryBuilder\Expression\ColumnExpression;
 use Phuria\QueryBuilder\QueryBuilder;
 use Phuria\QueryBuilder\Reference\ColumnReference;
 
@@ -20,11 +19,6 @@ abstract class AbstractTable
      * @var string $tableAlias
      */
     private $tableAlias;
-
-    /**
-     * @var string $where
-     */
-    private $where;
 
     /**
      * @param QueryBuilder $qb
@@ -82,17 +76,5 @@ abstract class AbstractTable
     public function column($name)
     {
         return new ColumnReference($this, $name);
-    }
-
-    public function where($clause)
-    {
-        $this->where = $clause;
-
-        return $this;
-    }
-
-    public function getWhere()
-    {
-        return $this->where;
     }
 }

@@ -9,8 +9,10 @@ use Phuria\QueryBuilder\Table\AbstractTable;
  */
 class Query
 {
-    public function __construct($select, AbstractTable $table)
+    public function __construct($select, AbstractTable $table, array $whereClauses)
     {
+        $compiler = new ExpressionCompiler();
+
         $tableName = $table->getTableName();
 
         if ($alias = $table->getAlias()) {
@@ -19,7 +21,9 @@ class Query
 
         $this->sql = "SELECT $select FROM $tableName";
 
-        if ($where = $table->getWhere()) {
+        $where = $compiler->compileWhere($whereClauses);
+
+        if ($where) {
             $this->sql .= ' WHERE ' . $where;
         }
     }
