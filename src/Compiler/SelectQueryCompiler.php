@@ -4,7 +4,6 @@ namespace Phuria\QueryBuilder\Compiler;
 
 use Phuria\QueryBuilder\ExpressionCompiler;
 use Phuria\QueryBuilder\QueryBuilder;
-use Phuria\QueryBuilder\Table\AbstractTable;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>

@@ -2,9 +2,7 @@
 
 namespace Phuria\QueryBuilder\Compiler;
 
-use Phuria\QueryBuilder\ExpressionCompiler;
 use Phuria\QueryBuilder\QueryBuilder;
-use Phuria\QueryBuilder\Table\AbstractTable;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -25,8 +23,9 @@ class UpdateQueryCompiler implements QueryCompilerInterface
     public function compile(QueryBuilder $qb)
     {
         $from = (new RootTableCompiler())->compile($qb);
+        $set = (new UpdateSetCompiler())->compile($qb);
 
-        $sql = "UPDATE $from SET example.name = NULL";
+        $sql = "UPDATE $from SET $set";
 
         return $sql;
     }

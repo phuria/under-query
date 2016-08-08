@@ -263,6 +263,12 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $exampleTable = $qb->update('example');
         $qb->addSet($exampleTable->column('name'), ' = NULL');
 
-        static::assertSame('UPDATE example SET example.name = NULL', $qb->buildSQL());
+        $expectedSQL = 'UPDATE example SET example.name = NULL';
+        static::assertSame($expectedSQL, $qb->buildSQL());
+
+        $qb->addSet($exampleTable->column('value'), ' = 10');
+
+        $expectedSQL .= ', example.value = 10';
+        static::assertSame($expectedSQL, $qb->buildSQL());
     }
 }
