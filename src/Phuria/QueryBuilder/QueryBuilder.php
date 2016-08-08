@@ -27,6 +27,11 @@ class QueryBuilder
     private $whereClauses;
 
     /**
+     * @var AbstractTable[] $tables
+     */
+    private $tables = [];
+
+    /**
      * @param TableFactory $tableFactory
      */
     public function __construct(TableFactory $tableFactory = null)
@@ -74,6 +79,16 @@ class QueryBuilder
         return $table;
     }
 
+    public function crossJoin($table)
+    {
+        $table = $this->tableFactory->createNewTable($table, $this);
+        $table->setJoinType(AbstractTable::CROSS_JOIN);
+
+        $this->tables[] = $table;
+
+        return $table;
+    }
+
     public function setAlias($alias)
     {
         $this->rootTable .= ' AS ' . $alias;
@@ -89,6 +104,6 @@ class QueryBuilder
             return $clause;
         }, $this->selectClauses);
 
-        return new Query(implode(', ', $selectClauses), $this->rootTable, $this->whereClauses);
+        return new Query(implode(', ', $selectClauses), $this->rootTable, $this->whereClauses, $this->tables);
     }
 }

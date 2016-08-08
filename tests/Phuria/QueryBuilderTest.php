@@ -160,4 +160,15 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $expectedSQL .= ' AND (example.name = "Albert" OR example.name = "Olaf")';
         static::assertSame($expectedSQL, $qb->buildQuery()->getSQL());
     }
+
+    public function testCrossJoin()
+    {
+        $qb = $this->createQb();
+
+        $qb->from('example');
+        $qb->addSelect('*');
+        $qb->crossJoin('test');
+
+        static::assertSame('SELECT * FROM example CROSS JOIN test', $qb->buildQuery()->getSQL());
+    }
 }

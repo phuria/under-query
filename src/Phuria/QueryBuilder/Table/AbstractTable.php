@@ -10,6 +10,8 @@ use Phuria\QueryBuilder\Reference\ColumnReference;
  */
 abstract class AbstractTable
 {
+    const CROSS_JOIN = 'CROSS';
+
     /**
      * @var QueryBuilder $qb
      */
@@ -19,6 +21,11 @@ abstract class AbstractTable
      * @var string $tableAlias
      */
     private $tableAlias;
+
+    /**
+     * @var string $joinType
+     */
+    private $joinType;
 
     /**
      * @param QueryBuilder $qb
@@ -32,6 +39,14 @@ abstract class AbstractTable
      * @return string
      */
     abstract public function getTableName();
+
+    /**
+     * @return string
+     */
+    public function getAlias()
+    {
+        return $this->tableAlias;
+    }
 
     /**
      * @param string $alias
@@ -48,9 +63,17 @@ abstract class AbstractTable
     /**
      * @return string
      */
-    public function getAlias()
+    public function getJoinType()
     {
-        return $this->tableAlias;
+        return $this->joinType;
+    }
+
+    /**
+     * @param string $joinType
+     */
+    public function setJoinType($joinType)
+    {
+        $this->joinType = $joinType;
     }
 
     /**

@@ -9,7 +9,7 @@ use Phuria\QueryBuilder\Table\AbstractTable;
  */
 class Query
 {
-    public function __construct($select, AbstractTable $table, array $whereClauses)
+    public function __construct($select, AbstractTable $table, array $whereClauses, array $tables)
     {
         $compiler = new ExpressionCompiler();
 
@@ -20,6 +20,10 @@ class Query
         }
 
         $this->sql = "SELECT $select FROM $tableName";
+
+        foreach ($tables as $table) {
+            $this->sql .= ' ' . $table->getJoinType() . ' JOIN ' . $table->getTableName();
+        }
 
         $where = $compiler->compileWhere($whereClauses);
 
