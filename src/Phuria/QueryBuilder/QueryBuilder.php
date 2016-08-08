@@ -3,7 +3,6 @@
 namespace Phuria\QueryBuilder;
 
 use Phuria\QueryBuilder\Expression\ExpressionInterface;
-use Phuria\QueryBuilder\Reference\ColumnReference;
 use Phuria\QueryBuilder\Table\AbstractTable;
 
 /**
@@ -42,11 +41,9 @@ class QueryBuilder
     }
 
     /**
-     * @param mixed $clause
-     *
      * @return $this
      */
-    public function addSelect($clause)
+    public function addSelect()
     {
         $this->selectClauses[] = Expr::implode(...func_get_args());
 
@@ -70,11 +67,15 @@ class QueryBuilder
      */
     public function from($table)
     {
+        return $this->addFrom($table);
+    }
+
+    public function addFrom($table)
+    {
         $table = $this->tableFactory->createNewTable($table, $this);
+        $table->setFrom(true);
 
-
-
-        $this->rootTable = $table;
+        $this->tables[] = $table;
 
         return $table;
     }
@@ -94,16 +95,38 @@ class QueryBuilder
         $this->rootTable .= ' AS ' . $alias;
     }
 
+    public function buildSQL()
+    {
+        $compiler = new ExpressionCompiler();
+
+        $rootTables = array_filter($this->tables, function (AbstractTable $table) {
+            return $table->isFrom();
+        });
+
+        $joinTables = array_filter($this->tables, function (AbstractTable $table) {
+            return $table->isJoin();
+        });
+
+        $select = $compiler->compileSelect($this->selectClauses);
+        $where = $compiler->compileWhere($this->whereClauses);
+        $from = $compiler->compileFrom($rootTables);
+        $join = $compiler->compileJoin($joinTables);
+
+        $sql = "SELECT $select FROM $from";
+
+        if ($join) {
+            $sql .= ' ' . $join;
+        }
+
+        if ($where) {
+            $sql .= ' WHERE ' . $where;
+        }
+
+        return $sql;
+    }
+
     public function buildQuery()
     {
-        $selectClauses = array_map(function ($clause) {
-            if ($clause instanceof ExpressionInterface) {
-                return $clause->compile();
-            }
-
-            return $clause;
-        }, $this->selectClauses);
-
-        return new Query(implode(', ', $selectClauses), $this->rootTable, $this->whereClauses, $this->tables);
+        return new Query($this->buildSQL());
     }
 }

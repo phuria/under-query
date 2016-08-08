@@ -171,4 +171,15 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
 
         static::assertSame('SELECT * FROM example CROSS JOIN test', $qb->buildQuery()->getSQL());
     }
+
+    public function testMultipleFrom()
+    {
+        $qb = $this->createQb();
+
+        $qb->from('example');
+        $qb->addFrom('test');
+        $qb->addSelect('*');
+
+        static::assertSame('SELECT * FROM example, test', $qb->buildQuery()->getSQL());
+    }
 }
