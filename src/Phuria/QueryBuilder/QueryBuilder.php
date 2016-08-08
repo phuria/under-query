@@ -70,6 +70,11 @@ class QueryBuilder
         return $this->addFrom($table);
     }
 
+    /**
+     * @param mixed $table
+     *
+     * @return AbstractTable
+     */
     public function addFrom($table)
     {
         $table = $this->tableFactory->createNewTable($table, $this);
@@ -80,21 +85,45 @@ class QueryBuilder
         return $table;
     }
 
-    public function crossJoin($table)
+    /**
+     * @param string $joinType
+     * @param mixed  $table
+     *
+     * @return AbstractTable
+     */
+    public function join($joinType, $table)
     {
         $table = $this->tableFactory->createNewTable($table, $this);
-        $table->setJoinType(AbstractTable::CROSS_JOIN);
+        $table->setJoinType($joinType);
 
         $this->tables[] = $table;
 
         return $table;
     }
 
-    public function setAlias($alias)
+    /**
+     * @param mixed $table
+     *
+     * @return AbstractTable
+     */
+    public function crossJoin($table)
     {
-        $this->rootTable .= ' AS ' . $alias;
+        return $this->join(AbstractTable::CROSS_JOIN, $table);
     }
 
+    /**
+     * @param mixed $table
+     *
+     * @return AbstractTable
+     */
+    public function leftJoin($table)
+    {
+        return $this->join(AbstractTable::LEFT_JOIN, $table);
+    }
+
+    /**
+     * @return string
+     */
     public function buildSQL()
     {
         $compiler = new ExpressionCompiler();
@@ -125,6 +154,9 @@ class QueryBuilder
         return $sql;
     }
 
+    /**
+     * @return Query
+     */
     public function buildQuery()
     {
         return new Query($this->buildSQL());

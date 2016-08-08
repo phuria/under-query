@@ -176,10 +176,27 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $qb = $this->createQb();
 
-        $qb->from('example');
-        $qb->addFrom('test');
+        $exampleTable = $qb->from('example');
+        $testTable = $qb->addFrom('test');
         $qb->addSelect('*');
 
         static::assertSame('SELECT * FROM example, test', $qb->buildQuery()->getSQL());
+
+        $exampleTable->setAlias('SRC');
+        $testTable->setAlias('OTHER');
+
+        static::assertSame('SELECT * FROM example AS SRC, test AS OTHER', $qb->buildSQL());
+    }
+
+    public function testLeftJoin()
+    {
+        $qb = $this->createQb();
+
+        $exampleTable = $qb->from('example');
+        $qb->addSelect('*');
+        $testTable = $qb->leftJoin('test');
+        $testTable->joinOn($testTable->column('id'), ' = ', $exampleTable->column('test_id'));
+
+        static::assertSame('SELECT * FROM example LEFT JOIN test ON test.id = example.test_id', $qb->buildSQL());
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Phuria\QueryBuilder\Table;
 
+use Phuria\QueryBuilder\Expr;
+use Phuria\QueryBuilder\Expression\ExpressionInterface;
 use Phuria\QueryBuilder\QueryBuilder;
 use Phuria\QueryBuilder\Reference\ColumnReference;
 
@@ -11,6 +13,7 @@ use Phuria\QueryBuilder\Reference\ColumnReference;
 abstract class AbstractTable
 {
     const CROSS_JOIN = 'CROSS JOIN';
+    const LEFT_JOIN = 'LEFT JOIN';
 
     /**
      * @var QueryBuilder $qb
@@ -26,6 +29,11 @@ abstract class AbstractTable
      * @var string $joinType
      */
     private $joinType;
+
+    /**
+     * @var ExpressionInterface $joinOn
+     */
+    private $joinOn = [];
 
     /**
      * @var bool $from
@@ -139,6 +147,29 @@ abstract class AbstractTable
         return $this;
     }
 
+    /**
+     * @return $this
+     */
+    public function joinOn()
+    {
+        $this->joinOn = Expr::implode(...func_get_args());
+
+        return $this;
+    }
+
+    /**
+     * @return ExpressionInterface
+     */
+    public function getJoinOn()
+    {
+        return $this->joinOn;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return ColumnReference
+     */
     public function column($name)
     {
         return new ColumnReference($this, $name);

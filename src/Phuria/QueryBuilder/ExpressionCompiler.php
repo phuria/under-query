@@ -48,7 +48,13 @@ class ExpressionCompiler
     public function compileJoin(array $joinTables)
     {
         return implode(' ', array_map(function (AbstractTable $table) {
-            return $table->getJoinType() . ' ' . $this->fullTableName($table);
+            $compiled = $table->getJoinType() . ' ' . $this->fullTableName($table);
+
+            if ($joinOn = $table->getJoinOn()) {
+                $compiled .= ' ON ' . $joinOn->compile();
+            }
+
+            return $compiled;
         }, $joinTables));
     }
 
