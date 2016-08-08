@@ -1,17 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: phuria
- * Date: 07.08.16
- * Time: 18:25
- */
 
 namespace Phuria;
 
 use Phuria\QueryBuilder\TableRecognizer;
 use Phuria\QueryBuilder\Test\ExampleTable;
 
-class TableRegistryTest extends \PHPUnit_Framework_TestCase
+/**
+ * @author Beniamin Jonatan Šimko <spam@simko.it>
+ */
+class TableRecognizerTest extends \PHPUnit_Framework_TestCase
 {
     public function testTypes()
     {

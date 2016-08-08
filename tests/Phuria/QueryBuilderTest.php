@@ -122,7 +122,9 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $qb->addSelect($rootTable->column('points')->max());
 
         static::assertSame('SELECT MAX(example.points) FROM example', $qb->buildQuery()->getSQL());
+
+        $rootTable->setAlias('SRC');
+
+        static::assertSame('SELECT MAX(SRC.points) FROM example AS SRC', $qb->buildQuery()->getSQL());
     }
-
-
 }
