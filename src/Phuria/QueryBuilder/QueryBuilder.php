@@ -43,11 +43,7 @@ class QueryBuilder
      */
     public function addSelect($clause)
     {
-        if ($clause instanceof ColumnReference) {
-            $clause = $clause->toExpression();
-        }
-
-        $this->selectClauses[] = $clause;
+        $this->selectClauses[] = Expr::implode(...func_get_args());
 
         return $this;
     }

@@ -31,6 +31,6 @@ class ExpressionCompiler
             $compiled[] = $expression;
         }
 
-        return implode('', $compiled);
+        return implode(' AND ', $compiled);
     }
 }

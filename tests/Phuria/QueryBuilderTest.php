@@ -142,4 +142,22 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
 
         static::assertSame('SELECT SRC.* FROM example AS SRC WHERE SRC.name IS NOT NULL', $qb->buildQuery()->getSQL());
     }
+
+    public function testWhereConjunction()
+    {
+        $qb = $this->createQb();
+
+        $rootTable = $qb->from('example');
+        $qb->addSelect('*');
+        $qb->andWhere($rootTable->column('name'), ' IS NOT NULL');
+        $qb->andWhere($rootTable->column('id'), ' > 10');
+
+        $expectedSQL = 'SELECT * FROM example WHERE example.name IS NOT NULL AND example.id > 10';
+        static::assertSame($expectedSQL, $qb->buildQuery()->getSQL());
+
+        $qb->andWhere('(', $rootTable->column('name'), ' = "Albert" OR ', $rootTable->column('name'), ' = "Olaf")');
+
+        $expectedSQL .= ' AND (example.name = "Albert" OR example.name = "Olaf")';
+        static::assertSame($expectedSQL, $qb->buildQuery()->getSQL());
+    }
 }
