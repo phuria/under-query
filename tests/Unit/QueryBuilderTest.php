@@ -247,6 +247,12 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $qb->addSelect('*');
         $qb->addOrderBy($exampleTable->column('id'), ' DESC');
 
-        static::assertSame('SELECT * FROM example ORDER BY example.id DESC', $qb->buildSQL());
+        $expectedSQL = 'SELECT * FROM example ORDER BY example.id DESC';
+        static::assertSame($expectedSQL, $qb->buildSQL());
+
+        $qb->addOrderBy($exampleTable->column('name'), ' ASC');
+
+        $expectedSQL .= ', example.name ASC';
+        $qb->addOrderBy($expectedSQL, $qb->buildSQL());
     }
 }
