@@ -26,12 +26,11 @@ class SelectQueryCompiler implements QueryCompilerInterface
     {
         $compiler = new ExpressionCompiler();
 
-        $rootTables = $qb->getRootTables();
         $joinTables = $qb->getJoinTables();
 
         $select = $compiler->compileSelect($qb->getSelectClauses());
         $where = $compiler->compileWhere($qb->getWhereClauses());
-        $from = $compiler->compileFrom($rootTables);
+        $from = (new RootTableCompiler())->compile($qb);
         $join = $compiler->compileJoin($joinTables);
         $orderBy = $compiler->compileOrderBy($qb->getOrderByClauses());
 
