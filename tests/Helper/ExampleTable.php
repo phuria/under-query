@@ -1,6 +1,6 @@
 <?php
 
-namespace Phuria\QueryBuilder\Test;
+namespace Phuria\QueryBuilder\Test\Helper;
 
 use Phuria\QueryBuilder\Table\AbstractTable;
 

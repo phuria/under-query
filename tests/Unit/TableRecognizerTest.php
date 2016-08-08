@@ -1,9 +1,9 @@
 <?php
 
-namespace Phuria;
+namespace Phuria\QueryBuilder\Test\Unit;
 
 use Phuria\QueryBuilder\TableRecognizer;
-use Phuria\QueryBuilder\Test\ExampleTable;
+use Phuria\QueryBuilder\Test\Helper\ExampleTable;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>

@@ -1,12 +1,12 @@
 <?php
 
-namespace Phuria;
+namespace Phuria\QueryBuilder\Test\Unit;
 
 use Phuria\QueryBuilder\QueryBuilder;
 use Phuria\QueryBuilder\Table\UnknownTable;
 use Phuria\QueryBuilder\TableFactory;
 use Phuria\QueryBuilder\TableRegistry;
-use Phuria\QueryBuilder\Test\ExampleTable;
+use Phuria\QueryBuilder\Test\Helper\ExampleTable;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
