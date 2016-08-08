@@ -26,6 +26,11 @@ class QueryBuilder
     private $whereClauses;
 
     /**
+     * @var array $orderByClauses
+     */
+    private $orderByClauses;
+
+    /**
      * @var AbstractTable[] $tables
      */
     private $tables = [];
@@ -38,6 +43,7 @@ class QueryBuilder
         $this->tableFactory = $tableFactory ?: new TableFactory();
         $this->selectClauses = [];
         $this->whereClauses = [];
+        $this->orderByClauses = [];
     }
 
     /**
@@ -132,6 +138,16 @@ class QueryBuilder
     }
 
     /**
+     * @return $this
+     */
+    public function addOrderBy()
+    {
+        $this->orderByClauses[] = Expr::implode(...func_get_args());
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function buildSQL()
@@ -150,6 +166,7 @@ class QueryBuilder
         $where = $compiler->compileWhere($this->whereClauses);
         $from = $compiler->compileFrom($rootTables);
         $join = $compiler->compileJoin($joinTables);
+        $orderBy = $compiler->compileOrderBy($this->orderByClauses);
 
         $sql = "SELECT $select FROM $from";
 
@@ -159,6 +176,10 @@ class QueryBuilder
 
         if ($where) {
             $sql .= ' WHERE ' . $where;
+        }
+
+        if ($orderBy) {
+            $sql .= ' ORDER BY ' . $orderBy;
         }
 
         return $sql;

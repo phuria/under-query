@@ -59,6 +59,16 @@ class ExpressionCompiler
     }
 
     /**
+     * @param array $expressionList
+     *
+     * @return string
+     */
+    public function compileOrderBy(array $expressionList)
+    {
+        return implode(', ', $this->compileExpressionList($expressionList));
+    }
+
+    /**
      * @param AbstractTable $table
      *
      * @return string

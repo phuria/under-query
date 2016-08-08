@@ -238,4 +238,15 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $expectedSQL = 'SELECT SRC.max_value FROM (SELECT MAX(example.value) AS max_value FROM example) AS SRC';
         static::assertSame($expectedSQL, $qb->buildSQL());
     }
+
+    public function testOrderBy()
+    {
+        $qb = $this->createQb();
+
+        $exampleTable = $qb->from('example');
+        $qb->addSelect('*');
+        $qb->addOrderBy($exampleTable->column('id'), ' DESC');
+
+        static::assertSame('SELECT * FROM example ORDER BY example.id DESC', $qb->buildSQL());
+    }
 }
