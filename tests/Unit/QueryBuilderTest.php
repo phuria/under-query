@@ -222,4 +222,20 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
 
         static::assertSame($expectedSQL, $qb->buildSQL());
     }
+
+    public function testSubQuery()
+    {
+        $maxQb = $this->createQb();
+
+        $exampleTable = $maxQb->from('example');
+        $maxQb->addSelect('MAX(', $exampleTable->column('value'), ') AS max_value');
+
+        $qb = $this->createQb();
+        $subQuery = $qb->from($maxQb);
+        $subQuery->setAlias('SRC');
+        $qb->addSelect($subQuery->column('max_value'));
+
+        $expectedSQL = 'SELECT SRC.max_value FROM (SELECT MAX(example.value) AS max_value FROM example) AS SRC';
+        static::assertSame($expectedSQL, $qb->buildSQL());
+    }
 }

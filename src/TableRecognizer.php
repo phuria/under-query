@@ -10,6 +10,7 @@ class TableRecognizer
     const TYPE_ROUTE = 2;
     const TYPE_CLASS_NAME = 3;
     const TYPE_TABLE_NAME = 4;
+    const TYPE_SUB_QUERY = 5;
 
     /**
      * @param mixed $stuff
@@ -20,6 +21,10 @@ class TableRecognizer
     {
         if ($stuff instanceof \Closure) {
             return static::TYPE_CLOSURE;
+        }
+
+        if ($stuff instanceof QueryBuilder) {
+            return static::TYPE_SUB_QUERY;
         }
 
         if (strpos($stuff, '.')) {

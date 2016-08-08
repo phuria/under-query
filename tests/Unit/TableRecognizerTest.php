@@ -2,6 +2,7 @@
 
 namespace Phuria\QueryBuilder\Test\Unit;
 
+use Phuria\QueryBuilder\QueryBuilder;
 use Phuria\QueryBuilder\TableRecognizer;
 use Phuria\QueryBuilder\Test\Helper\ExampleTable;
 
@@ -25,5 +26,8 @@ class TableRecognizerTest extends \PHPUnit_Framework_TestCase
 
         $type = $recognizer->recognizeType('example_table_name');
         static::assertSame(TableRecognizer::TYPE_TABLE_NAME, $type);
+
+        $type = $recognizer->recognizeType(new QueryBuilder());
+        static::assertSame(TableRecognizer::TYPE_SUB_QUERY, $type);
     }
 }

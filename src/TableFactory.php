@@ -3,6 +3,7 @@
 namespace Phuria\QueryBuilder;
 
 use Phuria\QueryBuilder\Table\AbstractTable;
+use Phuria\QueryBuilder\Table\SubQueryTable;
 use Phuria\QueryBuilder\Table\UnknownTable;
 
 /**
@@ -48,6 +49,9 @@ class TableFactory
             case TableRecognizer::TYPE_TABLE_NAME:
                 $tableClass = $this->registry->getTableClass($table);
                 break;
+            case TableRecognizer::TYPE_SUB_QUERY;
+                return $this->createSubQueryTable($table, $qb);
+                break;
         }
 
         $tableObject = new $tableClass($qb);
@@ -68,5 +72,10 @@ class TableFactory
         }
 
         return $lastTable;
+    }
+
+    public function createSubQueryTable(QueryBuilder $subQb, QueryBuilder $qb)
+    {
+        return new SubQueryTable($subQb, $qb);
     }
 }
