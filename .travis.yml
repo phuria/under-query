@@ -4,6 +4,6 @@ php:
   - '7.0'
   - nightly
 install:
-  - composer update
+  - composer install
 script:
   - phpunit tests
