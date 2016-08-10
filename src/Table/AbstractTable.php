@@ -3,9 +3,10 @@
 namespace Phuria\QueryBuilder\Table;
 
 use Phuria\QueryBuilder\Expr;
+use Phuria\QueryBuilder\ExprBuilder;
+use Phuria\QueryBuilder\Expression\ColumnExpression;
 use Phuria\QueryBuilder\Expression\ExpressionInterface;
 use Phuria\QueryBuilder\QueryBuilder;
-use Phuria\QueryBuilder\Reference\ColumnReference;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -169,10 +170,10 @@ abstract class AbstractTable
     /**
      * @param string $name
      *
-     * @return ColumnReference
+     * @return ExprBuilder
      */
     public function column($name)
     {
-        return new ColumnReference($this, $name);
+        return new ExprBuilder(new ColumnExpression($this, $name));
     }
 }

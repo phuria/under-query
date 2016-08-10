@@ -2,6 +2,7 @@
 
 namespace Phuria\QueryBuilder;
 
+use Phuria\QueryBuilder\Expression\AliasExpression;
 use Phuria\QueryBuilder\Expression\ExpressionInterface;
 use Phuria\QueryBuilder\Expression\IfNullExpression;
 use Phuria\QueryBuilder\Expression\MaxExpression;
@@ -59,5 +60,17 @@ class ExprBuilder implements ExpressionInterface
         $expression = Expr::normalizeExpression($expression);
 
         return new self(new IfNullExpression($this->wrappedExpression, $expression));
+    }
+
+    /**
+     * @param mixed $alias
+     *
+     * @return ExprBuilder
+     */
+    public function alias($alias)
+    {
+        $alias = Expr::normalizeExpression($alias);
+
+        return new self(new AliasExpression($this->wrappedExpression, $alias));
     }
 }

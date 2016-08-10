@@ -2,31 +2,34 @@
 
 namespace Phuria\QueryBuilder\Expression;
 
-use Phuria\QueryBuilder\Reference\ColumnReference;
+use Phuria\QueryBuilder\Table\AbstractTable;
 
 class ColumnExpression implements ExpressionInterface
 {
     /**
-     * @var ColumnReference $column
+     * @var AbstractTable $table
      */
-    private $column;
+    private $table;
 
     /**
-     * @param ColumnReference $column
+     * @var string $columnName
      */
-    public function __construct(ColumnReference $column)
+    private $columnName;
+
+    /**
+     * @param AbstractTable $table
+     * @param string        $columnName
+     */
+    public function __construct(AbstractTable $table, $columnName)
     {
-        $this->column = $column;
+        $this->table = $table;
+        $this->columnName = $columnName;
     }
     /**
      * @return string
      */
     public function compile()
     {
-        if ($alias = $this->column->getAlias()) {
-            return $this->column->getFullName() . ' AS ' . $alias;
-        }
-
-        return $this->column->getFullName();
+        return $this->table->getAliasOrName() . '.' . $this->columnName;
     }
 }
