@@ -3,6 +3,7 @@
 namespace Phuria\QueryBuilder;
 
 use Phuria\QueryBuilder\Expression\ExpressionInterface;
+use Phuria\QueryBuilder\Expression\SumExpression;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -10,7 +11,7 @@ use Phuria\QueryBuilder\Expression\ExpressionInterface;
 class ExprBuilder implements ExpressionInterface
 {
     /**
-     * @var mixed $wrappedExpression
+     * @var ExpressionInterface $wrappedExpression
      */
     private $wrappedExpression;
 
@@ -19,7 +20,7 @@ class ExprBuilder implements ExpressionInterface
      */
     public function __construct($wrappedExpression)
     {
-        $this->wrappedExpression = $wrappedExpression;
+        $this->wrappedExpression = Expr::normalizeExpression($wrappedExpression);
     }
 
     /**
@@ -27,15 +28,14 @@ class ExprBuilder implements ExpressionInterface
      */
     public function compile()
     {
-        if ($this->wrappedExpression instanceof ExpressionInterface) {
-            return $this->wrappedExpression->compile();
-        }
-
-        return $this->wrappedExpression;
+        return $this->wrappedExpression->compile();
     }
 
+    /**
+     * @return ExpressionInterface
+     */
     public function sum()
     {
-        return 'SUM(1)';
+        return new self(new SumExpression($this->wrappedExpression));
     }
 }

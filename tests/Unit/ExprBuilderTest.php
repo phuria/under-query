@@ -14,6 +14,6 @@ class ExprBuilderTest extends \PHPUnit_Framework_TestCase
         $exp = new ExprBuilder('1');
         $exp = $exp->sum();
 
-        static::assertSame('SUM(1)', $exp);
+        static::assertSame('SUM(1)', $exp->compile());
     }
 }

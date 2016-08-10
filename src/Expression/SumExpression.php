@@ -8,14 +8,14 @@ namespace Phuria\QueryBuilder\Expression;
 class SumExpression implements ExpressionInterface
 {
     /**
-     * @var mixed $wrappedExpression
+     * @var ExpressionInterface $wrappedExpression
      */
     private $wrappedExpression;
 
     /**
-     * @param mixed $expression
+     * @param ExpressionInterface $expression
      */
-    public function __construct($expression)
+    public function __construct(ExpressionInterface $expression)
     {
         $this->wrappedExpression = $expression;
     }
@@ -25,6 +25,6 @@ class SumExpression implements ExpressionInterface
      */
     public function compile()
     {
-
+        return 'SUM(' . $this->wrappedExpression->compile() . ')';
     }
 }
