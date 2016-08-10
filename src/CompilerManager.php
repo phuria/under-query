@@ -1,8 +1,10 @@
 <?php
 
-namespace Phuria\QueryBuilder\Compiler;
+namespace Phuria\QueryBuilder;
 
-use Phuria\QueryBuilder\QueryBuilder;
+use Phuria\QueryBuilder\Compiler\QueryCompilerInterface;
+use Phuria\QueryBuilder\Compiler\SelectQueryCompiler;
+use Phuria\QueryBuilder\Compiler\UpdateQueryCompiler;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -10,7 +12,7 @@ use Phuria\QueryBuilder\QueryBuilder;
 class CompilerManager
 {
     /**
-     * @var CompilerInterface[] $compilers
+     * @var QueryCompilerInterface[] $compilers
      */
     private $compilers = [];
 

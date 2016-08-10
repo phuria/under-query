@@ -2,7 +2,6 @@
 
 namespace Phuria\QueryBuilder;
 
-use Phuria\QueryBuilder\Compiler\CompilerManager;
 use Phuria\QueryBuilder\Table\AbstractTable;
 
 /**
