@@ -27,7 +27,7 @@ class ExpressionListCompiler implements CompilerInterface
             }
 
             if ($expression instanceof AbstractTable) {
-                $expression = $this->fullTableName($expression);
+                $expression = $this->fullTableDeclaration($expression);
             }
 
             $compiled[] = $expression;
@@ -41,14 +41,24 @@ class ExpressionListCompiler implements CompilerInterface
      *
      * @return string
      */
-    private function fullTableName(AbstractTable $table)
+    private function fullTableDeclaration(AbstractTable $table)
     {
-        $tableName = $table->getTableName();
+        $declaration = '';
 
-        if ($alias = $table->getAlias()) {
-            $tableName .= ' AS ' . $alias;
+        if ($table->isJoin()) {
+            $declaration .= $table->getJoinType() . ' ';
         }
 
-        return $tableName;
+        $declaration .= $table->getTableName();
+
+        if ($alias = $table->getAlias()) {
+            $declaration .= ' AS ' . $alias;
+        }
+
+        if ($joinOn = $table->getJoinOn()) {
+            $declaration .= ' ON ' . $joinOn->compile();
+        }
+
+        return $declaration;
     }
 }

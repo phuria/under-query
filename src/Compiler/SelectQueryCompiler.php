@@ -2,7 +2,6 @@
 
 namespace Phuria\QueryBuilder\Compiler;
 
-use Phuria\QueryBuilder\ExpressionCompiler;
 use Phuria\QueryBuilder\QueryBuilder;
 
 /**
@@ -23,16 +22,15 @@ class SelectQueryCompiler implements QueryCompilerInterface
      */
     public function compile(QueryBuilder $qb)
     {
-        $compiler = new ExpressionCompiler();
         $commaSeparated = new SeparatedListCompiler(', ');
+        $andSeparated = new SeparatedListCompiler(' AND ');
+        $spaceSeparated = new SeparatedListCompiler(' ');
 
-        $joinTables = $qb->getJoinTables();
-
-        $select = $compiler->compileSelect($qb->getSelectClauses());
-        $where = $compiler->compileWhere($qb->getWhereClauses());
+        $select = $commaSeparated->compile($qb->getSelectClauses());
+        $where = $andSeparated->compile($qb->getWhereClauses());
         $from = $commaSeparated->compile($qb->getRootTables());
-        $join = $compiler->compileJoin($joinTables);
-        $orderBy = $compiler->compileOrderBy($qb->getOrderByClauses());
+        $join = $spaceSeparated->compile($qb->getJoinTables());
+        $orderBy = $commaSeparated->compile($qb->getOrderByClauses());
         $groupBy = $commaSeparated->compile($qb->getGroupByClauses());
 
         $sql = "SELECT $select FROM $from";
