@@ -4,6 +4,8 @@ namespace Phuria\QueryBuilder;
 
 use Phuria\QueryBuilder\Expression\AliasExpression;
 use Phuria\QueryBuilder\Expression\Arithmetic as Arithmetic;
+use Phuria\QueryBuilder\Expression\AscExpression;
+use Phuria\QueryBuilder\Expression\DescExpression;
 use Phuria\QueryBuilder\Expression\EmptyExpression;
 use Phuria\QueryBuilder\Expression\ExpressionInterface;
 use Phuria\QueryBuilder\Expression\Func as Func;
@@ -91,9 +93,33 @@ class ExprBuilder implements ExpressionInterface
     /**
      * @return ExprBuilder
      */
+    public function sumNullable()
+    {
+        return $this->ifNull('0')->sum();
+    }
+
+    /**
+     * @return ExprBuilder
+     */
     public function using()
     {
         return new self(new UsingExpression($this->wrappedExpression));
+    }
+
+    /**
+     * @return ExprBuilder
+     */
+    public function desc()
+    {
+        return new self(new DescExpression($this->wrappedExpression));
+    }
+
+    /**
+     * @return ExprBuilder
+     */
+    public function asc()
+    {
+        return new self(new AscExpression($this->wrappedExpression));
     }
 
     ##############################
@@ -172,9 +198,9 @@ class ExprBuilder implements ExpressionInterface
         return new self(new Arithmetic\Subtract($this->wrappedExpression, $right));
     }
 
-    ########################
-    ### STRING FUNCTIONS ###
-    ########################
+    #################
+    ### FUNCTIONS ###
+    #################
 
     /**
      * @return ExprBuilder
@@ -279,8 +305,8 @@ class ExprBuilder implements ExpressionInterface
     /**
      * @return ExprBuilder
      */
-    public function sumNullable()
+    public function year()
     {
-        return $this->ifNull('0')->sum();
+        return new self(new Func\Year($this->wrappedExpression));
     }
 }

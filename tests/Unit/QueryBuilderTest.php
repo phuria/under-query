@@ -322,4 +322,17 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
 
         static::assertSame($expectedSQL, $qb->buildSQL());
     }
+
+    public function testGroupByOrder()
+    {
+        $qb = $this->createQb();
+
+        $exampleTable = $qb->from('example');
+        $qb->addSelect('*');
+        $qb->addGroupBy($exampleTable->column('user_id')->desc());
+        $qb->addGroupBy($exampleTable->column('created_at')->year()->asc());
+
+        $expectedSQL = 'SELECT * FROM example GROUP BY example.user_id DESC, YEAR(example.created_at) ASC';
+        static::assertSame($expectedSQL, $qb->buildSQL());
+    }
 }

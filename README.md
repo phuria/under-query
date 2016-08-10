@@ -30,6 +30,39 @@ SELECT u.name, c.phone_number FROM user AS u
 LEFT JOIN contact AS c ON u.id = c.user_id;
 ```
 
+### ASC / DESC Expression
+
+```php
+$qb = new QueryBuilder();
+
+$ordersTable = $qb->from('orders');
+$qb->addSelect('*');
+$qb->addOrderBy($ordersTable->column('created_at')->desc());
+
+$sql = $qb->buildSQL();
+```
+
+```sql
+SELECT * FROM orders ORDER BY orders.created_at DESC
+```
+
+```php
+$qb = new QueryBuilder();
+
+$orderTable = $qb->from('orders');
+$year = $orderTable->column('created_at')->year();
+$qb->addSelect($orderTable->column('price')->sum());
+$qb->addSelect($year);
+$qb->addGroupBy($year->desc());
+
+$sql = $qb->buildSQL();
+```
+
+```sql
+SELECT SUM(orders.price), YEAR(orders.created_at) FROM orders
+GROUP BY YEAR(ordsers.created_at) DESC
+```
+
 ### Aggregate functions
 
 ```php
