@@ -1,7 +1,8 @@
 <?php
 
-namespace Phuria\QueryBuilder\Compiler;
+namespace Phuria\QueryBuilder\QueryCompiler;
 
+use Phuria\QueryBuilder\Compiler\SeparatedListCompiler;
 use Phuria\QueryBuilder\QueryBuilder;
 
 /**

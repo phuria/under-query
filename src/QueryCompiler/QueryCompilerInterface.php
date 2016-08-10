@@ -1,6 +1,6 @@
 <?php
 
-namespace Phuria\QueryBuilder\Compiler;
+namespace Phuria\QueryBuilder\QueryCompiler;
 
 use Phuria\QueryBuilder\QueryBuilder;
 
