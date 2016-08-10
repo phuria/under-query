@@ -141,6 +141,22 @@ class ExprBuilder implements ExpressionInterface
     }
 
     /**
+     * @return ExprBuilder
+     */
+    public function concat()
+    {
+        return new self(new Func\Concat($this->wrappedExpression));
+    }
+
+    /**
+     * @return ExprBuilder
+     */
+    public function concatWs()
+    {
+        return new self(new Func\Concat($this->wrappedExpression));
+    }
+
+    /**
      * @param mixed $expression
      *
      * @return ExprBuilder
@@ -166,5 +182,13 @@ class ExprBuilder implements ExpressionInterface
     public function sum()
     {
         return new self(new Func\Sum($this->wrappedExpression));
+    }
+
+    /**
+     * @return ExprBuilder
+     */
+    public function sumNullable()
+    {
+        return $this->ifNull('0')->sum();
     }
 }

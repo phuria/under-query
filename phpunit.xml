@@ -11,15 +11,4 @@
     syntaxCheck                 = "false"
     bootstrap                   = "vendor/autoload.php" >
 
-    <testsuites>
-        <testsuite name="Project Test Suite">
-            <directory>.tests</directory>
-        </testsuite>
-    </testsuites>
-
-    <filter>
-        <whitelist>
-            <directory>tests</directory>
-        </whitelist>
-    </filter>
 </phpunit>
