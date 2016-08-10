@@ -2,7 +2,10 @@
 
 namespace Phuria\QueryBuilder;
 
+use Phuria\QueryBuilder\Expression\EmptyExpression;
+use Phuria\QueryBuilder\Expression\ExpressionInterface;
 use Phuria\QueryBuilder\Expression\ImplodeExpression;
+use Phuria\QueryBuilder\Expression\RawExpression;
 use Phuria\QueryBuilder\Reference\ColumnReference;
 
 /**
@@ -10,6 +13,28 @@ use Phuria\QueryBuilder\Reference\ColumnReference;
  */
 class Expr
 {
+    /**
+     * @param mixed $expression
+     *
+     * @return ExpressionInterface
+     */
+    public static function normalizeExpression($expression)
+    {
+        if ($expression instanceof ExpressionInterface) {
+            return $expression;
+        }
+
+        if ('' === $expression || null === $expression) {
+            return new EmptyExpression();
+        }
+
+        if ($expression instanceof ColumnReference) {
+            return $expression->toExpression();
+        }
+
+        return new RawExpression($expression);
+    }
+
     /**
      * @param mixed $expr
      *
@@ -29,11 +54,7 @@ class Expr
         $expressions = [];
 
         foreach ($args as $arg) {
-            if ($arg instanceof ColumnReference) {
-                $arg = $arg->toExpression();
-            }
-
-            $expressions[] = $arg;
+            $expressions[] = static::normalizeExpression($arg);
         }
 
         return new ImplodeExpression($expressions);

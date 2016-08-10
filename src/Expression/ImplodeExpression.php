@@ -8,7 +8,7 @@ namespace Phuria\QueryBuilder\Expression;
 class ImplodeExpression implements ExpressionInterface
 {
     /**
-     * @var array $expressionList
+     * @var ExpressionInterface[] $expressionList
      */
     private $expressionList;
 
@@ -25,13 +25,11 @@ class ImplodeExpression implements ExpressionInterface
      */
     public function compile()
     {
-        $elements = array_map(function ($element) {
-            if ($element instanceof ExpressionInterface) {
-                return $element->compile();
-            }
+        $elements = [];
 
-            return $element;
-        }, $this->expressionList);
+        foreach ($this->expressionList as $expression) {
+            $elements[] = $expression->compile();
+        }
 
         return implode('', $elements);
     }
