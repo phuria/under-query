@@ -2,8 +2,8 @@
 
 namespace Phuria\QueryBuilder;
 
-use Phuria\QueryBuilder\Expression\AddExpression;
 use Phuria\QueryBuilder\Expression\AliasExpression;
+use Phuria\QueryBuilder\Expression\Arithmetic as Arithmetic;
 use Phuria\QueryBuilder\Expression\EmptyExpression;
 use Phuria\QueryBuilder\Expression\ExpressionInterface;
 use Phuria\QueryBuilder\Expression\Func as Func;
@@ -89,6 +89,18 @@ class ExprBuilder implements ExpressionInterface
     }
 
     /**
+     * @return ExprBuilder
+     */
+    public function using()
+    {
+        return new self(new UsingExpression($this->wrappedExpression));
+    }
+
+    ##############################
+    ### ARITHMETIC EXPRESSIONS ###
+    ##############################
+
+    /**
      * @param mixed $right
      *
      * @return ExprBuilder
@@ -97,16 +109,72 @@ class ExprBuilder implements ExpressionInterface
     {
         $right = static::normalizeExpression($right);
 
-        return new self(new AddExpression($this->wrappedExpression, $right));
+        return new self(new Arithmetic\Add($this->wrappedExpression, $right));
     }
 
     /**
+     * @param mixed $right
+     *
      * @return ExprBuilder
      */
-    public function using()
+    public function div($right)
     {
-        return new self(new UsingExpression($this->wrappedExpression));
+        $right = static::normalizeExpression($right);
+
+        return new self(new Arithmetic\Div($this->wrappedExpression, $right));
     }
+
+    /**
+     * @param mixed $right
+     *
+     * @return ExprBuilder
+     */
+    public function divide($right)
+    {
+        $right = static::normalizeExpression($right);
+
+        return new self(new Arithmetic\Divide($this->wrappedExpression, $right));
+    }
+
+    /**
+     * @param mixed $right
+     *
+     * @return ExprBuilder
+     */
+    public function modulo($right)
+    {
+        $right = static::normalizeExpression($right);
+
+        return new self(new Arithmetic\Modulo($this->wrappedExpression, $right));
+    }
+
+    /**
+     * @param mixed $right
+     *
+     * @return ExprBuilder
+     */
+    public function multiply($right)
+    {
+        $right = static::normalizeExpression($right);
+
+        return new self(new Arithmetic\Multiply($this->wrappedExpression, $right));
+    }
+
+    /**
+     * @param mixed $right
+     *
+     * @return ExprBuilder
+     */
+    public function subtract($right)
+    {
+        $right = static::normalizeExpression($right);
+
+        return new self(new Arithmetic\Subtract($this->wrappedExpression, $right));
+    }
+
+    ########################
+    ### STRING FUNCTIONS ###
+    ########################
 
     /**
      * @return ExprBuilder
@@ -154,6 +222,30 @@ class ExprBuilder implements ExpressionInterface
     public function concatWs()
     {
         return new self(new Func\Concat($this->wrappedExpression));
+    }
+
+    /**
+     * @return ExprBuilder
+     */
+    public function elt()
+    {
+        return new self(new Func\Elt($this->wrappedExpression));
+    }
+
+    /**
+     * @return ExprBuilder
+     */
+    public function exportSet()
+    {
+        return new self(new Func\ExportSet($this->wrappedExpression));
+    }
+
+    /**
+     * @return ExprBuilder
+     */
+    public function field()
+    {
+        return new self(new Func\Field($this->wrappedExpression));
     }
 
     /**

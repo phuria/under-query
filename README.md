@@ -1,10 +1,12 @@
-# Phuria SQLBuilder [![Build Status](https://travis-ci.org/phuria/sql-builder.svg?branch=master)](https://travis-ci.org/phuria/sql-builder)
+# Phuria SQL Builder [![Build Status](https://travis-ci.org/phuria/sql-builder.svg?branch=master)](https://travis-ci.org/phuria/sql-builder)
 
 ### Requirements
 
 PHP: `>=5.6.0`
 
-### Simple Examples
+### Examples
+
+1. Simple Query
 
 ```php
 $qb = new QueryBuilder();
