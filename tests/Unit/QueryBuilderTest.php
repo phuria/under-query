@@ -303,4 +303,23 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
 
         static::assertSame('SELECT 1 + 1', $qb->buildSQL());
     }
+
+    public function testSelectOptions()
+    {
+        $qb = $this->createQb();
+
+        $exampleTable = $qb->from('example');
+        $qb->addSelect($exampleTable->column('*'));
+        $qb->setHighPriority(true);
+        $qb->setMaxStatementTime(30);
+        $qb->setStraightJoin(true);
+        $qb->setSqlSmallResult(true);
+        $qb->setSqlNoCache(true);
+        $qb->setSqlCalcFoundRows(true);
+
+        $expectedSQL = 'SELECT HIGH_PRIORITY MAX_STATEMENT_TIME 30 STRAIGHT_JOIN SQL_SMALL_RESULT SQL_NO_CACHE'
+            . ' SQL_CALC_FOUND_ROWS example.* FROM example';
+
+        static::assertSame($expectedSQL, $qb->buildSQL());
+    }
 }

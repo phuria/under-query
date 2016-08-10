@@ -34,7 +34,43 @@ class SelectQueryCompiler implements QueryCompilerInterface
         $orderBy = $commaSeparated->compile($qb->getOrderByClauses());
         $groupBy = $commaSeparated->compile($qb->getGroupByClauses());
 
-        $sql = "SELECT $select";
+        $sql = "SELECT";
+
+        if ($qb->isHighPriority()) {
+            $sql .= ' HIGH_PRIORITY';
+        }
+
+        if ($statementTime = $qb->getMaxStatementTime()) {
+            $sql .= ' MAX_STATEMENT_TIME ' . $statementTime;
+        }
+
+        if ($qb->isStraightJoin()) {
+            $sql .= ' STRAIGHT_JOIN';
+        }
+
+        if ($qb->isSqlSmallResult()) {
+            $sql .= ' SQL_SMALL_RESULT';
+        }
+
+        if ($qb->isSqlBigResult()) {
+            $sql .= ' SQL_BIG_RESULT';
+        }
+
+        if ($qb->isSqlBufferResult()) {
+            $sql .= ' SQL_BUFFER_RESULT';
+        }
+
+        if ($qb->isSqlNoCache()) {
+            $sql .= ' SQL_NO_CACHE';
+        }
+
+        if ($qb->isSqlCalcFoundRows()) {
+            $sql .= ' SQL_CALC_FOUND_ROWS';
+        }
+
+        if ($select) {
+            $sql .= ' ' . $select;
+        }
 
         if ($from) {
             $sql .= ' FROM ' . $from;
