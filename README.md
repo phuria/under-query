@@ -54,14 +54,8 @@ class AccountTable extends AbstractTable
 $qb = new QueryBuilder();
 $qb->addSelect('*');
 
-// By returned table
 $accountTable = $qb->from('account');
 $accountTable->onlyActive();
-
-// By callback
-$qb->from(function (AccountTable $table) {
-    $table->onlyActive();
-});
 
 $qb->buildSQL();
 ```
