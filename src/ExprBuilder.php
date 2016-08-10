@@ -21,7 +21,7 @@ class ExprBuilder implements ExpressionInterface
     /**
      * @param mixed $wrappedExpression
      */
-    public function __construct($wrappedExpression)
+    public function __construct($wrappedExpression = null)
     {
         $this->wrappedExpression = Expr::normalizeExpression($wrappedExpression);
     }

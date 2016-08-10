@@ -284,4 +284,14 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
 
         static::assertSame('SELECT p.user_id, SUM(p.price) FROM price_list AS p GROUP BY p.user_id', $qb->buildSQL());
     }
+
+    public function testAliasedSum()
+    {
+        $qb = $this->createQb();
+
+        $exampleTable = $qb->from('example');
+        $qb->addSelect($exampleTable->column('points')->sum()->alias('points'));
+
+        static::assertSame('SELECT SUM(example.points) AS points FROM example', $qb->buildSQL());
+    }
 }
