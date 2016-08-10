@@ -5,11 +5,9 @@ namespace Phuria\QueryBuilder;
 use Phuria\QueryBuilder\Expression\AliasExpression;
 use Phuria\QueryBuilder\Expression\EmptyExpression;
 use Phuria\QueryBuilder\Expression\ExpressionInterface;
-use Phuria\QueryBuilder\Expression\IfNullExpression;
+use Phuria\QueryBuilder\Expression\Func as Func;
 use Phuria\QueryBuilder\Expression\ImplodeExpression;
-use Phuria\QueryBuilder\Expression\MaxExpression;
 use Phuria\QueryBuilder\Expression\RawExpression;
-use Phuria\QueryBuilder\Expression\SumExpression;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -73,7 +71,7 @@ class ExprBuilder implements ExpressionInterface
      */
     public function sum()
     {
-        return new self(new SumExpression($this->wrappedExpression));
+        return new self(new Func\Sum($this->wrappedExpression));
     }
 
     /**
@@ -81,7 +79,7 @@ class ExprBuilder implements ExpressionInterface
      */
     public function max()
     {
-        return new self(new MaxExpression($this->wrappedExpression));
+        return new self(new Func\Max($this->wrappedExpression));
     }
 
     /**
@@ -93,7 +91,7 @@ class ExprBuilder implements ExpressionInterface
     {
         $expression = static::normalizeExpression($expression);
 
-        return new self(new IfNullExpression($this->wrappedExpression, $expression));
+        return new self(new Func\IfNull($this->wrappedExpression, $expression));
     }
 
     /**
