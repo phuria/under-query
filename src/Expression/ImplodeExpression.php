@@ -21,9 +21,17 @@ class ImplodeExpression implements ExpressionInterface
     }
 
     /**
+     * @return ExpressionInterface[]
+     */
+    public function getExpressionList()
+    {
+        return $this->expressionList;
+    }
+
+    /**
      * @inheritdoc
      */
-    public function compile()
+    public function compile($separator = '')
     {
         $elements = [];
 
@@ -31,6 +39,6 @@ class ImplodeExpression implements ExpressionInterface
             $elements[] = $expression->compile();
         }
 
-        return implode('', $elements);
+        return implode($separator, $elements);
     }
 }

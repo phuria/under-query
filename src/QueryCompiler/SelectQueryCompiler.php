@@ -34,7 +34,11 @@ class SelectQueryCompiler implements QueryCompilerInterface
         $orderBy = $commaSeparated->compile($qb->getOrderByClauses());
         $groupBy = $commaSeparated->compile($qb->getGroupByClauses());
 
-        $sql = "SELECT $select FROM $from";
+        $sql = "SELECT $select";
+
+        if ($from) {
+            $sql .= ' FROM ' . $from;
+        }
 
         if ($join) {
             $sql .= ' ' . $join;

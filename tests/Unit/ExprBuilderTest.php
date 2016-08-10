@@ -42,4 +42,12 @@ class ExprBuilderTest extends \PHPUnit_Framework_TestCase
 
         static::assertSame('TEST', $exp->compile());
     }
+
+    public function testCharUsingUtf8()
+    {
+        $using = (new ExprBuilder('utf8'))->using();
+        $exp = (new ExprBuilder(10, 20, 30, $using))->char();
+
+        static::assertSame('CHAR(10, 20, 30 USING utf8)', $exp->compile());
+    }
 }

@@ -23,6 +23,14 @@ abstract class AbstractFuncExpression implements ExpressionInterface
     }
 
     /**
+     * @return ExpressionInterface[]
+     */
+    public function getArguments()
+    {
+        return $this->args;
+    }
+
+    /**
      * @return string
      */
     abstract public function getName();
@@ -32,12 +40,12 @@ abstract class AbstractFuncExpression implements ExpressionInterface
      */
     public function compile()
     {
-        $compiled = [];
+        $funcArguments = new FuncArguments();
 
         foreach ($this->args as $arg) {
-            $compiled[] = $arg->compile();
+            $funcArguments->addArgument($arg);
         }
 
-        return $this->getName() . '(' . implode(', ', $compiled) . ')';
+        return $this->getName() . '(' . $funcArguments->compile() . ')';
     }
 }

@@ -294,4 +294,13 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
 
         static::assertSame('SELECT SUM(example.points) AS points FROM example', $qb->buildSQL());
     }
+
+    public function testExpr()
+    {
+        $qb = $this->createQb();
+
+        $qb->addSelect($qb->expr(1)->add(1));
+
+        static::assertSame('SELECT 1 + 1', $qb->buildSQL());
+    }
 }

@@ -65,6 +65,14 @@ class QueryBuilder
     }
 
     /**
+     * @return ExprBuilder
+     */
+    public function expr()
+    {
+        return new ExprBuilder(func_get_args());
+    }
+
+    /**
      * @return $this
      */
     public function addSelect()

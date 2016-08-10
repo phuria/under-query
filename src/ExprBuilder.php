@@ -2,12 +2,14 @@
 
 namespace Phuria\QueryBuilder;
 
+use Phuria\QueryBuilder\Expression\AddExpression;
 use Phuria\QueryBuilder\Expression\AliasExpression;
 use Phuria\QueryBuilder\Expression\EmptyExpression;
 use Phuria\QueryBuilder\Expression\ExpressionInterface;
 use Phuria\QueryBuilder\Expression\Func as Func;
 use Phuria\QueryBuilder\Expression\ImplodeExpression;
 use Phuria\QueryBuilder\Expression\RawExpression;
+use Phuria\QueryBuilder\Expression\UsingExpression;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -59,6 +61,14 @@ class ExprBuilder implements ExpressionInterface
     }
 
     /**
+     * @return ExpressionInterface
+     */
+    public function getWrappedExpression()
+    {
+        return $this->wrappedExpression;
+    }
+
+    /**
      * @inheritdoc
      */
     public function compile()
@@ -67,19 +77,67 @@ class ExprBuilder implements ExpressionInterface
     }
 
     /**
+     * @param mixed $alias
+     *
      * @return ExprBuilder
      */
-    public function sum()
+    public function alias($alias)
     {
-        return new self(new Func\Sum($this->wrappedExpression));
+        $alias = static::normalizeExpression($alias);
+
+        return new self(new AliasExpression($this->wrappedExpression, $alias));
+    }
+
+    /**
+     * @param mixed $right
+     *
+     * @return ExprBuilder
+     */
+    public function add($right)
+    {
+        $right = static::normalizeExpression($right);
+
+        return new self(new AddExpression($this->wrappedExpression, $right));
     }
 
     /**
      * @return ExprBuilder
      */
-    public function max()
+    public function using()
     {
-        return new self(new Func\Max($this->wrappedExpression));
+        return new self(new UsingExpression($this->wrappedExpression));
+    }
+
+    /**
+     * @return ExprBuilder
+     */
+    public function asci()
+    {
+        return new self(new Func\Asci($this->wrappedExpression));
+    }
+
+    /**
+     * @return ExprBuilder
+     */
+    public function bin()
+    {
+        return new self(new Func\Bin($this->wrappedExpression));
+    }
+
+    /**
+     * @return ExprBuilder
+     */
+    public function bitLength()
+    {
+        return new self(new Func\BitLength($this->wrappedExpression));
+    }
+
+    /**
+     * @return ExprBuilder
+     */
+    public function char()
+    {
+        return new self(new Func\Char($this->wrappedExpression));
     }
 
     /**
@@ -95,14 +153,18 @@ class ExprBuilder implements ExpressionInterface
     }
 
     /**
-     * @param mixed $alias
-     *
      * @return ExprBuilder
      */
-    public function alias($alias)
+    public function max()
     {
-        $alias = static::normalizeExpression($alias);
+        return new self(new Func\Max($this->wrappedExpression));
+    }
 
-        return new self(new AliasExpression($this->wrappedExpression, $alias));
+    /**
+     * @return ExprBuilder
+     */
+    public function sum()
+    {
+        return new self(new Func\Sum($this->wrappedExpression));
     }
 }
