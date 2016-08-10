@@ -6,7 +6,6 @@ use Phuria\QueryBuilder\Expression\EmptyExpression;
 use Phuria\QueryBuilder\Expression\ExpressionInterface;
 use Phuria\QueryBuilder\Expression\ImplodeExpression;
 use Phuria\QueryBuilder\Expression\RawExpression;
-use Phuria\QueryBuilder\Reference\ColumnReference;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -28,21 +27,7 @@ class Expr
             return new EmptyExpression();
         }
 
-        if ($expression instanceof ColumnReference) {
-            return $expression->toExpression();
-        }
-
         return new RawExpression($expression);
-    }
-
-    /**
-     * @param mixed $expr
-     *
-     * @return ImplodeExpression
-     */
-    public static function max($expr)
-    {
-        return static::implode('MAX(', $expr, ')');
     }
 
     /**
