@@ -30,6 +30,54 @@ SELECT u.name, c.phone_number FROM user AS u
 LEFT JOIN contact AS c ON u.id = c.user_id;
 ```
 
+
+2. Custom table
+
+```php
+use Phuria\QueryBuilder\Table\AbstractTable;
+
+class AccountTable extends AbstractTable
+{
+    /**
+     * @inheritdoc
+     */
+    public function getTableName()
+    {
+        return 'account';
+    }
+    
+    /**
+     * @return $this
+     */
+    public function onlyActive()
+    {
+        $this->andWhere($this->column('active'));
+        
+        return $this;
+    }
+}
+```
+
+```php
+$qb = new QueryBuilder();
+$qb->addSelect('*');
+
+// By returned table
+$accountTable = $qb->from('account');
+$accountTable->onlyActive();
+
+// By callback
+$qb->from(function (AccountTable $table) {
+    $table->onlyActive();
+});
+
+$qb->buildSQL();
+```
+
+```sql
+SELECT * FROM account WHERE acount.active
+```
+
 ### ASC / DESC Expression
 
 ```php
