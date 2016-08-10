@@ -2,9 +2,9 @@
 
 namespace Phuria\QueryBuilder;
 
-use Phuria\QueryBuilder\Compiler\QueryCompilerInterface;
-use Phuria\QueryBuilder\Compiler\SelectQueryCompiler;
-use Phuria\QueryBuilder\Compiler\UpdateQueryCompiler;
+use Phuria\QueryBuilder\QueryCompiler\QueryCompilerInterface;
+use Phuria\QueryBuilder\QueryCompiler\SelectQueryCompiler;
+use Phuria\QueryBuilder\QueryCompiler\UpdateQueryCompiler;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
