@@ -14,7 +14,7 @@ class SelectQueryCompiler implements QueryCompilerInterface
      */
     public function canHandleQuery(QueryBuilder $qb)
     {
-        return $qb->getQueryType()->isSelect() && false === $qb->getQueryType()->isUpdate();
+        return (bool) $qb->getSelectClauses();
     }
 
     /**

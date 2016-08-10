@@ -16,11 +16,6 @@ class QueryBuilder
     private $tableFactory;
 
     /**
-     * @var QueryType $queryType
-     */
-    private $queryType;
-
-    /**
      * @var CompilerManager $compilerManager
      */
     private $compilerManager;
@@ -63,7 +58,6 @@ class QueryBuilder
     {
         $this->tableFactory = $tableFactory ?: new TableFactory();
         $this->compilerManager = $compilerManager ?: new CompilerManager();
-        $this->queryType = new QueryType();
         $this->selectClauses = [];
         $this->whereClauses = [];
         $this->orderByClauses = [];
@@ -123,8 +117,6 @@ class QueryBuilder
      */
     public function addFrom($table)
     {
-        $this->queryType->setSelect(true);
-
         return $this->addRootTable($table);
     }
 
@@ -135,8 +127,6 @@ class QueryBuilder
      */
     public function update($table)
     {
-        $this->queryType->setUpdate(true);
-
         return $this->addRootTable($table);
     }
 
@@ -230,14 +220,6 @@ class QueryBuilder
     public function buildQuery()
     {
         return new Query($this->buildSQL());
-    }
-
-    /**
-     * @return QueryType
-     */
-    public function getQueryType()
-    {
-        return $this->queryType;
     }
 
     /**
