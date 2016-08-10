@@ -46,6 +46,11 @@ class QueryBuilder
     private $setClauses;
 
     /**
+     * @var array $groupByClauses
+     */
+    private $groupByClauses;
+
+    /**
      * @var AbstractTable[] $tables
      */
     private $tables = [];
@@ -62,6 +67,8 @@ class QueryBuilder
         $this->selectClauses = [];
         $this->whereClauses = [];
         $this->orderByClauses = [];
+        $this->groupByClauses = [];
+        $this->setClauses = [];
     }
 
     /**
@@ -200,6 +207,16 @@ class QueryBuilder
     }
 
     /**
+     * @return $this
+     */
+    public function addGroupBy()
+    {
+        $this->groupByClauses[] = Expr::implode(...func_get_args());
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function buildSQL()
@@ -253,6 +270,14 @@ class QueryBuilder
     public function getSetClauses()
     {
         return $this->setClauses;
+    }
+
+    /**
+     * @return array
+     */
+    public function getGroupByClauses()
+    {
+        return $this->groupByClauses;
     }
 
     /**

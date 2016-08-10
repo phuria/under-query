@@ -271,4 +271,17 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $expectedSQL .= ', example.value = 10';
         static::assertSame($expectedSQL, $qb->buildSQL());
     }
+
+    public function testGroupBy()
+    {
+        $qb = $this->createQb();
+
+        $exampleTable = $qb->from('price_list');
+        $exampleTable->setAlias('p');
+        $qb->addSelect($exampleTable->column('user_id'));
+        $qb->addSelect('SUM(', $exampleTable->column('price'), ')');
+        $qb->addGroupBy($exampleTable->column('user_id'));
+
+        static::assertSame('SELECT p.user_id, SUM(p.price) FROM price_list AS p GROUP BY p.user_id', $qb->buildSQL());
+    }
 }

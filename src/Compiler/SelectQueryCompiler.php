@@ -24,14 +24,16 @@ class SelectQueryCompiler implements QueryCompilerInterface
     public function compile(QueryBuilder $qb)
     {
         $compiler = new ExpressionCompiler();
+        $commaSeparated = new SeparatedListCompiler(', ');
 
         $joinTables = $qb->getJoinTables();
 
         $select = $compiler->compileSelect($qb->getSelectClauses());
         $where = $compiler->compileWhere($qb->getWhereClauses());
-        $from = (new RootTableCompiler())->compile($qb);
+        $from = $commaSeparated->compile($qb->getRootTables());
         $join = $compiler->compileJoin($joinTables);
         $orderBy = $compiler->compileOrderBy($qb->getOrderByClauses());
+        $groupBy = $commaSeparated->compile($qb->getGroupByClauses());
 
         $sql = "SELECT $select FROM $from";
 
@@ -41,6 +43,10 @@ class SelectQueryCompiler implements QueryCompilerInterface
 
         if ($where) {
             $sql .= ' WHERE ' . $where;
+        }
+
+        if ($groupBy) {
+            $sql .= ' GROUP BY ' . $groupBy;
         }
 
         if ($orderBy) {

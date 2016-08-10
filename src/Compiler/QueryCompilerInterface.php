@@ -7,7 +7,7 @@ use Phuria\QueryBuilder\QueryBuilder;
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-interface QueryCompilerInterface extends CompilerInterface
+interface QueryCompilerInterface
 {
     /**
      * @param QueryBuilder $qb
@@ -15,4 +15,11 @@ interface QueryCompilerInterface extends CompilerInterface
      * @return boolean
      */
     public function canHandleQuery(QueryBuilder $qb);
+
+    /**
+     * @param QueryBuilder $qb
+     *
+     * @return string
+     */
+    public function compile(QueryBuilder $qb);
 }

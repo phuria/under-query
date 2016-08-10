@@ -22,8 +22,10 @@ class UpdateQueryCompiler implements QueryCompilerInterface
      */
     public function compile(QueryBuilder $qb)
     {
-        $from = (new RootTableCompiler())->compile($qb);
-        $set = (new UpdateSetCompiler())->compile($qb);
+        $commaSeparated = new SeparatedListCompiler(', ');
+
+        $from = $commaSeparated->compile($qb->getRootTables());
+        $set = $commaSeparated->compile($qb->getSetClauses());
 
         $sql = "UPDATE $from SET $set";
 
