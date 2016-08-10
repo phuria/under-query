@@ -2,7 +2,6 @@
 
 namespace Phuria\QueryBuilder\Table;
 
-use Phuria\QueryBuilder\Expr;
 use Phuria\QueryBuilder\ExprBuilder;
 use Phuria\QueryBuilder\Expression\ColumnExpression;
 use Phuria\QueryBuilder\Expression\ExpressionInterface;
@@ -154,7 +153,7 @@ abstract class AbstractTable
      */
     public function joinOn()
     {
-        $this->joinOn = Expr::implode(...func_get_args());
+        $this->joinOn = new ExprBuilder(func_get_args());
 
         return $this;
     }

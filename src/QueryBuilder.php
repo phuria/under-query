@@ -69,7 +69,7 @@ class QueryBuilder
      */
     public function addSelect()
     {
-        $this->selectClauses[] = Expr::implode(...func_get_args());
+        $this->selectClauses[] = ExprBuilder::normalizeExpression(func_get_args());
 
         return $this;
     }
@@ -79,7 +79,7 @@ class QueryBuilder
      */
     public function andWhere()
     {
-        $this->whereClauses[] = Expr::implode(...func_get_args());
+        $this->whereClauses[] = ExprBuilder::normalizeExpression(func_get_args());
 
         return $this;
     }
@@ -180,7 +180,7 @@ class QueryBuilder
      */
     public function addOrderBy()
     {
-        $this->orderByClauses[] = Expr::implode(...func_get_args());
+        $this->orderByClauses[] = ExprBuilder::normalizeExpression(func_get_args());
 
         return $this;
     }
@@ -190,7 +190,7 @@ class QueryBuilder
      */
     public function addSet()
     {
-        $this->setClauses[] = Expr::implode(...func_get_args());
+        $this->setClauses[] = ExprBuilder::normalizeExpression(func_get_args());
 
         return $this;
     }
@@ -200,7 +200,7 @@ class QueryBuilder
      */
     public function addGroupBy()
     {
-        $this->groupByClauses[] = Expr::implode(...func_get_args());
+        $this->groupByClauses[] = ExprBuilder::normalizeExpression(func_get_args());
 
         return $this;
     }

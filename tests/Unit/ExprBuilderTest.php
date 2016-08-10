@@ -35,4 +35,11 @@ class ExprBuilderTest extends \PHPUnit_Framework_TestCase
 
         static::assertSame('IFNULL(test, 0)', $exp->compile());
     }
+
+    public function testTwoArguments()
+    {
+        $exp = new ExprBuilder('TE', 'ST');
+
+        static::assertSame('TEST', $exp->compile());
+    }
 }

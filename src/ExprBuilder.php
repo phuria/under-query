@@ -3,9 +3,12 @@
 namespace Phuria\QueryBuilder;
 
 use Phuria\QueryBuilder\Expression\AliasExpression;
+use Phuria\QueryBuilder\Expression\EmptyExpression;
 use Phuria\QueryBuilder\Expression\ExpressionInterface;
 use Phuria\QueryBuilder\Expression\IfNullExpression;
+use Phuria\QueryBuilder\Expression\ImplodeExpression;
 use Phuria\QueryBuilder\Expression\MaxExpression;
+use Phuria\QueryBuilder\Expression\RawExpression;
 use Phuria\QueryBuilder\Expression\SumExpression;
 
 /**
@@ -19,11 +22,42 @@ class ExprBuilder implements ExpressionInterface
     private $wrappedExpression;
 
     /**
-     * @param mixed $wrappedExpression
+     * ExprBuilder constructor.
      */
-    public function __construct($wrappedExpression = null)
+    public function __construct()
     {
-        $this->wrappedExpression = Expr::normalizeExpression($wrappedExpression);
+        $this->wrappedExpression = static::normalizeExpression(func_get_args());
+    }
+    /**
+     * @param mixed $expression
+     *
+     * @return ExpressionInterface
+     */
+    public static function normalizeExpression($expression)
+    {
+        if ($expression instanceof ExpressionInterface) {
+            return $expression;
+        }
+
+        if (is_array($expression) && 1 === count($expression)) {
+            return static::normalizeExpression($expression[0]);
+        }
+
+        if (is_array($expression)) {
+            $normalized = [];
+
+            foreach ($expression as $exp) {
+                $normalized[] = static::normalizeExpression($exp);
+            }
+
+            return new ImplodeExpression($normalized);
+        }
+
+        if ('' === $expression || null === $expression) {
+            return new EmptyExpression();
+        }
+
+        return new RawExpression($expression);
     }
 
     /**
@@ -57,7 +91,7 @@ class ExprBuilder implements ExpressionInterface
      */
     public function ifNull($expression)
     {
-        $expression = Expr::normalizeExpression($expression);
+        $expression = static::normalizeExpression($expression);
 
         return new self(new IfNullExpression($this->wrappedExpression, $expression));
     }
@@ -69,7 +103,7 @@ class ExprBuilder implements ExpressionInterface
      */
     public function alias($alias)
     {
-        $alias = Expr::normalizeExpression($alias);
+        $alias = static::normalizeExpression($alias);
 
         return new self(new AliasExpression($this->wrappedExpression, $alias));
     }
