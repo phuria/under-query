@@ -50,4 +50,11 @@ class ExprBuilderTest extends \PHPUnit_Framework_TestCase
 
         static::assertSame('CHAR(10, 20, 30 USING utf8)', $exp->compile());
     }
+
+    public function testBetween()
+    {
+        $exp = (new ExprBuilder('test'))->between(10, 20);
+
+        static::assertSame('test BETWEEN 10 AND 20', $exp->compile());
+    }
 }

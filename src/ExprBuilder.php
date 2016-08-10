@@ -128,6 +128,20 @@ class ExprBuilder implements ExpressionInterface
     ###############################
 
     /**
+     * @param mixed $from
+     * @param mixed $to
+     *
+     * @return ExprBuilder
+     */
+    public function between($from, $to)
+    {
+        $from = static::normalizeExpression($from);
+        $to = static::normalizeExpression($to);
+
+        return new self(new Comparison\Between($this->wrappedExpression, $from, $to));
+    }
+
+    /**
      * @param mixed $right
      *
      * @return ExprBuilder
