@@ -3,6 +3,8 @@
 namespace Phuria\QueryBuilder;
 
 use Phuria\QueryBuilder\Expression\ExpressionInterface;
+use Phuria\QueryBuilder\Expression\IfNullExpression;
+use Phuria\QueryBuilder\Expression\MaxExpression;
 use Phuria\QueryBuilder\Expression\SumExpression;
 
 /**
@@ -32,10 +34,30 @@ class ExprBuilder implements ExpressionInterface
     }
 
     /**
-     * @return ExpressionInterface
+     * @return ExprBuilder
      */
     public function sum()
     {
         return new self(new SumExpression($this->wrappedExpression));
+    }
+
+    /**
+     * @return ExprBuilder
+     */
+    public function max()
+    {
+        return new self(new MaxExpression($this->wrappedExpression));
+    }
+
+    /**
+     * @param mixed $expression
+     *
+     * @return ExprBuilder
+     */
+    public function ifNull($expression)
+    {
+        $expression = Expr::normalizeExpression($expression);
+
+        return new self(new IfNullExpression($this->wrappedExpression, $expression));
     }
 }
