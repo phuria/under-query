@@ -222,6 +222,20 @@ class ExprBuilder implements ExpressionInterface
     }
 
     /**
+     * @param mixed $from
+     * @param mixed $to
+     *
+     * @return ExprBuilder
+     */
+    public function notBetween($from, $to)
+    {
+        $from = static::normalizeExpression($from);
+        $to = static::normalizeExpression($to);
+
+        return new self(new Comparison\NotBetween($this->wrappedExpression, $from, $to));
+    }
+
+    /**
      * @param mixed $right
      *
      * @return ExprBuilder
@@ -343,6 +357,14 @@ class ExprBuilder implements ExpressionInterface
     public function char()
     {
         return new self(new Func\Char($this->wrappedExpression));
+    }
+
+    /**
+     * @return ExprBuilder
+     */
+    public function coalesce()
+    {
+        return new self(new Func\Coalesce($this->wrappedExpression));
     }
 
     /**

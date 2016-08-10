@@ -11,7 +11,6 @@ class ExprBuilderTest extends \PHPUnit_Framework_TestCase
 {
     public function testSum1()
     {
-        /** @var ExprBuilder $exp */
         $exp = new ExprBuilder('1');
         $exp = $exp->sum();
 
@@ -29,7 +28,6 @@ class ExprBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testIfNull()
     {
-        /** @var ExprBuilder $exp */
         $exp = new ExprBuilder('test');
         $exp = $exp->ifNull('0');
 
@@ -56,5 +54,19 @@ class ExprBuilderTest extends \PHPUnit_Framework_TestCase
         $exp = (new ExprBuilder('test'))->between(10, 20);
 
         static::assertSame('test BETWEEN 10 AND 20', $exp->compile());
+    }
+
+    public function testNotBetween()
+    {
+        $exp = (new ExprBuilder('test'))->notBetween(10, 20);
+
+        static::assertSame('test NOT BETWEEN 10 AND 20', $exp->compile());
+    }
+
+    public function testCoalesce()
+    {
+        $exp = (new ExprBuilder('NULL', 'NULL', 'NULL'))->coalesce();
+
+        static::assertSame('COALESCE(NULL, NULL, NULL)', $exp->compile());
     }
 }
