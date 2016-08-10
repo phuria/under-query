@@ -6,7 +6,7 @@ PHP: `>=5.6.0`
 
 ### Examples
 
-1. Simple Query
+__Simple Query__
 
 ```php
 $qb = new QueryBuilder();
@@ -31,29 +31,21 @@ LEFT JOIN contact AS c ON u.id = c.user_id;
 ```
 
 
-2. Custom table
+__Custom table__
 
 ```php
 use Phuria\QueryBuilder\Table\AbstractTable;
 
 class AccountTable extends AbstractTable
 {
-    /**
-     * @inheritdoc
-     */
     public function getTableName()
     {
         return 'account';
     }
     
-    /**
-     * @return $this
-     */
     public function onlyActive()
     {
         $this->andWhere($this->column('active'));
-        
-        return $this;
     }
 }
 ```
