@@ -45,6 +45,11 @@ class QueryBuilder
     private $groupByClauses;
 
     /**
+     * @var array $havingClauses
+     */
+    private $havingClauses;
+
+    /**
      * @var AbstractTable[] $tables
      */
     private $tables = [];
@@ -102,6 +107,7 @@ class QueryBuilder
         $this->orderByClauses = [];
         $this->groupByClauses = [];
         $this->setClauses = [];
+        $this->havingClauses = [];
     }
 
     /**
@@ -128,6 +134,16 @@ class QueryBuilder
     public function andWhere()
     {
         $this->whereClauses[] = ExprBuilder::normalizeExpression(func_get_args());
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function andHaving()
+    {
+        $this->havingClauses[] = ExprBuilder::normalizeExpression(func_get_args());
 
         return $this;
     }
@@ -307,6 +323,14 @@ class QueryBuilder
     public function getGroupByClauses()
     {
         return $this->groupByClauses;
+    }
+
+    /**
+     * @return array
+     */
+    public function getHavingClauses()
+    {
+        return $this->havingClauses;
     }
 
     /**

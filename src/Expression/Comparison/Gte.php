@@ -1,19 +1,19 @@
 <?php
 
-namespace Phuria\QueryBuilder\Expression\Arithmetic;
+namespace Phuria\QueryBuilder\Expression\Comparison;
 
 use Phuria\QueryBuilder\Expression\AbstractOperatorExpression;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-class Add extends AbstractOperatorExpression
+class Gte extends AbstractOperatorExpression
 {
     /**
-     * @inheritdoc
+     * @return string
      */
     public function getOperator()
     {
-        return '+';
+        return '>=';
     }
 }

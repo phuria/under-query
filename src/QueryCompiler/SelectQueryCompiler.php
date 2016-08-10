@@ -33,6 +33,7 @@ class SelectQueryCompiler implements QueryCompilerInterface
         $join = $spaceSeparated->compile($qb->getJoinTables());
         $orderBy = $commaSeparated->compile($qb->getOrderByClauses());
         $groupBy = $commaSeparated->compile($qb->getGroupByClauses());
+        $having = $andSeparated->compile($qb->getHavingClauses());
 
         $sql = "SELECT";
 
@@ -86,6 +87,10 @@ class SelectQueryCompiler implements QueryCompilerInterface
 
         if ($groupBy) {
             $sql .= ' GROUP BY ' . $groupBy;
+        }
+
+        if ($having) {
+            $sql .= ' HAVING ' . $having;
         }
 
         if ($orderBy) {

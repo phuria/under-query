@@ -335,4 +335,16 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $expectedSQL = 'SELECT * FROM example GROUP BY example.user_id DESC, YEAR(example.created_at) ASC';
         static::assertSame($expectedSQL, $qb->buildSQL());
     }
+
+    public function testHaving()
+    {
+        $qb = $this->createQb();
+
+        $exampleTable = $qb->from('example');
+        $qb->addSelect($exampleTable->column('price')->sum()->alias('price'));
+        $qb->andHaving($qb->expr('price')->gt(100));
+
+        $expectedSQL = 'SELECT SUM(example.price) AS price FROM example HAVING price > 100';
+        static::assertSame($expectedSQL, $qb->buildSQL());
+    }
 }

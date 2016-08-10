@@ -1,13 +1,11 @@
 <?php
 
-namespace Phuria\QueryBuilder\Expression\Arithmetic;
-
-use Phuria\QueryBuilder\Expression\ExpressionInterface;
+namespace Phuria\QueryBuilder\Expression;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-abstract class AbstractArithmeticExpression implements ExpressionInterface
+abstract class AbstractOperatorExpression implements ExpressionInterface
 {
     /**
      * @var ExpressionInterface $leftComponent

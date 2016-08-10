@@ -5,6 +5,7 @@ namespace Phuria\QueryBuilder;
 use Phuria\QueryBuilder\Expression\AliasExpression;
 use Phuria\QueryBuilder\Expression\Arithmetic as Arithmetic;
 use Phuria\QueryBuilder\Expression\AscExpression;
+use Phuria\QueryBuilder\Expression\Comparison as Comparison;
 use Phuria\QueryBuilder\Expression\DescExpression;
 use Phuria\QueryBuilder\Expression\EmptyExpression;
 use Phuria\QueryBuilder\Expression\ExpressionInterface;
@@ -120,6 +121,102 @@ class ExprBuilder implements ExpressionInterface
     public function asc()
     {
         return new self(new AscExpression($this->wrappedExpression));
+    }
+
+    ###############################
+    ### COMPARISION EXPRESSIONS ###
+    ###############################
+
+    /**
+     * @param mixed $right
+     *
+     * @return ExprBuilder
+     */
+    public function eq($right)
+    {
+        $right = static::normalizeExpression($right);
+
+        return new self(new Comparison\Eq($this->wrappedExpression, $right));
+    }
+
+    /**
+     * @param mixed $right
+     *
+     * @return ExprBuilder
+     */
+    public function gt($right)
+    {
+        $right = static::normalizeExpression($right);
+
+        return new self(new Comparison\Gt($this->wrappedExpression, $right));
+    }
+
+    /**
+     * @param mixed $right
+     *
+     * @return ExprBuilder
+     */
+    public function gte($right)
+    {
+        $right = static::normalizeExpression($right);
+
+        return new self(new Comparison\Gte($this->wrappedExpression, $right));
+    }
+
+    /**
+     * @return ExprBuilder
+     */
+    public function isNull()
+    {
+        return new self(new Comparison\IsNull($this->wrappedExpression));
+    }
+
+    /**
+     * @param mixed $right
+     *
+     * @return ExprBuilder
+     */
+    public function lt($right)
+    {
+        $right = static::normalizeExpression($right);
+
+        return new self(new Comparison\Lt($this->wrappedExpression, $right));
+    }
+
+    /**
+     * @param mixed $right
+     *
+     * @return ExprBuilder
+     */
+    public function lte($right)
+    {
+        $right = static::normalizeExpression($right);
+
+        return new self(new Comparison\Lte($this->wrappedExpression, $right));
+    }
+
+    /**
+     * @param mixed $right
+     *
+     * @return ExprBuilder
+     */
+    public function neq($right)
+    {
+        $right = static::normalizeExpression($right);
+
+        return new self(new Comparison\Neq($this->wrappedExpression, $right));
+    }
+
+    /**
+     * @param mixed $right
+     *
+     * @return ExprBuilder
+     */
+    public function nullEq($right)
+    {
+        $right = static::normalizeExpression($right);
+
+        return new self(new Comparison\NullEq($this->wrappedExpression, $right));
     }
 
     ##############################
