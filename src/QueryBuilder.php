@@ -55,44 +55,9 @@ class QueryBuilder
     private $tables = [];
 
     /**
-     * @var bool $highPriority
+     * @var array $mods
      */
-    private $highPriority;
-
-    /**
-     * @var int $maxStatementTime
-     */
-    private $maxStatementTime;
-
-    /**
-     * @var bool $straightJoin
-     */
-    private $straightJoin;
-
-    /**
-     * @var bool $sqlSmallResult
-     */
-    private $sqlSmallResult;
-
-    /**
-     * @var bool $sqlBigResult
-     */
-    private $sqlBigResult;
-
-    /**
-     * @var bool $sqlBufferResult
-     */
-    private $sqlBufferResult;
-
-    /**
-     * @var bool $sqlNoCache
-     */
-    private $sqlNoCache;
-
-    /**
-     * @var bool $sqlCalcFoundRows
-     */
-    private $sqlCalcFoundRows;
+    private $hints = [];
 
     /**
      * @param TableFactory    $tableFactory
@@ -144,6 +109,18 @@ class QueryBuilder
     public function andHaving()
     {
         $this->havingClauses[] = ExprNormalizer::normalizeExpression(func_get_args());
+
+        return $this;
+    }
+
+    /**
+     * @param string $hint
+     *
+     * @return $this
+     */
+    public function addHint($hint)
+    {
+        $this->hints[] = $hint;
 
         return $this;
     }
@@ -362,162 +339,10 @@ class QueryBuilder
     }
 
     /**
-     * @return boolean
+     * @return array
      */
-    public function isHighPriority()
+    public function getHints()
     {
-        return $this->highPriority;
-    }
-
-    /**
-     * @param boolean $highPriority
-     *
-     * @return $this
-     */
-    public function setHighPriority($highPriority)
-    {
-        $this->highPriority = $highPriority;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getMaxStatementTime()
-    {
-        return $this->maxStatementTime;
-    }
-
-    /**
-     * @param integer $maxStatementTime
-     *
-     * @return $this
-     */
-    public function setMaxStatementTime($maxStatementTime)
-    {
-        $this->maxStatementTime = $maxStatementTime;
-
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isStraightJoin()
-    {
-        return $this->straightJoin;
-    }
-
-    /**
-     * @param boolean $straightJoin
-     *
-     * @return $this
-     */
-    public function setStraightJoin($straightJoin)
-    {
-        $this->straightJoin = $straightJoin;
-
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isSqlSmallResult()
-    {
-        return $this->sqlSmallResult;
-    }
-
-    /**
-     * @param boolean $sqlSmallResult
-     *
-     * @return $this
-     */
-    public function setSqlSmallResult($sqlSmallResult)
-    {
-        $this->sqlSmallResult = $sqlSmallResult;
-
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isSqlBigResult()
-    {
-        return $this->sqlBigResult;
-    }
-
-    /**
-     * @param boolean $sqlBigResult
-     *
-     * @return $this
-     */
-    public function setSqlBigResult($sqlBigResult)
-    {
-        $this->sqlBigResult = $sqlBigResult;
-
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isSqlBufferResult()
-    {
-        return $this->sqlBufferResult;
-    }
-
-    /**
-     * @param boolean $sqlBufferResult
-     *
-     * @return $this
-     */
-    public function setSqlBufferResult($sqlBufferResult)
-    {
-        $this->sqlBufferResult = $sqlBufferResult;
-
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isSqlNoCache()
-    {
-        return $this->sqlNoCache;
-    }
-
-    /**
-     * @param boolean $sqlNoCache
-     *
-     * @return $this
-     */
-    public function setSqlNoCache($sqlNoCache)
-    {
-        $this->sqlNoCache = $sqlNoCache;
-
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isSqlCalcFoundRows()
-    {
-        return $this->sqlCalcFoundRows;
-    }
-
-    /**
-     * @param boolean $sqlCalcFoundRows
-     *
-     * @return $this
-     */
-    public function setSqlCalcFoundRows($sqlCalcFoundRows)
-    {
-        $this->sqlCalcFoundRows = $sqlCalcFoundRows;
-
-        return $this;
+        return $this->hints;
     }
 }

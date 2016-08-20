@@ -304,25 +304,6 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         static::assertSame('SELECT 1 + 1', $qb->buildSQL());
     }
 
-    public function testSelectOptions()
-    {
-        $qb = $this->createQb();
-
-        $exampleTable = $qb->from('example');
-        $qb->addSelect($exampleTable->column('*'));
-        $qb->setHighPriority(true);
-        $qb->setMaxStatementTime(30);
-        $qb->setStraightJoin(true);
-        $qb->setSqlSmallResult(true);
-        $qb->setSqlNoCache(true);
-        $qb->setSqlCalcFoundRows(true);
-
-        $expectedSQL = 'SELECT HIGH_PRIORITY MAX_STATEMENT_TIME 30 STRAIGHT_JOIN SQL_SMALL_RESULT SQL_NO_CACHE'
-            . ' SQL_CALC_FOUND_ROWS example.* FROM example';
-
-        static::assertSame($expectedSQL, $qb->buildSQL());
-    }
-
     public function testGroupByOrder()
     {
         $qb = $this->createQb();
@@ -345,6 +326,23 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $qb->andHaving($qb->expr('price')->gt(100));
 
         $expectedSQL = 'SELECT SUM(example.price) AS price FROM example HAVING price > 100';
+        static::assertSame($expectedSQL, $qb->buildSQL());
+    }
+
+    /**
+     * @test
+     */
+    public function itWillContainSelectHints()
+    {
+        $qb = $this->createQb();
+
+        $exampleTable = $qb->from('example');
+        $qb->addSelect($exampleTable->column('*'));
+        $qb->addHint('MAX_STATEMENT_TIME 30');
+        $qb->addHint('STRAIGHT_JOIN');
+
+        $expectedSQL = 'SELECT MAX_STATEMENT_TIME 30 STRAIGHT_JOIN example.* FROM example';
+
         static::assertSame($expectedSQL, $qb->buildSQL());
     }
 }

@@ -28,6 +28,7 @@ class SelectQueryCompiler implements QueryCompilerInterface
         $spaceSeparated = new SeparatedListCompiler(' ');
 
         $select = $commaSeparated->compile($qb->getSelectClauses());
+        $afterSelectHints = $spaceSeparated->compile($qb->getHints());
         $where = $andSeparated->compile($qb->getWhereClauses());
         $from = $commaSeparated->compile($qb->getRootTables());
         $join = $spaceSeparated->compile($qb->getJoinTables());
@@ -37,36 +38,8 @@ class SelectQueryCompiler implements QueryCompilerInterface
 
         $sql = "SELECT";
 
-        if ($qb->isHighPriority()) {
-            $sql .= ' HIGH_PRIORITY';
-        }
-
-        if ($statementTime = $qb->getMaxStatementTime()) {
-            $sql .= ' MAX_STATEMENT_TIME ' . $statementTime;
-        }
-
-        if ($qb->isStraightJoin()) {
-            $sql .= ' STRAIGHT_JOIN';
-        }
-
-        if ($qb->isSqlSmallResult()) {
-            $sql .= ' SQL_SMALL_RESULT';
-        }
-
-        if ($qb->isSqlBigResult()) {
-            $sql .= ' SQL_BIG_RESULT';
-        }
-
-        if ($qb->isSqlBufferResult()) {
-            $sql .= ' SQL_BUFFER_RESULT';
-        }
-
-        if ($qb->isSqlNoCache()) {
-            $sql .= ' SQL_NO_CACHE';
-        }
-
-        if ($qb->isSqlCalcFoundRows()) {
-            $sql .= ' SQL_CALC_FOUND_ROWS';
+        if ($afterSelectHints) {
+            $sql .= ' ' . $afterSelectHints;
         }
 
         if ($select) {
