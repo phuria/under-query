@@ -1,6 +1,7 @@
 filter:
   excluded_paths:
-      - ['tests/*', 'vendor/*']
+      - 'tests/*'
+      - 'vendor/*'
 
 before_commands:
   - 'composer install'
