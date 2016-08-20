@@ -76,4 +76,14 @@ class ExprBuilderTest extends \PHPUnit_Framework_TestCase
 
         static::assertSame('test IN (1, 2, 3)', $exp->compile());
     }
+
+    /**
+     * @test
+     */
+    public function itWillReturnAsciFunction()
+    {
+        $exp = (new ExprBuilder(10))->asci();
+
+        static::assertSame('ASCI(10)', $exp->compile());
+    }
 }

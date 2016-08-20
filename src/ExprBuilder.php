@@ -9,6 +9,7 @@ use Phuria\QueryBuilder\Expression\ConjunctionExpression;
 use Phuria\QueryBuilder\Expression\DescExpression;
 use Phuria\QueryBuilder\Expression\ExpressionInterface;
 use Phuria\QueryBuilder\Expression\Func as Func;
+use Phuria\QueryBuilder\Expression\FunctionExpression;
 use Phuria\QueryBuilder\Expression\InExpression;
 use Phuria\QueryBuilder\Expression\UsingExpression;
 
@@ -111,6 +112,16 @@ class ExprBuilder implements ExpressionInterface
         $expression = ExprNormalizer::normalizeExpression($expression);
 
         return new self(new ConjunctionExpression($this, $connector, $expression));
+    }
+
+    /**
+     * @param string $functionName
+     *
+     * @return ExprBuilder
+     */
+    public function func($functionName)
+    {
+        return new self(new FunctionExpression($functionName, $this->wrappedExpression));
     }
 
     ###############################
@@ -322,7 +333,7 @@ class ExprBuilder implements ExpressionInterface
      */
     public function asci()
     {
-        return new self(new Func\Asci($this->wrappedExpression));
+        return $this->func(FunctionExpression::FUNC_ASCI);
     }
 
     /**
@@ -330,7 +341,7 @@ class ExprBuilder implements ExpressionInterface
      */
     public function bin()
     {
-        return new self(new Func\Bin($this->wrappedExpression));
+        return $this->func(FunctionExpression::FUNC_BIN);
     }
 
     /**
@@ -338,7 +349,7 @@ class ExprBuilder implements ExpressionInterface
      */
     public function bitLength()
     {
-        return new self(new Func\BitLength($this->wrappedExpression));
+        return $this->func(FunctionExpression::FUNC_BIT_LENGTH);
     }
 
     /**
@@ -362,7 +373,7 @@ class ExprBuilder implements ExpressionInterface
      */
     public function concat()
     {
-        return new self(new Func\Concat($this->wrappedExpression));
+        return $this->func(FunctionExpression::FUNC_CONCAT);
     }
 
     /**
@@ -370,7 +381,7 @@ class ExprBuilder implements ExpressionInterface
      */
     public function concatWs()
     {
-        return new self(new Func\Concat($this->wrappedExpression));
+        return $this->func(FunctionExpression::FUNC_CONCAT_WS);
     }
 
     /**
@@ -378,7 +389,7 @@ class ExprBuilder implements ExpressionInterface
      */
     public function elt()
     {
-        return new self(new Func\Elt($this->wrappedExpression));
+        return $this->func(FunctionExpression::FUNC_ELT);
     }
 
     /**
@@ -386,7 +397,7 @@ class ExprBuilder implements ExpressionInterface
      */
     public function exportSet()
     {
-        return new self(new Func\ExportSet($this->wrappedExpression));
+        return $this->func(FunctionExpression::FUNC_EXPORT_SET);
     }
 
     /**
@@ -394,7 +405,7 @@ class ExprBuilder implements ExpressionInterface
      */
     public function field()
     {
-        return new self(new Func\Field($this->wrappedExpression));
+        return $this->func(FunctionExpression::FUNC_EXPORT_SET);
     }
 
     /**
@@ -414,7 +425,7 @@ class ExprBuilder implements ExpressionInterface
      */
     public function max()
     {
-        return new self(new Func\Max($this->wrappedExpression));
+        return $this->func(FunctionExpression::FUNC_MAX);
     }
 
     /**
@@ -422,7 +433,7 @@ class ExprBuilder implements ExpressionInterface
      */
     public function sum()
     {
-        return new self(new Func\Sum($this->wrappedExpression));
+        return $this->func(FunctionExpression::FUNC_SUM);
     }
 
     /**
@@ -430,6 +441,6 @@ class ExprBuilder implements ExpressionInterface
      */
     public function year()
     {
-        return new self(new Func\Year($this->wrappedExpression));
+        return $this->func(FunctionExpression::FUNC_YEAR);
     }
 }
