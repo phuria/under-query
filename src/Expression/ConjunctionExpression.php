@@ -16,6 +16,12 @@ class ConjunctionExpression implements ExpressionInterface
     const SYMBOL_NULL_EQ = '<=>';
     const SYMBOL_AND = 'AND';
     const SYMBOL_OR = 'OR';
+    const SYMBOL_ADD = '+';
+    const SYMBOL_DIV = 'DIV';
+    const SYMBOL_DIVIDE = '/';
+    const SYMBOL_MODULO = 'MOD';
+    const SYMBOL_MULTIPLY = '*';
+    const SYMBOL_SUBTRACT = '-';
 
     /**
      * @var ExpressionInterface $left

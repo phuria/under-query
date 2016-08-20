@@ -123,7 +123,7 @@ class QueryBuilder
      */
     public function addSelect()
     {
-        $this->selectClauses[] = ExprBuilder::normalizeExpression(func_get_args());
+        $this->selectClauses[] = ExprNormalizer::normalizeExpression(func_get_args());
 
         return $this;
     }
@@ -133,7 +133,7 @@ class QueryBuilder
      */
     public function andWhere()
     {
-        $this->whereClauses[] = ExprBuilder::normalizeExpression(func_get_args());
+        $this->whereClauses[] = ExprNormalizer::normalizeExpression(func_get_args());
 
         return $this;
     }
@@ -143,7 +143,7 @@ class QueryBuilder
      */
     public function andHaving()
     {
-        $this->havingClauses[] = ExprBuilder::normalizeExpression(func_get_args());
+        $this->havingClauses[] = ExprNormalizer::normalizeExpression(func_get_args());
 
         return $this;
     }
@@ -244,7 +244,7 @@ class QueryBuilder
      */
     public function addOrderBy()
     {
-        $this->orderByClauses[] = ExprBuilder::normalizeExpression(func_get_args());
+        $this->orderByClauses[] = ExprNormalizer::normalizeExpression(func_get_args());
 
         return $this;
     }
@@ -254,7 +254,7 @@ class QueryBuilder
      */
     public function addSet()
     {
-        $this->setClauses[] = ExprBuilder::normalizeExpression(func_get_args());
+        $this->setClauses[] = ExprNormalizer::normalizeExpression(func_get_args());
 
         return $this;
     }
@@ -264,7 +264,7 @@ class QueryBuilder
      */
     public function addGroupBy()
     {
-        $this->groupByClauses[] = ExprBuilder::normalizeExpression(func_get_args());
+        $this->groupByClauses[] = ExprNormalizer::normalizeExpression(func_get_args());
 
         return $this;
     }

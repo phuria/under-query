@@ -3,17 +3,13 @@
 namespace Phuria\QueryBuilder;
 
 use Phuria\QueryBuilder\Expression\AliasExpression;
-use Phuria\QueryBuilder\Expression\Arithmetic as Arithmetic;
 use Phuria\QueryBuilder\Expression\AscExpression;
 use Phuria\QueryBuilder\Expression\Comparison as Comparison;
 use Phuria\QueryBuilder\Expression\ConjunctionExpression;
 use Phuria\QueryBuilder\Expression\DescExpression;
-use Phuria\QueryBuilder\Expression\EmptyExpression;
 use Phuria\QueryBuilder\Expression\ExpressionInterface;
 use Phuria\QueryBuilder\Expression\Func as Func;
-use Phuria\QueryBuilder\Expression\ImplodeExpression;
 use Phuria\QueryBuilder\Expression\InExpression;
-use Phuria\QueryBuilder\Expression\RawExpression;
 use Phuria\QueryBuilder\Expression\UsingExpression;
 
 /**
@@ -31,42 +27,7 @@ class ExprBuilder implements ExpressionInterface
      */
     public function __construct()
     {
-        $this->wrappedExpression = static::normalizeExpression(func_get_args());
-    }
-    /**
-     * @param mixed $expression
-     *
-     * @return ExpressionInterface
-     */
-    public static function normalizeExpression($expression)
-    {
-        if ($expression instanceof ExpressionInterface) {
-            return $expression;
-        }
-
-        if (is_array($expression) && 1 === count($expression)) {
-            return static::normalizeExpression($expression[0]);
-        }
-
-        if (is_array($expression)) {
-            $normalized = [];
-
-            foreach ($expression as $exp) {
-                $normalized[] = static::normalizeExpression($exp);
-            }
-
-            return new ImplodeExpression($normalized);
-        }
-
-        if ('' === $expression || null === $expression) {
-            return new EmptyExpression();
-        }
-
-        if (is_scalar($expression)) {
-            return new RawExpression($expression);
-        }
-
-        throw new \InvalidArgumentException('Invalid argument.');
+        $this->wrappedExpression = ExprNormalizer::normalizeExpression(func_get_args());
     }
 
     /**
@@ -82,6 +43,7 @@ class ExprBuilder implements ExpressionInterface
      */
     public function compile()
     {
+        var_dump($this->wrappedExpression);
         return $this->wrappedExpression->compile();
     }
 
@@ -92,7 +54,7 @@ class ExprBuilder implements ExpressionInterface
      */
     public function alias($alias)
     {
-        $alias = static::normalizeExpression($alias);
+        $alias = ExprNormalizer::normalizeExpression($alias);
 
         return new self(new AliasExpression($this->wrappedExpression, $alias));
     }
@@ -110,7 +72,7 @@ class ExprBuilder implements ExpressionInterface
      */
     public function in()
     {
-        $arguments = static::normalizeExpression(func_get_args());
+        $arguments = ExprNormalizer::normalizeExpression(func_get_args());
 
         return new self(new InExpression($this->wrappedExpression, $arguments));
     }
@@ -147,7 +109,7 @@ class ExprBuilder implements ExpressionInterface
      */
     public function conjunction($connector, $expression)
     {
-        $expression = static::normalizeExpression($expression);
+        $expression = ExprNormalizer::normalizeExpression($expression);
 
         return new self(new ConjunctionExpression($this, $connector, $expression));
     }
@@ -164,8 +126,8 @@ class ExprBuilder implements ExpressionInterface
      */
     public function between($from, $to)
     {
-        $from = static::normalizeExpression($from);
-        $to = static::normalizeExpression($to);
+        $from = ExprNormalizer::normalizeExpression($from);
+        $to = ExprNormalizer::normalizeExpression($to);
 
         return new self(new Comparison\Between($this->wrappedExpression, $from, $to));
     }
@@ -177,7 +139,7 @@ class ExprBuilder implements ExpressionInterface
      */
     public function eq($expression)
     {
-        $expression = static::normalizeExpression($expression);
+        $expression = ExprNormalizer::normalizeExpression($expression);
 
         return $this->conjunction(ConjunctionExpression::SYMBOL_EQ, $expression);
     }
@@ -189,7 +151,7 @@ class ExprBuilder implements ExpressionInterface
      */
     public function gt($expression)
     {
-        $expression = static::normalizeExpression($expression);
+        $expression = ExprNormalizer::normalizeExpression($expression);
 
         return $this->conjunction(ConjunctionExpression::SYMBOL_GT, $expression);
     }
@@ -201,7 +163,7 @@ class ExprBuilder implements ExpressionInterface
      */
     public function gte($expression)
     {
-        $expression = static::normalizeExpression($expression);
+        $expression = ExprNormalizer::normalizeExpression($expression);
 
         return $this->conjunction(ConjunctionExpression::SYMBOL_GTE, $expression);
     }
@@ -221,7 +183,7 @@ class ExprBuilder implements ExpressionInterface
      */
     public function lt($expression)
     {
-        $expression = static::normalizeExpression($expression);
+        $expression = ExprNormalizer::normalizeExpression($expression);
 
         return $this->conjunction(ConjunctionExpression::SYMBOL_LT, $expression);
     }
@@ -233,7 +195,7 @@ class ExprBuilder implements ExpressionInterface
      */
     public function lte($expression)
     {
-        $expression = static::normalizeExpression($expression);
+        $expression = ExprNormalizer::normalizeExpression($expression);
 
         return $this->conjunction(ConjunctionExpression::SYMBOL_LTE, $expression);
     }
@@ -245,7 +207,7 @@ class ExprBuilder implements ExpressionInterface
      */
     public function neq($expression)
     {
-        $expression = static::normalizeExpression($expression);
+        $expression = ExprNormalizer::normalizeExpression($expression);
 
         return $this->conjunction(ConjunctionExpression::SYMBOL_NEQ, $expression);
     }
@@ -258,8 +220,8 @@ class ExprBuilder implements ExpressionInterface
      */
     public function notBetween($from, $to)
     {
-        $from = static::normalizeExpression($from);
-        $to = static::normalizeExpression($to);
+        $from = ExprNormalizer::normalizeExpression($from);
+        $to = ExprNormalizer::normalizeExpression($to);
 
         return new self(new Comparison\NotBetween($this->wrappedExpression, $from, $to));
     }
@@ -271,7 +233,7 @@ class ExprBuilder implements ExpressionInterface
      */
     public function nullEq($expression)
     {
-        $expression = static::normalizeExpression($expression);
+        $expression = ExprNormalizer::normalizeExpression($expression);
 
         return $this->conjunction(ConjunctionExpression::SYMBOL_NULL_EQ, $expression);
     }
@@ -281,75 +243,75 @@ class ExprBuilder implements ExpressionInterface
     ##############################
 
     /**
-     * @param mixed $right
+     * @param mixed $expression
      *
      * @return ExprBuilder
      */
-    public function add($right)
+    public function add($expression)
     {
-        $right = static::normalizeExpression($right);
+        $expression = ExprNormalizer::normalizeExpression($expression);
 
-        return new self(new Arithmetic\Add($this->wrappedExpression, $right));
+        return $this->conjunction(ConjunctionExpression::SYMBOL_ADD, $expression);
     }
 
     /**
-     * @param mixed $right
+     * @param mixed $expression
      *
      * @return ExprBuilder
      */
-    public function div($right)
+    public function div($expression)
     {
-        $right = static::normalizeExpression($right);
+        $expression = ExprNormalizer::normalizeExpression($expression);
 
-        return new self(new Arithmetic\Div($this->wrappedExpression, $right));
+        return $this->conjunction(ConjunctionExpression::SYMBOL_DIV, $expression);
     }
 
     /**
-     * @param mixed $right
+     * @param mixed $expression
      *
      * @return ExprBuilder
      */
-    public function divide($right)
+    public function divide($expression)
     {
-        $right = static::normalizeExpression($right);
+        $expression = ExprNormalizer::normalizeExpression($expression);
 
-        return new self(new Arithmetic\Divide($this->wrappedExpression, $right));
+        return $this->conjunction(ConjunctionExpression::SYMBOL_DIVIDE, $expression);
     }
 
     /**
-     * @param mixed $right
+     * @param mixed $expression
      *
      * @return ExprBuilder
      */
-    public function modulo($right)
+    public function modulo($expression)
     {
-        $right = static::normalizeExpression($right);
+        $expression = ExprNormalizer::normalizeExpression($expression);
 
-        return new self(new Arithmetic\Modulo($this->wrappedExpression, $right));
+        return $this->conjunction(ConjunctionExpression::SYMBOL_MODULO, $expression);
     }
 
     /**
-     * @param mixed $right
+     * @param mixed $expression
      *
      * @return ExprBuilder
      */
-    public function multiply($right)
+    public function multiply($expression)
     {
-        $right = static::normalizeExpression($right);
+        $expression = ExprNormalizer::normalizeExpression($expression);
 
-        return new self(new Arithmetic\Multiply($this->wrappedExpression, $right));
+        return $this->conjunction(ConjunctionExpression::SYMBOL_MULTIPLY, $expression);
     }
 
     /**
-     * @param mixed $right
+     * @param mixed $expression
      *
      * @return ExprBuilder
      */
-    public function subtract($right)
+    public function subtract($expression)
     {
-        $right = static::normalizeExpression($right);
+        $expression = ExprNormalizer::normalizeExpression($expression);
 
-        return new self(new Arithmetic\Subtract($this->wrappedExpression, $right));
+        return $this->conjunction(ConjunctionExpression::SYMBOL_SUBTRACT, $expression);
     }
 
     #################
@@ -443,7 +405,7 @@ class ExprBuilder implements ExpressionInterface
      */
     public function ifNull($expression)
     {
-        $expression = static::normalizeExpression($expression);
+        $expression = ExprNormalizer::normalizeExpression($expression);
 
         return new self(new Func\IfNull($this->wrappedExpression, $expression));
     }

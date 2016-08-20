@@ -51,7 +51,7 @@ class FuncArguments implements ExpressionInterface
             if ($arg instanceof ExprBuilder) {
                 $arg = $arg->getWrappedExpression();
             }
-
+            
             if ($arg instanceof UsingExpression) {
                 $using = $arg->compile();
                 continue;
