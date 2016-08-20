@@ -11,6 +11,7 @@ use Phuria\QueryBuilder\Expression\EmptyExpression;
 use Phuria\QueryBuilder\Expression\ExpressionInterface;
 use Phuria\QueryBuilder\Expression\Func as Func;
 use Phuria\QueryBuilder\Expression\ImplodeExpression;
+use Phuria\QueryBuilder\Expression\InExpression;
 use Phuria\QueryBuilder\Expression\RawExpression;
 use Phuria\QueryBuilder\Expression\UsingExpression;
 
@@ -60,7 +61,11 @@ class ExprBuilder implements ExpressionInterface
             return new EmptyExpression();
         }
 
-        return new RawExpression($expression);
+        if (is_scalar($expression)) {
+            return new RawExpression($expression);
+        }
+
+        throw new \InvalidArgumentException('Invalid argument.');
     }
 
     /**
@@ -97,6 +102,16 @@ class ExprBuilder implements ExpressionInterface
     public function sumNullable()
     {
         return $this->ifNull('0')->sum();
+    }
+
+    /**
+     * @return ExprBuilder
+     */
+    public function in()
+    {
+        $arguments = static::normalizeExpression(func_get_args());
+
+        return new self(new InExpression($this->wrappedExpression, $arguments));
     }
 
     /**

@@ -69,4 +69,11 @@ class ExprBuilderTest extends \PHPUnit_Framework_TestCase
 
         static::assertSame('COALESCE(NULL, NULL, NULL)', $exp->compile());
     }
+
+    public function testIn()
+    {
+        $exp = (new ExprBuilder('test'))->in(1, 2, 3);
+
+        static::assertSame('test IN (1, 2, 3)', $exp->compile());
+    }
 }
