@@ -12,7 +12,7 @@ use Phuria\QueryBuilder\QueryCompiler\UpdateQueryCompiler;
 class CompilerManager
 {
     /**
-     * @var QueryCompilerInterface[] $compilers
+     * @var \SplPriorityQueue|QueryCompilerInterface[] $compilers
      */
     private $compilers = [];
 

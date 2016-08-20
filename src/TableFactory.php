@@ -17,6 +17,11 @@ class TableFactory
     private $registry;
 
     /**
+     * @var TableRecognizer $tableRecognizer
+     */
+    private $tableRecognizer;
+
+    /**
      * @param TableRegistry $registry
      */
     public function __construct(TableRegistry $registry = null)
@@ -49,9 +54,8 @@ class TableFactory
             case TableRecognizer::TYPE_TABLE_NAME:
                 $tableClass = $this->registry->getTableClass($table);
                 break;
-            case TableRecognizer::TYPE_SUB_QUERY;
+            case TableRecognizer::TYPE_SUB_QUERY:
                 return $this->createSubQueryTable($table, $qb);
-                break;
         }
 
         $tableObject = new $tableClass($qb);
