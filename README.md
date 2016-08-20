@@ -1,4 +1,7 @@
-# Phuria SQL Builder [![Build Status](https://travis-ci.org/phuria/sql-builder.svg?branch=master)](https://travis-ci.org/phuria/sql-builder)
+# Phuria SQL Builder 
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/phuria/sql-builder/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/phuria/sql-builder/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/phuria/sql-builder/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/phuria/sql-builder/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/phuria/sql-builder/badges/build.png?b=master)](https://scrutinizer-ci.com/g/phuria/sql-builder/build-status/master)
 
 ### Requirements
 
