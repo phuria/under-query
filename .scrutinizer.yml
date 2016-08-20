@@ -25,7 +25,7 @@ build:
           format: 'clover'
     after:
       - 'wget https://scrutinizer-ci.com/ocular.phar'
-      - 'php ocular.phar code-coverage:upload --format=php-clover coverage.clover'
+      - 'php ocular.phar code-coverage:upload --format=php-clover --repository="g/phuria/sql-builder" coverage.clover'
 
 tools:
     external_code_coverage: true
