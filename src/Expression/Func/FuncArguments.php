@@ -29,7 +29,7 @@ class FuncArguments implements ExpressionInterface
         }
 
         if (is_array($argument)) {
-            $this->args = array_merge($this->args, $argument);
+            $this->args +=  $argument;
 
             return $this;
         }
@@ -51,7 +51,7 @@ class FuncArguments implements ExpressionInterface
             if ($arg instanceof ExprBuilder) {
                 $arg = $arg->getWrappedExpression();
             }
-            
+
             if ($arg instanceof UsingExpression) {
                 $using = $arg->compile();
                 continue;
