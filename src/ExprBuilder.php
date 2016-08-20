@@ -43,7 +43,6 @@ class ExprBuilder implements ExpressionInterface
      */
     public function compile()
     {
-        var_dump($this->wrappedExpression);
         return $this->wrappedExpression->compile();
     }
 
