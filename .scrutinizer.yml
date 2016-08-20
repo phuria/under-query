@@ -1,4 +1,22 @@
+filter:
+  excluded_paths:
+      - ['tests/*', 'vendor/*']
+
+before_commands:
+  - 'composer install'
+
 checks:
+  php: true
+
+coding_style:
   php:
-    code_rating: true
-    duplication: true
+    spaces:
+      around_operators:
+        concatenation: true
+
+build:
+  tests:
+    before:
+      - 'composer --install'
+      - 'phpunit tests'
+
