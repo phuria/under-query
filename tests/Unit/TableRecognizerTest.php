@@ -11,7 +11,10 @@ use Phuria\QueryBuilder\Test\Helper\ExampleTable;
  */
 class TableRecognizerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testTypes()
+    /**
+     * @test
+     */
+    public function itWillReturnValidTypes()
     {
         $recognizer = new TableRecognizer();
 
