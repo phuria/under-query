@@ -10,7 +10,7 @@ interface CompilerInterface
     /**
      * @param mixed $stuff
      *
-     * @return string
+     * @return mixed
      */
     public function compile($stuff);
 }
