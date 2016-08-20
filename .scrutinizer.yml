@@ -23,6 +23,9 @@ build:
         coverage:
           file: 'coverage.clover'
           format: 'clover'
+    after:
+      - 'wget https://scrutinizer-ci.com/ocular.phar'
+      - 'php ocular.phar code-coverage:upload --format=php-clover coverage.clover'
 
 tools:
     external_code_coverage: true
