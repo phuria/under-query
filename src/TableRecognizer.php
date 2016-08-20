@@ -19,20 +19,15 @@ class TableRecognizer
      */
     public function recognizeType($stuff)
     {
-        if ($stuff instanceof \Closure) {
-            return static::TYPE_CLOSURE;
-        }
-
-        if ($stuff instanceof QueryBuilder) {
-            return static::TYPE_SUB_QUERY;
-        }
-
-        if (strpos($stuff, '.')) {
-            return static::TYPE_ROUTE;
-        }
-
-        if (strpos($stuff, '\\')) {
-            return static::TYPE_CLASS_NAME;
+        switch (true) {
+            case $stuff instanceof \Closure:
+                return static::TYPE_CLOSURE;
+            case $stuff instanceof QueryBuilder:
+                return static::TYPE_SUB_QUERY;
+            case false !== strpos($stuff, '.'):
+                return static::TYPE_ROUTE;
+            case strpos($stuff, '\\'):
+                return static::TYPE_CLASS_NAME;
         }
 
         return static::TYPE_TABLE_NAME;
