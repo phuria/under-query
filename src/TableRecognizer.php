@@ -26,7 +26,7 @@ class TableRecognizer
                 return static::TYPE_SUB_QUERY;
             case false !== strpos($stuff, '.'):
                 return static::TYPE_ROUTE;
-            case strpos($stuff, '\\'):
+            case false !== strpos($stuff, '\\'):
                 return static::TYPE_CLASS_NAME;
         }
 
