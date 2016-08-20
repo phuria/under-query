@@ -6,6 +6,7 @@ use Phuria\QueryBuilder\Expression\AliasExpression;
 use Phuria\QueryBuilder\Expression\Arithmetic as Arithmetic;
 use Phuria\QueryBuilder\Expression\AscExpression;
 use Phuria\QueryBuilder\Expression\Comparison as Comparison;
+use Phuria\QueryBuilder\Expression\ConjunctionExpression;
 use Phuria\QueryBuilder\Expression\DescExpression;
 use Phuria\QueryBuilder\Expression\EmptyExpression;
 use Phuria\QueryBuilder\Expression\ExpressionInterface;
@@ -138,6 +139,19 @@ class ExprBuilder implements ExpressionInterface
         return new self(new AscExpression($this->wrappedExpression));
     }
 
+    /**
+     * @param string $connector
+     * @param mixed  $expression
+     *
+     * @return ExprBuilder
+     */
+    public function conjunction($connector, $expression)
+    {
+        $expression = static::normalizeExpression($expression);
+
+        return new self(new ConjunctionExpression($this, $connector, $expression));
+    }
+
     ###############################
     ### COMPARISION EXPRESSIONS ###
     ###############################
@@ -157,39 +171,39 @@ class ExprBuilder implements ExpressionInterface
     }
 
     /**
-     * @param mixed $right
+     * @param mixed $expression
      *
      * @return ExprBuilder
      */
-    public function eq($right)
+    public function eq($expression)
     {
-        $right = static::normalizeExpression($right);
+        $expression = static::normalizeExpression($expression);
 
-        return new self(new Comparison\Eq($this->wrappedExpression, $right));
+        return $this->conjunction(ConjunctionExpression::SYMBOL_EQ, $expression);
     }
 
     /**
-     * @param mixed $right
+     * @param mixed $expression
      *
      * @return ExprBuilder
      */
-    public function gt($right)
+    public function gt($expression)
     {
-        $right = static::normalizeExpression($right);
+        $expression = static::normalizeExpression($expression);
 
-        return new self(new Comparison\Gt($this->wrappedExpression, $right));
+        return $this->conjunction(ConjunctionExpression::SYMBOL_GT, $expression);
     }
 
     /**
-     * @param mixed $right
+     * @param mixed $expression
      *
      * @return ExprBuilder
      */
-    public function gte($right)
+    public function gte($expression)
     {
-        $right = static::normalizeExpression($right);
+        $expression = static::normalizeExpression($expression);
 
-        return new self(new Comparison\Gte($this->wrappedExpression, $right));
+        return $this->conjunction(ConjunctionExpression::SYMBOL_GTE, $expression);
     }
 
     /**
@@ -201,39 +215,39 @@ class ExprBuilder implements ExpressionInterface
     }
 
     /**
-     * @param mixed $right
+     * @param mixed $expression
      *
      * @return ExprBuilder
      */
-    public function lt($right)
+    public function lt($expression)
     {
-        $right = static::normalizeExpression($right);
+        $expression = static::normalizeExpression($expression);
 
-        return new self(new Comparison\Lt($this->wrappedExpression, $right));
+        return $this->conjunction(ConjunctionExpression::SYMBOL_LT, $expression);
     }
 
     /**
-     * @param mixed $right
+     * @param mixed $expression
      *
      * @return ExprBuilder
      */
-    public function lte($right)
+    public function lte($expression)
     {
-        $right = static::normalizeExpression($right);
+        $expression = static::normalizeExpression($expression);
 
-        return new self(new Comparison\Lte($this->wrappedExpression, $right));
+        return $this->conjunction(ConjunctionExpression::SYMBOL_LTE, $expression);
     }
 
     /**
-     * @param mixed $right
+     * @param mixed $expression
      *
      * @return ExprBuilder
      */
-    public function neq($right)
+    public function neq($expression)
     {
-        $right = static::normalizeExpression($right);
+        $expression = static::normalizeExpression($expression);
 
-        return new self(new Comparison\Neq($this->wrappedExpression, $right));
+        return $this->conjunction(ConjunctionExpression::SYMBOL_NEQ, $expression);
     }
 
     /**
@@ -251,15 +265,15 @@ class ExprBuilder implements ExpressionInterface
     }
 
     /**
-     * @param mixed $right
+     * @param mixed $expression
      *
      * @return ExprBuilder
      */
-    public function nullEq($right)
+    public function nullEq($expression)
     {
-        $right = static::normalizeExpression($right);
+        $expression = static::normalizeExpression($expression);
 
-        return new self(new Comparison\NullEq($this->wrappedExpression, $right));
+        return $this->conjunction(ConjunctionExpression::SYMBOL_NULL_EQ, $expression);
     }
 
     ##############################
