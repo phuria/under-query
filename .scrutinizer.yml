@@ -18,6 +18,5 @@ coding_style:
 build:
   tests:
     before:
-      - 'composer --install'
       - 'phpunit tests'
 
