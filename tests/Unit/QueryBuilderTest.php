@@ -354,4 +354,22 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
 
         static::assertSame($expectedSQL, $qb->buildSQL());
     }
+
+    /**
+     * @test
+     */
+    public function itWillHaveLimit()
+    {
+        $qb = $this->createQb();
+
+        $qb->from('example');
+        $qb->addSelect('*');
+        $qb->limit(10);
+
+        static::assertSame('SELECT * FROM example LIMIT 10', $qb->buildSQL());
+
+        $qb->limit(10, 20);
+
+        static::assertSame('SELECT * FROM example LIMIT 10, 20', $qb->buildSQL());
+    }
 }

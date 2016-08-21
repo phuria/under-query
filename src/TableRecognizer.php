@@ -7,10 +7,9 @@ namespace Phuria\QueryBuilder;
 class TableRecognizer
 {
     const TYPE_CLOSURE = 1;
-    const TYPE_ROUTE = 2;
-    const TYPE_CLASS_NAME = 3;
-    const TYPE_TABLE_NAME = 4;
-    const TYPE_SUB_QUERY = 5;
+    const TYPE_CLASS_NAME = 2;
+    const TYPE_TABLE_NAME = 3;
+    const TYPE_SUB_QUERY = 4;
 
     /**
      * @param mixed $stuff
@@ -24,8 +23,6 @@ class TableRecognizer
                 return static::TYPE_CLOSURE;
             case $stuff instanceof QueryBuilder:
                 return static::TYPE_SUB_QUERY;
-            case false !== strpos($stuff, '.'):
-                return static::TYPE_ROUTE;
             case false !== strpos($stuff, '\\'):
                 return static::TYPE_CLASS_NAME;
         }

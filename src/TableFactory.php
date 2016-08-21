@@ -55,8 +55,6 @@ class TableFactory
             case TableRecognizer::TYPE_CLOSURE:
                 $tableClass = $this->tableRecognizer->extractClassName($table);
                 break;
-            case TableRecognizer::TYPE_ROUTE:
-                return $this->createTableSeries(explode('.', $table), $qb);
             case TableRecognizer::TYPE_CLASS_NAME:
                 $tableClass = $table;
                 break;
@@ -67,30 +65,25 @@ class TableFactory
                 return $this->createSubQueryTable($table, $qb);
         }
 
-        $tableObject = new $tableClass($qb);
-
-        if ($tableObject instanceof UnknownTable) {
-            $tableObject->setTableName($table);
-        }
-
-        return $tableObject;
+        return $this->doCreate($table, $tableClass, $qb);
     }
 
     /**
-     * @param array        $tables
+     * @param string       $requestedTable
+     * @param string       $tableClass
      * @param QueryBuilder $qb
      *
-     * @return AbstractTable
+     * @return mixed
      */
-    public function createTableSeries(array $tables, QueryBuilder $qb)
+    private function doCreate($requestedTable, $tableClass, QueryBuilder $qb)
     {
-        $lastTable = null;
+        $tableObject = new $tableClass($qb);
 
-        foreach ($tables as $table) {
-            $lastTable = $this->createNewTable($table, $qb);
+        if ($tableObject instanceof UnknownTable) {
+            $tableObject->setTableName($requestedTable);
         }
 
-        return $lastTable;
+        return $tableObject;
     }
 
     /**

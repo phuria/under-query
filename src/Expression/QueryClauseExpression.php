@@ -24,6 +24,7 @@ class QueryClauseExpression implements ExpressionInterface
     const CLAUSE_SET = 'SET';
     const CLAUSE_GROUP_BY = 'GROUP BY';
     const CLAUSE_HAVING = 'HAVING';
+    const CLAUSE_LIMIT = 'LIMIT';
 
     /**
      * @var string $clause

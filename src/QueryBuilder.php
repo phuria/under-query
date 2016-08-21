@@ -11,7 +11,10 @@
 
 namespace Phuria\QueryBuilder;
 
+use Phuria\QueryBuilder\Expression\EmptyExpression;
 use Phuria\QueryBuilder\Expression\ExpressionCollection;
+use Phuria\QueryBuilder\Expression\ExpressionInterface;
+use Phuria\QueryBuilder\Expression\QueryClauseExpression;
 use Phuria\QueryBuilder\Table\AbstractTable;
 
 /**
@@ -38,6 +41,11 @@ class QueryBuilder
      * @var AbstractTable[] $tables
      */
     private $tables = [];
+
+    /**
+     * @var ExpressionInterface $limit
+     */
+    private $limit;
 
     /**
      * @param TableFactory    $tableFactory
@@ -229,6 +237,15 @@ class QueryBuilder
         return $this->join(AbstractTable::INNER_JOIN, $table);
     }
 
+    /**
+     * @return $this
+     */
+    public function limit()
+    {
+        $this->limit = ExprNormalizer::normalizeExpression(func_get_args());
+
+        return $this;
+    }
 
     /**
      * @return string
@@ -272,5 +289,26 @@ class QueryBuilder
         return new ExpressionCollection(array_filter($this->getTables(), function (AbstractTable $table) {
             return $table->isJoin();
         }), ' ');
+    }
+
+    /**
+     * @return ExpressionInterface
+     */
+    public function getLimitExpression()
+    {
+        $expr = $this->limit;
+
+        if (!$expr) {
+            return new EmptyExpression();
+        }
+
+        if ($expr instanceof ExpressionCollection) {
+            $expr = $expr->changeSeparator(', ');
+        }
+
+        return new QueryClauseExpression(
+            QueryClauseExpression::CLAUSE_LIMIT,
+            $expr
+        );
     }
 }

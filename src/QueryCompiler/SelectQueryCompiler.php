@@ -32,7 +32,8 @@ class SelectQueryCompiler implements QueryCompilerInterface
             $clauses->getWhereExpression()->compile(),
             $clauses->getGroupByExpression()->compile(),
             $clauses->getHavingExpression()->compile(),
-            $clauses->getOrderByExpression()->compile()
+            $clauses->getOrderByExpression()->compile(),
+            $qb->getLimitExpression()->compile()
         ]));
     }
 }

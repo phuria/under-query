@@ -25,8 +25,9 @@ use Phuria\QueryBuilder\Expression\UsingExpression;
  */
 class ExprBuilder implements ExpressionInterface
 {
-    use ExprBuilder\ComparisionTrait;
     use ExprBuilder\ArithmeticTrait;
+    use ExprBuilder\ComparisionTrait;
+    use ExprBuilder\DateTimeTrait;
 
     /**
      * @var ExpressionInterface $wrappedExpression
@@ -254,6 +255,4 @@ class ExprBuilder implements ExpressionInterface
     {
         return $this->func(FunctionExpression::FUNC_SUM);
     }
-
-
 }
