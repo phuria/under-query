@@ -372,9 +372,9 @@ class ExprBuilder implements ExpressionInterface
         $context = null;
 
         if ($using) {
-            $context = new FunctionCallContext(['callHints' => [
-                ExprNormalizer::normalizeExpression($using)
-            ]]);
+            $using = ExprNormalizer::normalizeExpression($using);
+            $using = new UsingExpression($using);
+            $context = new FunctionCallContext(['callHints' => [$using]]);
         }
 
         return $this->func(FunctionExpression::FUNC_CHAR, $context);
@@ -437,8 +437,7 @@ class ExprBuilder implements ExpressionInterface
     {
         return new self(new FunctionExpression(
             FunctionExpression::FUNC_IFNULL,
-            ExprNormalizer::normalizeExpression([$this->wrappedExpression, $expression]),
-            $this->wrappedExpression
+            ExprNormalizer::normalizeExpression([$this->wrappedExpression, $expression])
         ));
     }
 
