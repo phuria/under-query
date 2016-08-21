@@ -12,7 +12,6 @@
 namespace Phuria\QueryBuilder;
 
 use Phuria\QueryBuilder\Expression\AliasExpression;
-use Phuria\QueryBuilder\Expression\Comparison as Comparison;
 use Phuria\QueryBuilder\Expression\ConjunctionExpression;
 use Phuria\QueryBuilder\Expression\ExpressionInterface;
 use Phuria\QueryBuilder\Expression\FunctionCallContext;
@@ -26,6 +25,8 @@ use Phuria\QueryBuilder\Expression\UsingExpression;
  */
 class ExprBuilder implements ExpressionInterface
 {
+    use ExprBuilder\ComparisionTrait;
+
     /**
      * @var ExpressionInterface $wrappedExpression
      */
@@ -40,7 +41,7 @@ class ExprBuilder implements ExpressionInterface
     }
 
     /**
-     * @return ExpressionInterface
+     * @inheritdoc
      */
     public function getWrappedExpression()
     {
@@ -110,10 +111,7 @@ class ExprBuilder implements ExpressionInterface
     }
 
     /**
-     * @param string $connector
-     * @param mixed  $expression
-     *
-     * @return ExprBuilder
+     * @inheritdoc
      */
     public function conjunction($connector, $expression)
     {
@@ -131,130 +129,6 @@ class ExprBuilder implements ExpressionInterface
     public function func($functionName, FunctionCallContext $context = null)
     {
         return new self(new FunctionExpression($functionName, $this->wrappedExpression, $context));
-    }
-
-    ###############################
-    ### COMPARISION EXPRESSIONS ###
-    ###############################
-
-    /**
-     * @param mixed $from
-     * @param mixed $to
-     *
-     * @return ExprBuilder
-     */
-    public function between($from, $to)
-    {
-        $from = ExprNormalizer::normalizeExpression($from);
-        $to = ExprNormalizer::normalizeExpression($to);
-
-        return new self(new Comparison\Between($this->wrappedExpression, $from, $to));
-    }
-
-    /**
-     * @param mixed $expression
-     *
-     * @return ExprBuilder
-     */
-    public function eq($expression)
-    {
-        $expression = ExprNormalizer::normalizeExpression($expression);
-
-        return $this->conjunction(ConjunctionExpression::SYMBOL_EQ, $expression);
-    }
-
-    /**
-     * @param mixed $expression
-     *
-     * @return ExprBuilder
-     */
-    public function gt($expression)
-    {
-        $expression = ExprNormalizer::normalizeExpression($expression);
-
-        return $this->conjunction(ConjunctionExpression::SYMBOL_GT, $expression);
-    }
-
-    /**
-     * @param mixed $expression
-     *
-     * @return ExprBuilder
-     */
-    public function gte($expression)
-    {
-        $expression = ExprNormalizer::normalizeExpression($expression);
-
-        return $this->conjunction(ConjunctionExpression::SYMBOL_GTE, $expression);
-    }
-
-    /**
-     * @return ExprBuilder
-     */
-    public function isNull()
-    {
-        return new self(new Comparison\IsNull($this->wrappedExpression));
-    }
-
-    /**
-     * @param mixed $expression
-     *
-     * @return ExprBuilder
-     */
-    public function lt($expression)
-    {
-        $expression = ExprNormalizer::normalizeExpression($expression);
-
-        return $this->conjunction(ConjunctionExpression::SYMBOL_LT, $expression);
-    }
-
-    /**
-     * @param mixed $expression
-     *
-     * @return ExprBuilder
-     */
-    public function lte($expression)
-    {
-        $expression = ExprNormalizer::normalizeExpression($expression);
-
-        return $this->conjunction(ConjunctionExpression::SYMBOL_LTE, $expression);
-    }
-
-    /**
-     * @param mixed $expression
-     *
-     * @return ExprBuilder
-     */
-    public function neq($expression)
-    {
-        $expression = ExprNormalizer::normalizeExpression($expression);
-
-        return $this->conjunction(ConjunctionExpression::SYMBOL_NEQ, $expression);
-    }
-
-    /**
-     * @param mixed $from
-     * @param mixed $to
-     *
-     * @return ExprBuilder
-     */
-    public function notBetween($from, $to)
-    {
-        $from = ExprNormalizer::normalizeExpression($from);
-        $to = ExprNormalizer::normalizeExpression($to);
-
-        return new self(new Comparison\NotBetween($this->wrappedExpression, $from, $to));
-    }
-
-    /**
-     * @param mixed $expression
-     *
-     * @return ExprBuilder
-     */
-    public function nullEq($expression)
-    {
-        $expression = ExprNormalizer::normalizeExpression($expression);
-
-        return $this->conjunction(ConjunctionExpression::SYMBOL_NULL_EQ, $expression);
     }
 
     ##############################
