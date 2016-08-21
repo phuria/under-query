@@ -37,7 +37,6 @@ trait ComparisionTrait
      */
     abstract public function getWrappedExpression();
 
-
     /**
      * @param mixed $from
      * @param mixed $to

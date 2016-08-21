@@ -26,6 +26,7 @@ use Phuria\QueryBuilder\Expression\UsingExpression;
 class ExprBuilder implements ExpressionInterface
 {
     use ExprBuilder\ComparisionTrait;
+    use ExprBuilder\ArithmeticTrait;
 
     /**
      * @var ExpressionInterface $wrappedExpression
@@ -129,82 +130,6 @@ class ExprBuilder implements ExpressionInterface
     public function func($functionName, FunctionCallContext $context = null)
     {
         return new self(new FunctionExpression($functionName, $this->wrappedExpression, $context));
-    }
-
-    ##############################
-    ### ARITHMETIC EXPRESSIONS ###
-    ##############################
-
-    /**
-     * @param mixed $expression
-     *
-     * @return ExprBuilder
-     */
-    public function add($expression)
-    {
-        $expression = ExprNormalizer::normalizeExpression($expression);
-
-        return $this->conjunction(ConjunctionExpression::SYMBOL_ADD, $expression);
-    }
-
-    /**
-     * @param mixed $expression
-     *
-     * @return ExprBuilder
-     */
-    public function div($expression)
-    {
-        $expression = ExprNormalizer::normalizeExpression($expression);
-
-        return $this->conjunction(ConjunctionExpression::SYMBOL_DIV, $expression);
-    }
-
-    /**
-     * @param mixed $expression
-     *
-     * @return ExprBuilder
-     */
-    public function divide($expression)
-    {
-        $expression = ExprNormalizer::normalizeExpression($expression);
-
-        return $this->conjunction(ConjunctionExpression::SYMBOL_DIVIDE, $expression);
-    }
-
-    /**
-     * @param mixed $expression
-     *
-     * @return ExprBuilder
-     */
-    public function modulo($expression)
-    {
-        $expression = ExprNormalizer::normalizeExpression($expression);
-
-        return $this->conjunction(ConjunctionExpression::SYMBOL_MODULO, $expression);
-    }
-
-    /**
-     * @param mixed $expression
-     *
-     * @return ExprBuilder
-     */
-    public function multiply($expression)
-    {
-        $expression = ExprNormalizer::normalizeExpression($expression);
-
-        return $this->conjunction(ConjunctionExpression::SYMBOL_MULTIPLY, $expression);
-    }
-
-    /**
-     * @param mixed $expression
-     *
-     * @return ExprBuilder
-     */
-    public function subtract($expression)
-    {
-        $expression = ExprNormalizer::normalizeExpression($expression);
-
-        return $this->conjunction(ConjunctionExpression::SYMBOL_SUBTRACT, $expression);
     }
 
     #################
@@ -330,11 +255,5 @@ class ExprBuilder implements ExpressionInterface
         return $this->func(FunctionExpression::FUNC_SUM);
     }
 
-    /**
-     * @return ExprBuilder
-     */
-    public function year()
-    {
-        return $this->func(FunctionExpression::FUNC_YEAR);
-    }
+
 }

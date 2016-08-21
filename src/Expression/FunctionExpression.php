@@ -18,6 +18,8 @@ use Phuria\QueryBuilder\ExprBuilder;
  */
 class FunctionExpression implements ExpressionInterface
 {
+    const FUNC_ADDDATE = 'ADDDATE';
+    const FUNC_ADDTIME = 'ADDTIME';
     const FUNC_ASCI = 'ASCI';
     const FUNC_BIN = 'BIN';
     const FUNC_BIT_LENGTH = 'BIT_LENGTH';
