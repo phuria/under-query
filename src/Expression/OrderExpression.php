@@ -14,19 +14,29 @@ namespace Phuria\QueryBuilder\Expression;
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-class DescExpression implements ExpressionInterface
+class OrderExpression implements ExpressionInterface
 {
+    const ORDER_ASC = 'ASC';
+    const ORDER_DESC = 'DESC';
+
     /**
      * @var ExpressionInterface $wrappedExpression
      */
     private $wrappedExpression;
 
     /**
-     * @param ExpressionInterface $expression
+     * @var string $order
      */
-    public function __construct(ExpressionInterface $expression)
+    private $order;
+
+    /**
+     * @param ExpressionInterface $expression
+     * @param string              $order
+     */
+    public function __construct(ExpressionInterface $expression, $order)
     {
         $this->wrappedExpression = $expression;
+        $this->order = $order;
     }
 
     /**
@@ -34,6 +44,6 @@ class DescExpression implements ExpressionInterface
      */
     public function compile()
     {
-        return $this->wrappedExpression->compile() . ' DESC';
+        return $this->wrappedExpression->compile() . ' ' . $this->order;
     }
 }

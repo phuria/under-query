@@ -12,14 +12,13 @@
 namespace Phuria\QueryBuilder;
 
 use Phuria\QueryBuilder\Expression\AliasExpression;
-use Phuria\QueryBuilder\Expression\AscExpression;
 use Phuria\QueryBuilder\Expression\Comparison as Comparison;
 use Phuria\QueryBuilder\Expression\ConjunctionExpression;
-use Phuria\QueryBuilder\Expression\DescExpression;
 use Phuria\QueryBuilder\Expression\ExpressionInterface;
 use Phuria\QueryBuilder\Expression\FunctionCallContext;
 use Phuria\QueryBuilder\Expression\FunctionExpression;
 use Phuria\QueryBuilder\Expression\InExpression;
+use Phuria\QueryBuilder\Expression\OrderExpression;
 use Phuria\QueryBuilder\Expression\UsingExpression;
 
 /**
@@ -99,7 +98,7 @@ class ExprBuilder implements ExpressionInterface
      */
     public function desc()
     {
-        return new self(new DescExpression($this->wrappedExpression));
+        return new self(new OrderExpression($this->wrappedExpression, OrderExpression::ORDER_DESC));
     }
 
     /**
@@ -107,7 +106,7 @@ class ExprBuilder implements ExpressionInterface
      */
     public function asc()
     {
-        return new self(new AscExpression($this->wrappedExpression));
+        return new self(new OrderExpression($this->wrappedExpression, OrderExpression::ORDER_ASC));
     }
 
     /**
