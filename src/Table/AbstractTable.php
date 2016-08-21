@@ -10,7 +10,7 @@ use Phuria\QueryBuilder\QueryBuilder;
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-abstract class AbstractTable
+abstract class AbstractTable implements ExpressionInterface
 {
     const CROSS_JOIN = 'CROSS JOIN';
     const LEFT_JOIN = 'LEFT JOIN';
@@ -58,6 +58,30 @@ abstract class AbstractTable
      * @return string
      */
     abstract public function getTableName();
+
+    /**
+     * @inheritdoc
+     */
+    public function compile()
+    {
+        $declaration = '';
+
+        if ($this->isJoin()) {
+            $declaration .= $this->getJoinType() . ' ';
+        }
+
+        $declaration .= $this->getTableName();
+
+        if ($alias = $this->getAlias()) {
+            $declaration .= ' AS ' . $alias;
+        }
+
+        if ($joinOn = $this->getJoinOn()) {
+            $declaration .= ' ON ' . $joinOn->compile();
+        }
+
+        return $declaration;
+    }
 
     /**
      * @return string

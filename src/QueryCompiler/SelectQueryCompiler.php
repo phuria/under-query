@@ -2,8 +2,8 @@
 
 namespace Phuria\QueryBuilder\QueryCompiler;
 
-use Phuria\QueryBuilder\Compiler\SeparatedListCompiler;
 use Phuria\QueryBuilder\QueryBuilder;
+use Phuria\QueryBuilder\QueryClauses;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -15,7 +15,7 @@ class SelectQueryCompiler implements QueryCompilerInterface
      */
     public function canHandleQuery(QueryBuilder $qb)
     {
-        return (bool) $qb->getSelectClauses();
+        return QueryClauses::QUERY_SELECT === $qb->getQueryClauses()->guessQueryType();
     }
 
     /**
@@ -23,53 +23,16 @@ class SelectQueryCompiler implements QueryCompilerInterface
      */
     public function compile(QueryBuilder $qb)
     {
-        $commaSeparated = new SeparatedListCompiler(', ');
-        $andSeparated = new SeparatedListCompiler(' AND ');
-        $spaceSeparated = new SeparatedListCompiler(' ');
+        $clauses = $qb->getQueryClauses();
 
-        $select = $commaSeparated->compile($qb->getSelectClauses());
-        $afterSelectHints = $spaceSeparated->compile($qb->getHints());
-        $where = $andSeparated->compile($qb->getWhereClauses());
-        $from = $commaSeparated->compile($qb->getRootTables());
-        $join = $spaceSeparated->compile($qb->getJoinTables());
-        $orderBy = $commaSeparated->compile($qb->getOrderByClauses());
-        $groupBy = $commaSeparated->compile($qb->getGroupByClauses());
-        $having = $andSeparated->compile($qb->getHavingClauses());
-
-        $sql = "SELECT";
-
-        if ($afterSelectHints) {
-            $sql .= ' ' . $afterSelectHints;
-        }
-
-        if ($select) {
-            $sql .= ' ' . $select;
-        }
-
-        if ($from) {
-            $sql .= ' FROM ' . $from;
-        }
-
-        if ($join) {
-            $sql .= ' ' . $join;
-        }
-
-        if ($where) {
-            $sql .= ' WHERE ' . $where;
-        }
-
-        if ($groupBy) {
-            $sql .= ' GROUP BY ' . $groupBy;
-        }
-
-        if ($having) {
-            $sql .= ' HAVING ' . $having;
-        }
-
-        if ($orderBy) {
-            $sql .= ' ORDER BY ' . $orderBy;
-        }
-
-        return $sql;
+        return implode(' ', array_filter([
+            $clauses->getSelectExpression()->compile(),
+            $qb->getRootTables()->isEmpty() ? '' : 'FROM ' . $qb->getRootTables()->compile(),
+            $qb->getJoinTables()->compile(),
+            $clauses->getWhereExpression()->compile(),
+            $clauses->getGroupByExpression()->compile(),
+            $clauses->getHavingExpression()->compile(),
+            $clauses->getOrderByExpression()->compile()
+        ]));
     }
 }

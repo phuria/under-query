@@ -14,7 +14,7 @@ namespace Phuria\QueryBuilder\Expression;
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-class ExpressionCollection implements ExpressionInterface
+class ExpressionCollection implements ExpressionInterface, \ArrayAccess
 {
     /**
      * @var ExpressionInterface[] $expressionList
@@ -30,7 +30,7 @@ class ExpressionCollection implements ExpressionInterface
      * @param array  $expressionList
      * @param string $separator
      */
-    public function __construct(array $expressionList, $separator = '')
+    public function __construct(array $expressionList = [], $separator = '')
     {
         $this->expressionList = $expressionList;
         $this->separator = $separator;
@@ -55,6 +55,18 @@ class ExpressionCollection implements ExpressionInterface
     }
 
     /**
+     * @param ExpressionInterface $expression
+     *
+     * @return $this
+     */
+    public function addElement(ExpressionInterface $expression)
+    {
+        $this->expressionList[] = $expression;
+
+        return $this;
+    }
+
+    /**
      * @inheritdoc
      */
     public function compile()
@@ -66,5 +78,47 @@ class ExpressionCollection implements ExpressionInterface
         }
 
         return implode($this->separator, $elements);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return empty($this->expressionList);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function offsetExists($offset)
+    {
+        return array_key_exists($offset, $this->expressionList);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function offsetGet($offset)
+    {
+        return $this->expressionList[$offset];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function offsetSet($offset, $value)
+    {
+        $this->expressionList[$offset] = $value;
+
+        return $value;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->expressionList[$offset]);
     }
 }

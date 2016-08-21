@@ -1,7 +1,17 @@
 <?php
 
+/**
+ * This file is part of Phuria SQL Builder package.
+ *
+ * Copyright (c) 2016 Beniamin Jonatan Šimko
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Phuria\QueryBuilder;
 
+use Phuria\QueryBuilder\Expression\ExpressionCollection;
 use Phuria\QueryBuilder\Table\AbstractTable;
 
 /**
@@ -20,44 +30,14 @@ class QueryBuilder
     private $compilerManager;
 
     /**
-     * @var array $selectClauses
+     * @var QueryClauses
      */
-    private $selectClauses;
-
-    /**
-     * @var array $whereClauses
-     */
-    private $whereClauses;
-
-    /**
-     * @var array $orderByClauses
-     */
-    private $orderByClauses;
-
-    /**
-     * @var array $setClauses
-     */
-    private $setClauses;
-
-    /**
-     * @var array $groupByClauses
-     */
-    private $groupByClauses;
-
-    /**
-     * @var array $havingClauses
-     */
-    private $havingClauses;
+    private $queryClauses;
 
     /**
      * @var AbstractTable[] $tables
      */
     private $tables = [];
-
-    /**
-     * @var array $mods
-     */
-    private $hints = [];
 
     /**
      * @param TableFactory    $tableFactory
@@ -67,12 +47,7 @@ class QueryBuilder
     {
         $this->tableFactory = $tableFactory ?: new TableFactory();
         $this->compilerManager = $compilerManager ?: new CompilerManager();
-        $this->selectClauses = [];
-        $this->whereClauses = [];
-        $this->orderByClauses = [];
-        $this->groupByClauses = [];
-        $this->setClauses = [];
-        $this->havingClauses = [];
+        $this->queryClauses = new QueryClauses();
     }
 
     /**
@@ -88,7 +63,7 @@ class QueryBuilder
      */
     public function addSelect()
     {
-        $this->selectClauses[] = ExprNormalizer::normalizeExpression(func_get_args());
+        $this->queryClauses->addSelect(...func_get_args());
 
         return $this;
     }
@@ -98,7 +73,7 @@ class QueryBuilder
      */
     public function andWhere()
     {
-        $this->whereClauses[] = ExprNormalizer::normalizeExpression(func_get_args());
+        $this->queryClauses->andWhere(...func_get_args());
 
         return $this;
     }
@@ -108,9 +83,47 @@ class QueryBuilder
      */
     public function andHaving()
     {
-        $this->havingClauses[] = ExprNormalizer::normalizeExpression(func_get_args());
+        $this->queryClauses->andHaving(...func_get_args());
 
         return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function addOrderBy()
+    {
+        $this->queryClauses->addOrderBy(...func_get_args());
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function addSet()
+    {
+        $this->queryClauses->addSet(...func_get_args());
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function addGroupBy()
+    {
+        $this->queryClauses->addGroupBy(...func_get_args());
+
+        return $this;
+    }
+
+    /**
+     * @return QueryClauses
+     */
+    public function getQueryClauses()
+    {
+        return $this->queryClauses;
     }
 
     /**
@@ -120,7 +133,7 @@ class QueryBuilder
      */
     public function addHint($hint)
     {
-        $this->hints[] = $hint;
+        $this->queryClauses->addHint(...func_get_args());
 
         return $this;
     }
@@ -216,35 +229,6 @@ class QueryBuilder
         return $this->join(AbstractTable::INNER_JOIN, $table);
     }
 
-    /**
-     * @return $this
-     */
-    public function addOrderBy()
-    {
-        $this->orderByClauses[] = ExprNormalizer::normalizeExpression(func_get_args());
-
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    public function addSet()
-    {
-        $this->setClauses[] = ExprNormalizer::normalizeExpression(func_get_args());
-
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    public function addGroupBy()
-    {
-        $this->groupByClauses[] = ExprNormalizer::normalizeExpression(func_get_args());
-
-        return $this;
-    }
 
     /**
      * @return string
@@ -263,54 +247,6 @@ class QueryBuilder
     }
 
     /**
-     * @return array
-     */
-    public function getSelectClauses()
-    {
-        return $this->selectClauses;
-    }
-
-    /**
-     * @return array
-     */
-    public function getWhereClauses()
-    {
-        return $this->whereClauses;
-    }
-
-    /**
-     * @return array
-     */
-    public function getOrderByClauses()
-    {
-        return $this->orderByClauses;
-    }
-
-    /**
-     * @return array
-     */
-    public function getSetClauses()
-    {
-        return $this->setClauses;
-    }
-
-    /**
-     * @return array
-     */
-    public function getGroupByClauses()
-    {
-        return $this->groupByClauses;
-    }
-
-    /**
-     * @return array
-     */
-    public function getHavingClauses()
-    {
-        return $this->havingClauses;
-    }
-
-    /**
      * @return AbstractTable[]
      */
     public function getTables()
@@ -319,30 +255,22 @@ class QueryBuilder
     }
 
     /**
-     * @return AbstractTable[]
+     * @return ExpressionCollection
      */
     public function getRootTables()
     {
-        return array_filter($this->getTables(), function (AbstractTable $table) {
+        return new ExpressionCollection(array_filter($this->getTables(), function (AbstractTable $table) {
             return $table->isRoot();
-        });
+        }), ', ');
     }
 
     /**
-     * @return AbstractTable[]
+     * @return ExpressionCollection
      */
     public function getJoinTables()
     {
-        return array_filter($this->getTables(), function (AbstractTable $table) {
+        return new ExpressionCollection(array_filter($this->getTables(), function (AbstractTable $table) {
             return $table->isJoin();
-        });
-    }
-
-    /**
-     * @return array
-     */
-    public function getHints()
-    {
-        return $this->hints;
+        }), ' ');
     }
 }
