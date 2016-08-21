@@ -1,7 +1,10 @@
 # Phuria SQL Builder 
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/phuria/sql-builder/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/phuria/sql-builder/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/phuria/sql-builder/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/phuria/sql-builder/?branch=master)
-[![Build Status](https://scrutinizer-ci.com/g/phuria/sql-builder/badges/build.png?b=master)](https://scrutinizer-ci.com/g/phuria/sql-builder/build-status/master)
+[![Build Status](https://img.shields.io/scrutinizer/build/g/phuria/sql-builder.svg?maxAge=2592000)](https://scrutinizer-ci.com/g/phuria/sql-builder/build-status/master)
+[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/phuria/sql-builder.svg?maxAge=2592000)](https://scrutinizer-ci.com/g/phuria/sql-builder/?branch=master)
+[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/phuria/sql-builder.svg?maxAge=2592000)](https://scrutinizer-ci.com/g/phuria/sql-builder/?branch=master)
+[![GitHub release](https://img.shields.io/github/release/phuria/sql-builder.svg?maxAge=2592000?style=flat-square)]()
+[![license](https://img.shields.io/github/license/phuria/sql-builder.svg?maxAge=2592000?style=flat-square)]()
+[![php](https://img.shields.io/badge/PHP-5.6-blue.svg)]()
 
 ### Requirements
 
