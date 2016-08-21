@@ -1,6 +1,17 @@
 <?php
 
+/**
+ * This file is part of Phuria SQL Builder package.
+ *
+ * Copyright (c) 2016 Beniamin Jonatan Šimko
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Phuria\QueryBuilder\Expression;
+
+use Phuria\QueryBuilder\ExprBuilder;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -32,6 +43,16 @@ class InExpression implements ExpressionInterface
      */
     public function compile()
     {
-        return $this->wrappedExpression->compile() . ' IN (' . $this->arguments->compile(', ') . ')';
+        $expression = $this->arguments;
+
+        if ($expression instanceof ExprBuilder) {
+            $expression = $expression->getWrappedExpression();
+        }
+
+        if ($expression instanceof ExpressionCollection) {
+            $expression = $expression->changeSeparator(', ');
+        }
+
+        return $this->wrappedExpression->compile() . ' IN (' . $expression->compile() . ')';
     }
 }

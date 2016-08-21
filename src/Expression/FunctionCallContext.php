@@ -14,26 +14,30 @@ namespace Phuria\QueryBuilder\Expression;
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-class UsingExpression implements ExpressionInterface
+class FunctionCallContext
 {
     /**
-     * @var ExpressionInterface $wrappedExpression
+     * @var ExpressionInterface[] $callHints
      */
-    private $wrappedExpression;
+    private $callHints = [];
 
     /**
-     * @param ExpressionInterface $expression
+     * @param array $options
      */
-    public function __construct(ExpressionInterface $expression)
+    public function __construct(array $options)
     {
-        $this->wrappedExpression = $expression;
+        $options = array_merge([
+            'callHints' => []
+        ], $options);
+
+        $this->callHints = $options['callHints'];
     }
 
     /**
-     * @inheritdoc
+     * @return ExpressionInterface[]
      */
-    public function compile()
+    public function getCallHints()
     {
-        return ' USING ' . $this->wrappedExpression->compile();
+        return $this->callHints;
     }
 }

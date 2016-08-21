@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * This file is part of Phuria SQL Builder package.
+ *
+ * Copyright (c) 2016 Beniamin Jonatan Šimko
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Phuria\QueryBuilder;
 
 use Phuria\QueryBuilder\Expression\AliasExpression;
@@ -8,7 +17,7 @@ use Phuria\QueryBuilder\Expression\Comparison as Comparison;
 use Phuria\QueryBuilder\Expression\ConjunctionExpression;
 use Phuria\QueryBuilder\Expression\DescExpression;
 use Phuria\QueryBuilder\Expression\ExpressionInterface;
-use Phuria\QueryBuilder\Expression\Func as Func;
+use Phuria\QueryBuilder\Expression\FunctionCallContext;
 use Phuria\QueryBuilder\Expression\FunctionExpression;
 use Phuria\QueryBuilder\Expression\InExpression;
 use Phuria\QueryBuilder\Expression\UsingExpression;
@@ -115,13 +124,14 @@ class ExprBuilder implements ExpressionInterface
     }
 
     /**
-     * @param string $functionName
+     * @param string                   $functionName
+     * @param FunctionCallContext|null $context
      *
      * @return ExprBuilder
      */
-    public function func($functionName)
+    public function func($functionName, FunctionCallContext $context = null)
     {
-        return new self(new FunctionExpression($functionName, $this->wrappedExpression));
+        return new self(new FunctionExpression($functionName, $this->wrappedExpression, $context));
     }
 
     ###############################
@@ -353,11 +363,21 @@ class ExprBuilder implements ExpressionInterface
     }
 
     /**
+     * @param mixed $using
+     *
      * @return ExprBuilder
      */
-    public function char()
+    public function char($using = null)
     {
-        return new self(new Func\Char($this->wrappedExpression));
+        $context = null;
+
+        if ($using) {
+            $context = new FunctionCallContext(['callHints' => [
+                ExprNormalizer::normalizeExpression($using)
+            ]]);
+        }
+
+        return $this->func(FunctionExpression::FUNC_CHAR, $context);
     }
 
     /**
@@ -365,7 +385,7 @@ class ExprBuilder implements ExpressionInterface
      */
     public function coalesce()
     {
-        return new self(new Func\Coalesce($this->wrappedExpression));
+        return $this->func(FunctionExpression::FUNC_COALESCE);
     }
 
     /**
@@ -405,7 +425,7 @@ class ExprBuilder implements ExpressionInterface
      */
     public function field()
     {
-        return $this->func(FunctionExpression::FUNC_EXPORT_SET);
+        return $this->func(FunctionExpression::FUNC_FIELD);
     }
 
     /**
@@ -415,9 +435,11 @@ class ExprBuilder implements ExpressionInterface
      */
     public function ifNull($expression)
     {
-        $expression = ExprNormalizer::normalizeExpression($expression);
-
-        return new self(new Func\IfNull($this->wrappedExpression, $expression));
+        return new self(new FunctionExpression(
+            FunctionExpression::FUNC_IFNULL,
+            ExprNormalizer::normalizeExpression([$this->wrappedExpression, $expression]),
+            $this->wrappedExpression
+        ));
     }
 
     /**

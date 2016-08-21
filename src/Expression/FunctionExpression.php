@@ -1,6 +1,17 @@
 <?php
 
+/**
+ * This file is part of Phuria SQL Builder package.
+ *
+ * Copyright (c) 2016 Beniamin Jonatan Šimko
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Phuria\QueryBuilder\Expression;
+
+use Phuria\QueryBuilder\ExprBuilder;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -17,6 +28,7 @@ class FunctionExpression implements ExpressionInterface
     const FUNC_ELT = 'ELT';
     const FUNC_EXPORT_SET = 'EXPORT_SET';
     const FUNC_FIELD = 'FIELD';
+    const FUNC_IFNULL = 'IFNULL';
     const FUNC_MAX = 'MAX';
     const FUNC_SUM = 'SUM';
     const FUNC_YEAR = 'YEAR';
@@ -32,13 +44,20 @@ class FunctionExpression implements ExpressionInterface
     private $arguments;
 
     /**
-     * @param $functionName
-     * @param $arguments
+     * @var FunctionCallContext|null $context
      */
-    public function __construct($functionName, ExpressionInterface $arguments)
+    private $context;
+
+    /**
+     * @param string                   $functionName
+     * @param ExpressionInterface      $arguments
+     * @param FunctionCallContext|null $context
+     */
+    public function __construct($functionName, ExpressionInterface $arguments, FunctionCallContext $context = null)
     {
         $this->functionName = $functionName;
         $this->arguments = $arguments;
+        $this->context = $context;
     }
 
     /**
@@ -46,6 +65,34 @@ class FunctionExpression implements ExpressionInterface
      */
     public function compile()
     {
-        return $this->functionName . '(' . $this->arguments->compile() . ')';
+        $expression = $this->arguments;
+
+        if ($expression instanceof ExprBuilder) {
+            $expression = $expression->getWrappedExpression();
+        }
+
+        if ($expression instanceof ExpressionCollection) {
+            $expression = $expression->changeSeparator(', ');
+        }
+
+        return $this->functionName . '(' . $expression->compile() . $this->compileHints() . ')';
+    }
+
+    /**
+     * @return string
+     */
+    private function compileHints()
+    {
+        if (null === $this->context) {
+            return '';
+        }
+
+        $compiledHints = [];
+
+        foreach ($this->context->getCallHints() as $hint) {
+            $compiledHints[] = $hint->compile();
+        }
+
+        return implode('', $compiledHints);
     }
 }

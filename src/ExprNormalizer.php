@@ -1,9 +1,19 @@
 <?php
+
+/**
+ * This file is part of Phuria SQL Builder package.
+ *
+ * Copyright (c) 2016 Beniamin Jonatan Šimko
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Phuria\QueryBuilder;
 
 use Phuria\QueryBuilder\Expression\EmptyExpression;
+use Phuria\QueryBuilder\Expression\ExpressionCollection;
 use Phuria\QueryBuilder\Expression\ExpressionInterface;
-use Phuria\QueryBuilder\Expression\ImplodeExpression;
 use Phuria\QueryBuilder\Expression\RawExpression;
 
 /**
@@ -52,6 +62,6 @@ class ExprNormalizer
                 return $normalized[0];
         }
 
-        return new ImplodeExpression($normalized);
+        return new ExpressionCollection($normalized);
     }
 }

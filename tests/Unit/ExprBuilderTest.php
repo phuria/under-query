@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * This file is part of Phuria SQL Builder package.
+ *
+ * Copyright (c) 2016 Beniamin Jonatan Šimko
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Phuria\QueryBuilder\Test\Unit;
 
 use Phuria\QueryBuilder\ExprBuilder;
@@ -41,10 +50,12 @@ class ExprBuilderTest extends \PHPUnit_Framework_TestCase
         static::assertSame('TEST', $exp->compile());
     }
 
-    public function testCharUsingUtf8()
+    /**
+     * @test
+     */
+    public function itWillUseUTF8()
     {
-        $using = (new ExprBuilder('utf8'))->using();
-        $exp = (new ExprBuilder(10, 20, 30, $using))->char();
+        $exp = (new ExprBuilder(10, 20, 30))->char('utf8');
 
         static::assertSame('CHAR(10, 20, 30 USING utf8)', $exp->compile());
     }
@@ -85,5 +96,15 @@ class ExprBuilderTest extends \PHPUnit_Framework_TestCase
         $exp = (new ExprBuilder(10))->asci();
 
         static::assertSame('ASCI(10)', $exp->compile());
+    }
+
+    /**
+     * @test
+     */
+    public function itWillReturnCommaSeparatedArguments()
+    {
+        $exp = (new ExprBuilder(10, 20, 30))->field();
+
+        static::assertSame('FIELD(10, 20, 30)', $exp->compile());
     }
 }
