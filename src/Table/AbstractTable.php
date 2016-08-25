@@ -199,4 +199,14 @@ abstract class AbstractTable implements ExpressionInterface
     {
         return new ExprBuilder(new ColumnExpression($this, $name));
     }
+
+    /**
+     * @return $this
+     */
+    public function autoAlias()
+    {
+        $this->tableAlias = $this->qb->getAliasManager()->generateNextTableAlias();
+
+        return $this;
+    }
 }

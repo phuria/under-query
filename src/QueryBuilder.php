@@ -11,6 +11,7 @@
 
 namespace Phuria\QueryBuilder;
 
+use Phuria\QueryBuilder\AliasManager\AliasManager;
 use Phuria\QueryBuilder\Expression\EmptyExpression;
 use Phuria\QueryBuilder\Expression\ExpressionCollection;
 use Phuria\QueryBuilder\Expression\ExpressionInterface;
@@ -56,6 +57,15 @@ class QueryBuilder
         $this->tableFactory = $tableFactory ?: new TableFactory();
         $this->compilerManager = $compilerManager ?: new CompilerManager();
         $this->queryClauses = new QueryClauses();
+        $this->aliasManager = new AliasManager();
+    }
+
+    /**
+     * @return AliasManager
+     */
+    public function getAliasManager()
+    {
+        return $this->aliasManager;
     }
 
     /**
