@@ -2,6 +2,7 @@
 
 namespace Phuria\QueryBuilder\QueryCompiler;
 
+use Phuria\QueryBuilder\Parser\QueryClausesParser;
 use Phuria\QueryBuilder\QueryBuilder;
 use Phuria\QueryBuilder\QueryClauses;
 use Phuria\QueryBuilder\Table\AbstractTable;
@@ -24,17 +25,17 @@ class SelectQueryCompiler implements QueryCompilerInterface
      */
     public function compile(QueryBuilder $qb)
     {
-        $clauses = $qb->getQueryClauses();
+        $clausesParser = new QueryClausesParser($qb);
 
         $rawSql = implode(' ', array_filter([
-            $clauses->getRawSelectClause(),
-            $clauses->getRawFromClause(),
-            $clauses->getRawJoinClause(),
-            $clauses->getRawWhereClause(),
-            $clauses->getRawGroupByClause(),
-            $clauses->getRawHavingClause(),
-            $clauses->getRawOrderByClause(),
-            $clauses->getRawLimitClause()
+            $clausesParser->parseSelectClause(),
+            $clausesParser->parseFromClause(),
+            $clausesParser->parseJoinClause(),
+            $clausesParser->parseWhereClause(),
+            $clausesParser->parseGroupByClause(),
+            $clausesParser->parseHavingClause(),
+            $clausesParser->parseOrderByClause(),
+            $clausesParser->parseLimitClause()
         ]));
 
         $references = $qb->getReferenceManager()->all();

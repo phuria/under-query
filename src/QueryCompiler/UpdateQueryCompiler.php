@@ -2,6 +2,7 @@
 
 namespace Phuria\QueryBuilder\QueryCompiler;
 
+use Phuria\QueryBuilder\Parser\QueryClausesParser;
 use Phuria\QueryBuilder\QueryBuilder;
 use Phuria\QueryBuilder\QueryClauses;
 use Phuria\QueryBuilder\Table\AbstractTable;
@@ -24,9 +25,11 @@ class UpdateQueryCompiler implements QueryCompilerInterface
      */
     public function compile(QueryBuilder $qb)
     {
+        $clausesParser = new QueryClausesParser($qb);
+
         $rawSQL = implode(' ', array_filter([
-            $qb->getQueryClauses()->getRawUpdateClause(),
-            $qb->getQueryClauses()->getRawSetClause()
+            $clausesParser->parseUpdateClause(),
+            $clausesParser->parseSetClause()
         ]));
 
         $references = $qb->getReferenceManager()->all();

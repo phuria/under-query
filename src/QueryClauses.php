@@ -11,8 +11,6 @@
 
 namespace Phuria\QueryBuilder;
 
-use Phuria\QueryBuilder\Table\AbstractTable;
-
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
@@ -20,11 +18,6 @@ class QueryClauses
 {
     const QUERY_SELECT = 1;
     const QUERY_UPDATE = 2;
-
-    /**
-     * @var QueryBuilder $qb
-     */
-    private $qb;
 
     /**
      * @var array $selectClauses
@@ -60,14 +53,6 @@ class QueryClauses
      * @var string $limitClause
      */
     private $limitClause;
-
-    /**
-     * @param QueryBuilder $qb
-     */
-    public function __construct(QueryBuilder $qb)
-    {
-        $this->qb = $qb;
-    }
 
     /**
      * @return int
@@ -166,156 +151,58 @@ class QueryClauses
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getRawSelectClause()
+    public function getSelectClauses()
     {
-        if ($this->selectClauses) {
-            return 'SELECT ' . implode(', ', $this->selectClauses);
-        }
+        return $this->selectClauses;
+    }
 
-        return '';
+    /**
+     * @return array
+     */
+    public function getWhereClauses()
+    {
+        return $this->whereClauses;
+    }
+
+    /**
+     * @return array
+     */
+    public function getOrderByClauses()
+    {
+        return $this->orderByClauses;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSetClauses()
+    {
+        return $this->setClauses;
+    }
+
+    /**
+     * @return array
+     */
+    public function getGroupByClauses()
+    {
+        return $this->groupByClauses;
+    }
+
+    /**
+     * @return array
+     */
+    public function getHavingClauses()
+    {
+        return $this->havingClauses;
     }
 
     /**
      * @return string
      */
-    public function getRawUpdateClause()
+    public function getLimitClause()
     {
-        $rootTables = $this->qb->getRootTables();
-
-        if (0 === count($rootTables)) {
-            return '';
-        }
-
-        return 'UPDATE ' . implode(', ', array_map(function (AbstractTable $table) {
-            if ($table->getAlias()) {
-                return $table->getTableName() . ' AS ' . $table->getAlias();
-            }
-
-            return $table->getTableName();
-        }, $rootTables));
-    }
-
-    /**
-     * @return string
-     */
-    public function getRawFromClause()
-    {
-        $rootTables = $this->qb->getRootTables();
-
-        if (0 === count($rootTables)) {
-            return '';
-        }
-
-        return 'FROM ' . implode(', ', array_map(function (AbstractTable $table) {
-            if ($table->getAlias()) {
-                return $table->getTableName() . ' AS ' . $table->getAlias();
-            }
-
-            return $table->getTableName();
-        }, $rootTables));
-    }
-
-    /**
-     * @return string
-     */
-    public function getRawJoinClause()
-    {
-        $joinTables = $this->qb->getJoinTables();
-
-        if (0 === count($joinTables)) {
-            return '';
-        }
-
-        $joins = [];
-
-        foreach ($joinTables as $table) {
-            $clause = $table->getJoinType() . ' ' . $table->getTableName();
-
-            if ($table->getAlias()) {
-                $clause .= ' AS ' . $table->getAlias();
-            }
-
-            if ($table->getJoinOn()) {
-                $clause .= ' ON ' . $table->getJoinOn();
-            }
-
-            $joins[] = $clause;
-        }
-
-        return implode(' ', $joins);
-    }
-
-    /**
-     * @return string
-     */
-    public function getRawWhereClause()
-    {
-        if ($this->whereClauses) {
-            return 'WHERE ' . implode(' AND ', $this->whereClauses);
-        }
-
-        return '';
-    }
-
-    /**
-     * @return string
-     */
-    public function getRawOrderByClause()
-    {
-        if ($this->orderByClauses) {
-            return 'ORDER BY ' . implode(', ', $this->orderByClauses);
-        }
-
-        return '';
-    }
-
-    /**
-     * @return string
-     */
-    public function getRawSetClause()
-    {
-        if ($this->setClauses) {
-            return 'SET ' . implode(', ', $this->setClauses);
-        }
-
-        return '';
-    }
-
-    /**
-     * @return string
-     */
-    public function getRawGroupByClause()
-    {
-        if ($this->groupByClauses) {
-            return 'GROUP BY ' . implode(', ', $this->groupByClauses);
-        }
-
-        return '';
-    }
-
-    /**
-     * @return string
-     */
-    public function getRawHavingClause()
-    {
-        if ($this->havingClauses) {
-            return 'HAVING ' . implode(' AND ', $this->havingClauses);
-        }
-
-        return '';
-    }
-
-    /**
-     * @return string
-     */
-    public function getRawLimitClause()
-    {
-        if ($this->limitClause) {
-            return 'LIMIT ' . $this->limitClause;
-        }
-
-        return '';
+        return $this->limitClause;
     }
 }

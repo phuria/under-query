@@ -51,7 +51,7 @@ class QueryBuilder
     {
         $this->tableFactory = $tableFactory ?: new TableFactory();
         $this->compilerManager = $compilerManager ?: new CompilerManager();
-        $this->queryClauses = new QueryClauses($this);
+        $this->queryClauses = new QueryClauses();
         $this->referenceManager = new ReferenceManager();
     }
 

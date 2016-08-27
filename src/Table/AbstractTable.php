@@ -66,30 +66,6 @@ abstract class AbstractTable
     abstract public function getTableName();
 
     /**
-     * @inheritdoc
-     */
-    public function compile()
-    {
-        $declaration = '';
-
-        if ($this->isJoin()) {
-            $declaration .= $this->getJoinType() . ' ';
-        }
-
-        $declaration .= $this->getTableName();
-
-        if ($alias = $this->getAlias()) {
-            $declaration .= ' AS ' . $alias;
-        }
-
-        if ($joinOn = $this->getJoinOn()) {
-            $declaration .= ' ON ' . $joinOn;
-        }
-
-        return $declaration;
-    }
-
-    /**
      * @return string
      */
     public function getAlias()
