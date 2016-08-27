@@ -41,7 +41,7 @@ class QueryParameter
      */
     public function __toString()
     {
-        return sprintf(':%s',  $this->name);
+        return sprintf(':%s', $this->name);
     }
 
     /**
