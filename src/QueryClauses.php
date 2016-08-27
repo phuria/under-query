@@ -14,7 +14,6 @@ namespace Phuria\QueryBuilder;
 use Phuria\QueryBuilder\Expression\ExpressionCollection;
 use Phuria\QueryBuilder\Expression\ExpressionInterface;
 use Phuria\QueryBuilder\Expression\QueryClauseExpression as QueryExpr;
-use Phuria\QueryBuilder\Expression\SelectClauseExpression;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -72,21 +71,25 @@ class QueryClauses
     }
 
     /**
+     * @param string $clause
+     *
      * @return $this
      */
-    public function addSelect()
+    public function addSelect($clause)
     {
-        $this->selectClauses[] = ExprNormalizer::normalizeExpression(func_get_args());
+        $this->selectClauses[] = $clause;
 
         return $this;
     }
 
     /**
+     * @param string $clause
+     *
      * @return $this
      */
-    public function andWhere()
+    public function andWhere($clause)
     {
-        $this->whereClauses[] = ExprNormalizer::normalizeExpression(func_get_args());
+        $this->whereClauses[] = $clause;
 
         return $this;
     }
@@ -142,25 +145,27 @@ class QueryClauses
     }
 
     /**
-     * @return ExpressionInterface
+     * @return string
      */
-    public function getSelectExpression()
+    public function getRawSelectClause()
     {
-        return new SelectClauseExpression(
-            new ExpressionCollection($this->hints, ' '),
-            new ExpressionCollection($this->selectClauses, ', ')
-        );
+        if ($this->selectClauses) {
+            return 'SELECT ' . implode(', ', $this->selectClauses);
+        }
+
+        return '';
     }
 
     /**
-     * @return ExpressionInterface
+     * @return string
      */
-    public function getWhereExpression()
+    public function getRawWhereClause()
     {
-        return new QueryExpr(
-            QueryExpr::CLAUSE_WHERE,
-            new ExpressionCollection($this->whereClauses, ' AND ')
-        );
+        if ($this->whereClauses) {
+            return 'WHERE ' . implode(' AND ', $this->whereClauses);
+        }
+
+        return '';
     }
 
     /**

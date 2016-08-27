@@ -49,6 +49,11 @@ class QueryBuilder
     private $limit;
 
     /**
+     * @var ReferenceManager $referenceManager
+     */
+    private $referenceManager;
+
+    /**
      * @param TableFactory    $tableFactory
      * @param CompilerManager $compilerManager
      */
@@ -58,6 +63,7 @@ class QueryBuilder
         $this->compilerManager = $compilerManager ?: new CompilerManager();
         $this->queryClauses = new QueryClauses();
         $this->aliasManager = new AliasManager();
+        $this->referenceManager = new ReferenceManager();
     }
 
     /**
@@ -77,21 +83,25 @@ class QueryBuilder
     }
 
     /**
+     * @param string $clause
+     *
      * @return $this
      */
-    public function addSelect()
+    public function addSelect($clause)
     {
-        $this->queryClauses->addSelect(...func_get_args());
+        $this->queryClauses->addSelect($clause);
 
         return $this;
     }
 
     /**
+     * @param string $clause
+     *
      * @return $this
      */
-    public function andWhere()
+    public function andWhere($clause)
     {
-        $this->queryClauses->andWhere(...func_get_args());
+        $this->queryClauses->andWhere($clause);
 
         return $this;
     }
@@ -320,5 +330,13 @@ class QueryBuilder
             QueryClauseExpression::CLAUSE_LIMIT,
             $expr
         );
+    }
+
+    /**
+     * @return ReferenceManager
+     */
+    public function getReferenceManager()
+    {
+        return $this->referenceManager;
     }
 }

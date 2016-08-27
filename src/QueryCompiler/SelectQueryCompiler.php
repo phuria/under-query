@@ -4,6 +4,7 @@ namespace Phuria\QueryBuilder\QueryCompiler;
 
 use Phuria\QueryBuilder\QueryBuilder;
 use Phuria\QueryBuilder\QueryClauses;
+use Phuria\QueryBuilder\Table\AbstractTable;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -25,15 +26,25 @@ class SelectQueryCompiler implements QueryCompilerInterface
     {
         $clauses = $qb->getQueryClauses();
 
-        return implode(' ', array_filter([
-            $clauses->getSelectExpression()->compile(),
+        $rawSql = implode(' ', array_filter([
+            $clauses->getRawSelectClause(),
             $qb->getRootTables()->isEmpty() ? '' : 'FROM ' . $qb->getRootTables()->compile(),
             $qb->getJoinTables()->compile(),
-            $clauses->getWhereExpression()->compile(),
+            $clauses->getRawWhereClause(),
             $clauses->getGroupByExpression()->compile(),
             $clauses->getHavingExpression()->compile(),
             $clauses->getOrderByExpression()->compile(),
             $qb->getLimitExpression()->compile()
         ]));
+
+        $references = $qb->getReferenceManager()->all();
+
+        foreach ($references as &$value) {
+            if ($value instanceof AbstractTable) {
+                $value = $value->getAliasOrName();
+            }
+        }
+
+        return str_replace(array_keys($references), array_values($references), $rawSql);
     }
 }

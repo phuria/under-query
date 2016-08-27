@@ -3,9 +3,9 @@
 namespace Phuria\QueryBuilder\Table;
 
 use Phuria\QueryBuilder\ExprBuilder;
-use Phuria\QueryBuilder\Expression\ColumnExpression;
 use Phuria\QueryBuilder\Expression\ExpressionInterface;
 use Phuria\QueryBuilder\QueryBuilder;
+use Phuria\QueryBuilder\ReferenceManager;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -52,6 +52,14 @@ abstract class AbstractTable implements ExpressionInterface
     public function __construct(QueryBuilder $qb)
     {
         $this->qb = $qb;
+    }
+
+    /**
+     * @return ReferenceManager
+     */
+    public function __toString()
+    {
+        return $this->qb->getReferenceManager()->register($this);
     }
 
     /**
@@ -193,11 +201,11 @@ abstract class AbstractTable implements ExpressionInterface
     /**
      * @param string $name
      *
-     * @return ExprBuilder
+     * @return string
      */
     public function column($name)
     {
-        return new ExprBuilder(new ColumnExpression($this, $name));
+        return $this . '.' . $name;
     }
 
     /**
