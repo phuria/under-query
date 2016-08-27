@@ -44,6 +44,11 @@ class QueryBuilder
     private $referenceManager;
 
     /**
+     * @var ParameterManager $parameterManager
+     */
+    private $parameterManager;
+
+    /**
      * @param TableFactory    $tableFactory
      * @param CompilerManager $compilerManager
      */
@@ -53,6 +58,7 @@ class QueryBuilder
         $this->compilerManager = $compilerManager ?: new CompilerManager();
         $this->queryClauses = new QueryClauses();
         $this->referenceManager = new ReferenceManager();
+        $this->parameterManager = new ParameterManager();
     }
 
     /**
@@ -280,6 +286,23 @@ class QueryBuilder
         return array_filter($this->getTables(), function (AbstractTable $table) {
             return $table->isJoin();
         });
+    }
+
+    /**
+     * @param string $name
+     * @param mixed  $value
+     *
+     * @return string
+     */
+    public function param($name, $value = null)
+    {
+        $param = $this->parameterManager->createOrGetParameter($name);
+
+        if ($value) {
+            $param->setValue($value);
+        }
+
+        return $param;
     }
 
     /**

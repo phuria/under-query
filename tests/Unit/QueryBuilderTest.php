@@ -366,4 +366,18 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
 
         static::assertSame('SELECT * FROM example LIMIT 10, 20', $qb->buildSQL());
     }
+
+    /**
+     * @test
+     */
+    public function itWillHaveNamedParameter()
+    {
+        $qb = $this->createQb();
+
+        $exampleTable = $qb->from('example');
+        $qb->addSelect('*');
+        $qb->andWhere("{$exampleTable->column('id')} = {$qb->param('id')}");
+
+        static::assertSame('SELECT * FROM example WHERE example.id = :id', $qb->buildSQL());
+    }
 }

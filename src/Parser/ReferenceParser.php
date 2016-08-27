@@ -20,6 +20,16 @@ use Phuria\QueryBuilder\Table\AbstractTable;
 class ReferenceParser
 {
     /**
+     * @var string $rawSQL
+     */
+    private $rawSQL;
+
+    /**
+     * @var ReferenceManager $manager
+     */
+    private $manager;
+
+    /**
      * @param                  $rawSQL
      * @param ReferenceManager $manager
      */
