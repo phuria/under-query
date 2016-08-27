@@ -3,9 +3,9 @@
 namespace Phuria\QueryBuilder\QueryCompiler;
 
 use Phuria\QueryBuilder\Parser\QueryClausesParser;
+use Phuria\QueryBuilder\Parser\ReferenceParser;
 use Phuria\QueryBuilder\QueryBuilder;
 use Phuria\QueryBuilder\QueryClauses;
-use Phuria\QueryBuilder\Table\AbstractTable;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -32,14 +32,8 @@ class UpdateQueryCompiler implements QueryCompilerInterface
             $clausesParser->parseSetClause()
         ]));
 
-        $references = $qb->getReferenceManager()->all();
+        $referenceParser = new ReferenceParser($rawSQL, $qb->getReferenceManager());
 
-        foreach ($references as &$value) {
-            if ($value instanceof AbstractTable) {
-                $value = $value->getAliasOrName();
-            }
-        }
-
-        return str_replace(array_keys($references), array_values($references), $rawSQL);
+        return $referenceParser->parseSQL();
     }
 }

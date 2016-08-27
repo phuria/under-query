@@ -3,9 +3,9 @@
 namespace Phuria\QueryBuilder\QueryCompiler;
 
 use Phuria\QueryBuilder\Parser\QueryClausesParser;
+use Phuria\QueryBuilder\Parser\ReferenceParser;
 use Phuria\QueryBuilder\QueryBuilder;
 use Phuria\QueryBuilder\QueryClauses;
-use Phuria\QueryBuilder\Table\AbstractTable;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -27,7 +27,7 @@ class SelectQueryCompiler implements QueryCompilerInterface
     {
         $clausesParser = new QueryClausesParser($qb);
 
-        $rawSql = implode(' ', array_filter([
+        $rawSQL = implode(' ', array_filter([
             $clausesParser->parseSelectClause(),
             $clausesParser->parseFromClause(),
             $clausesParser->parseJoinClause(),
@@ -38,14 +38,8 @@ class SelectQueryCompiler implements QueryCompilerInterface
             $clausesParser->parseLimitClause()
         ]));
 
-        $references = $qb->getReferenceManager()->all();
+        $referenceParser = new ReferenceParser($rawSQL, $qb->getReferenceManager());
 
-        foreach ($references as &$value) {
-            if ($value instanceof AbstractTable) {
-                $value = $value->getAliasOrName();
-            }
-        }
-
-        return str_replace(array_keys($references), array_values($references), $rawSql);
+        return $referenceParser->parseSQL();
     }
 }
