@@ -92,31 +92,37 @@ class QueryBuilder
     }
 
     /**
+     * @param string $clause
+     *
      * @return $this
      */
-    public function addOrderBy()
+    public function addOrderBy($clause)
     {
-        $this->queryClauses->addOrderBy(...func_get_args());
+        $this->queryClauses->addOrderBy($clause);
 
         return $this;
     }
 
     /**
+     * @param string $clause
+     *
      * @return $this
      */
-    public function addSet()
+    public function addSet($clause)
     {
-        $this->queryClauses->addSet(...func_get_args());
+        $this->queryClauses->addSet($clause);
 
         return $this;
     }
 
     /**
+     * @param string $clause
+     *
      * @return $this
      */
-    public function addGroupBy()
+    public function addGroupBy($clause)
     {
-        $this->queryClauses->addGroupBy(...func_get_args());
+        $this->queryClauses->addGroupBy($clause);
 
         return $this;
     }

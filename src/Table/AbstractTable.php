@@ -207,14 +207,4 @@ abstract class AbstractTable
     {
         return $this . '.' . $name;
     }
-
-    /**
-     * @return $this
-     */
-    public function autoAlias()
-    {
-        $this->tableAlias = $this->qb->getAliasManager()->generateNextTableAlias();
-
-        return $this;
-    }
 }

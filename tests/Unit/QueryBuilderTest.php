@@ -273,7 +273,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $qb->addOrderBy("{$exampleTable->column('name')} ASC");
 
         $expectedSQL .= ', example.name ASC';
-        $qb->addOrderBy($expectedSQL, $qb->buildSQL());
+        static::assertSame($expectedSQL, $qb->buildSQL());
     }
 
     public function testUpdateSet()
@@ -365,19 +365,5 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $qb->limit('10, 20');
 
         static::assertSame('SELECT * FROM example LIMIT 10, 20', $qb->buildSQL());
-    }
-
-    /**
-     * @test
-     */
-    public function itWillHaveAutoAliasedTable()
-    {
-        $qb = $this->createQb();
-
-        $example = $qb->from('example');
-        $example->autoAlias();
-        $qb->addSelect($example->column('id'));
-
-        static::assertSame('SELECT _t0.id FROM example AS _t0', $qb->buildSQL());
     }
 }
