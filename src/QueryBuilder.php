@@ -11,7 +11,6 @@
 
 namespace Phuria\QueryBuilder;
 
-use Phuria\QueryBuilder\AliasManager\AliasManager;
 use Phuria\QueryBuilder\Table\AbstractTable;
 
 /**
@@ -53,16 +52,7 @@ class QueryBuilder
         $this->tableFactory = $tableFactory ?: new TableFactory();
         $this->compilerManager = $compilerManager ?: new CompilerManager();
         $this->queryClauses = new QueryClauses($this);
-        $this->aliasManager = new AliasManager();
         $this->referenceManager = new ReferenceManager();
-    }
-
-    /**
-     * @return AliasManager
-     */
-    public function getAliasManager()
-    {
-        return $this->aliasManager;
     }
 
     /**
