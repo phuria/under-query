@@ -12,10 +12,6 @@
 namespace Phuria\QueryBuilder;
 
 use Phuria\QueryBuilder\AliasManager\AliasManager;
-use Phuria\QueryBuilder\Expression\EmptyExpression;
-use Phuria\QueryBuilder\Expression\ExpressionCollection;
-use Phuria\QueryBuilder\Expression\ExpressionInterface;
-use Phuria\QueryBuilder\Expression\QueryClauseExpression;
 use Phuria\QueryBuilder\Table\AbstractTable;
 
 /**
@@ -44,11 +40,6 @@ class QueryBuilder
     private $tables = [];
 
     /**
-     * @var ExpressionInterface $limit
-     */
-    private $limit;
-
-    /**
      * @var ReferenceManager $referenceManager
      */
     private $referenceManager;
@@ -61,7 +52,7 @@ class QueryBuilder
     {
         $this->tableFactory = $tableFactory ?: new TableFactory();
         $this->compilerManager = $compilerManager ?: new CompilerManager();
-        $this->queryClauses = new QueryClauses();
+        $this->queryClauses = new QueryClauses($this);
         $this->aliasManager = new AliasManager();
         $this->referenceManager = new ReferenceManager();
     }
@@ -72,14 +63,6 @@ class QueryBuilder
     public function getAliasManager()
     {
         return $this->aliasManager;
-    }
-
-    /**
-     * @return ExprBuilder
-     */
-    public function expr()
-    {
-        return new ExprBuilder(func_get_args());
     }
 
     /**
@@ -107,11 +90,13 @@ class QueryBuilder
     }
 
     /**
+     * @param string $clause
+     *
      * @return $this
      */
-    public function andHaving()
+    public function andHaving($clause)
     {
-        $this->queryClauses->andHaving(...func_get_args());
+        $this->queryClauses->andHaving($clause);
 
         return $this;
     }
@@ -152,18 +137,6 @@ class QueryBuilder
     public function getQueryClauses()
     {
         return $this->queryClauses;
-    }
-
-    /**
-     * @param string $hint
-     *
-     * @return $this
-     */
-    public function addHint($hint)
-    {
-        $this->queryClauses->addHint(...func_get_args());
-
-        return $this;
     }
 
     /**
@@ -258,11 +231,13 @@ class QueryBuilder
     }
 
     /**
+     * @param string $clause
+     *
      * @return $this
      */
-    public function limit()
+    public function limit($clause)
     {
-        $this->limit = ExprNormalizer::normalizeExpression(func_get_args());
+        $this->queryClauses->setLimit($clause);
 
         return $this;
     }
@@ -292,44 +267,23 @@ class QueryBuilder
     }
 
     /**
-     * @return ExpressionCollection
+     * @return AbstractTable[]
      */
     public function getRootTables()
     {
-        return new ExpressionCollection(array_filter($this->getTables(), function (AbstractTable $table) {
+        return array_filter($this->getTables(), function (AbstractTable $table) {
             return $table->isRoot();
-        }), ', ');
+        });
     }
 
     /**
-     * @return ExpressionCollection
+     * @return AbstractTable[]
      */
     public function getJoinTables()
     {
-        return new ExpressionCollection(array_filter($this->getTables(), function (AbstractTable $table) {
+        return array_filter($this->getTables(), function (AbstractTable $table) {
             return $table->isJoin();
-        }), ' ');
-    }
-
-    /**
-     * @return ExpressionInterface
-     */
-    public function getLimitExpression()
-    {
-        $expr = $this->limit;
-
-        if (!$expr) {
-            return new EmptyExpression();
-        }
-
-        if ($expr instanceof ExpressionCollection) {
-            $expr = $expr->changeSeparator(', ');
-        }
-
-        return new QueryClauseExpression(
-            QueryClauseExpression::CLAUSE_LIMIT,
-            $expr
-        );
+        });
     }
 
     /**

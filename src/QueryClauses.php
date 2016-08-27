@@ -11,9 +11,7 @@
 
 namespace Phuria\QueryBuilder;
 
-use Phuria\QueryBuilder\Expression\ExpressionCollection;
-use Phuria\QueryBuilder\Expression\ExpressionInterface;
-use Phuria\QueryBuilder\Expression\QueryClauseExpression as QueryExpr;
+use Phuria\QueryBuilder\Table\AbstractTable;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -22,6 +20,11 @@ class QueryClauses
 {
     const QUERY_SELECT = 1;
     const QUERY_UPDATE = 2;
+
+    /**
+     * @var QueryBuilder $qb
+     */
+    private $qb;
 
     /**
      * @var array $selectClauses
@@ -54,9 +57,17 @@ class QueryClauses
     private $havingClauses = [];
 
     /**
-     * @var array $hints
+     * @var string $limitClause
      */
-    private $hints = [];
+    private $limitClause;
+
+    /**
+     * @param QueryBuilder $qb
+     */
+    public function __construct(QueryBuilder $qb)
+    {
+        $this->qb = $qb;
+    }
 
     /**
      * @return int
@@ -95,51 +106,61 @@ class QueryClauses
     }
 
     /**
+     * @param string $clause
+     *
      * @return $this
      */
-    public function andHaving()
+    public function andHaving($clause)
     {
-        $this->havingClauses[] = ExprNormalizer::normalizeExpression(func_get_args());
+        $this->havingClauses[] = $clause;
 
         return $this;
     }
 
     /**
+     * @param string $clause
+     *
      * @return $this
      */
-    public function addOrderBy()
+    public function addOrderBy($clause)
     {
-        $this->orderByClauses[] = ExprNormalizer::normalizeExpression(func_get_args());
+        $this->orderByClauses[] = $clause;
 
         return $this;
     }
 
     /**
+     * @param string $clause
+     *
      * @return $this
      */
-    public function addSet()
+    public function addSet($clause)
     {
-        $this->setClauses[] = ExprNormalizer::normalizeExpression(func_get_args());
+        $this->setClauses[] = $clause;
 
         return $this;
     }
 
     /**
+     * @param string $clause
+     *
      * @return $this
      */
-    public function addGroupBy()
+    public function addGroupBy($clause)
     {
-        $this->groupByClauses[] = ExprNormalizer::normalizeExpression(func_get_args());
+        $this->groupByClauses[] = $clause;
 
         return $this;
     }
 
     /**
+     * @param string $clause
+     *
      * @return $this
      */
-    public function addHint()
+    public function setLimit($clause)
     {
-        $this->hints[] = ExprNormalizer::normalizeExpression(func_get_args());
+        $this->limitClause = $clause;
 
         return $this;
     }
@@ -159,6 +180,76 @@ class QueryClauses
     /**
      * @return string
      */
+    public function getRawUpdateClause()
+    {
+        $rootTables = $this->qb->getRootTables();
+
+        if (0 === count($rootTables)) {
+            return '';
+        }
+
+        return 'UPDATE ' . implode(', ', array_map(function (AbstractTable $table) {
+            if ($table->getAlias()) {
+                return $table->getTableName() . ' AS ' . $table->getAlias();
+            }
+
+            return $table->getTableName();
+        }, $rootTables));
+    }
+
+    /**
+     * @return string
+     */
+    public function getRawFromClause()
+    {
+        $rootTables = $this->qb->getRootTables();
+
+        if (0 === count($rootTables)) {
+            return '';
+        }
+
+        return 'FROM ' . implode(', ', array_map(function (AbstractTable $table) {
+            if ($table->getAlias()) {
+                return $table->getTableName() . ' AS ' . $table->getAlias();
+            }
+
+            return $table->getTableName();
+        }, $rootTables));
+    }
+
+    /**
+     * @return string
+     */
+    public function getRawJoinClause()
+    {
+        $joinTables = $this->qb->getJoinTables();
+
+        if (0 === count($joinTables)) {
+            return '';
+        }
+
+        $joins = [];
+
+        foreach ($joinTables as $table) {
+            $clause = $table->getJoinType() . ' ' . $table->getTableName();
+
+            if ($table->getAlias()) {
+                $clause .= ' AS ' . $table->getAlias();
+            }
+
+            if ($table->getJoinOn()) {
+                $clause .= ' ON ' . $table->getJoinOn();
+            }
+
+            $joins[] = $clause;
+        }
+
+        return implode(' ', $joins);
+    }
+
+    /**
+     * @return string
+     */
     public function getRawWhereClause()
     {
         if ($this->whereClauses) {
@@ -169,46 +260,62 @@ class QueryClauses
     }
 
     /**
-     * @return ExpressionInterface
+     * @return string
      */
-    public function getOrderByExpression()
+    public function getRawOrderByClause()
     {
-        return new QueryExpr(
-            QueryExpr::CLAUSE_ORDER_BY,
-            new ExpressionCollection($this->orderByClauses, ', ')
-        );
+        if ($this->orderByClauses) {
+            return 'ORDER BY ' . implode(', ', $this->orderByClauses);
+        }
+
+        return '';
     }
 
     /**
-     * @return ExpressionInterface
+     * @return string
      */
-    public function getSetExpression()
+    public function getRawSetClause()
     {
-        return new QueryExpr(
-            QueryExpr::CLAUSE_SET,
-            new ExpressionCollection($this->setClauses, ', ')
-        );
+        if ($this->setClauses) {
+            return 'SET ' . implode(', ', $this->setClauses);
+        }
+
+        return '';
     }
 
     /**
-     * @return ExpressionInterface
+     * @return string
      */
-    public function getGroupByExpression()
+    public function getRawGroupByClause()
     {
-        return new QueryExpr(
-            QueryExpr::CLAUSE_GROUP_BY,
-            new ExpressionCollection($this->groupByClauses, ', ')
-        );
+        if ($this->groupByClauses) {
+            return 'GROUP BY ' . implode(', ', $this->groupByClauses);
+        }
+
+        return '';
     }
 
     /**
-     * @return ExpressionInterface
+     * @return string
      */
-    public function getHavingExpression()
+    public function getRawHavingClause()
     {
-        return new QueryExpr(
-            QueryExpr::CLAUSE_HAVING,
-            new ExpressionCollection($this->havingClauses, ' AND ')
-        );
+        if ($this->havingClauses) {
+            return 'HAVING ' . implode(' AND ', $this->havingClauses);
+        }
+
+        return '';
+    }
+
+    /**
+     * @return string
+     */
+    public function getRawLimitClause()
+    {
+        if ($this->limitClause) {
+            return 'LIMIT ' . $this->limitClause;
+        }
+
+        return '';
     }
 }

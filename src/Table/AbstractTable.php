@@ -2,15 +2,13 @@
 
 namespace Phuria\QueryBuilder\Table;
 
-use Phuria\QueryBuilder\ExprBuilder;
-use Phuria\QueryBuilder\Expression\ExpressionInterface;
 use Phuria\QueryBuilder\QueryBuilder;
 use Phuria\QueryBuilder\ReferenceManager;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-abstract class AbstractTable implements ExpressionInterface
+abstract class AbstractTable
 {
     const CROSS_JOIN = 'CROSS JOIN';
     const LEFT_JOIN = 'LEFT JOIN';
@@ -32,9 +30,9 @@ abstract class AbstractTable implements ExpressionInterface
     private $joinType;
 
     /**
-     * @var ExpressionInterface $joinOn
+     * @var string $joinOn
      */
-    private $joinOn = [];
+    private $joinOn;
 
     /**
      * @var bool $root
@@ -85,7 +83,7 @@ abstract class AbstractTable implements ExpressionInterface
         }
 
         if ($joinOn = $this->getJoinOn()) {
-            $declaration .= ' ON ' . $joinOn->compile();
+            $declaration .= ' ON ' . $joinOn;
         }
 
         return $declaration;
@@ -181,17 +179,19 @@ abstract class AbstractTable implements ExpressionInterface
     }
 
     /**
+     * @param string $clause
+     *
      * @return $this
      */
-    public function joinOn()
+    public function joinOn($clause)
     {
-        $this->joinOn = new ExprBuilder(func_get_args());
+        $this->joinOn = $clause;
 
         return $this;
     }
 
     /**
-     * @return ExpressionInterface
+     * @return string
      */
     public function getJoinOn()
     {

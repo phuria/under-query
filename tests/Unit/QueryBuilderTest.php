@@ -212,7 +212,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $exampleTable = $qb->from('example');
         $qb->addSelect('*');
         $testTable = $qb->leftJoin('test');
-        $testTable->joinOn($testTable->column('id'), ' = ', $exampleTable->column('test_id'));
+        $testTable->joinOn("{$testTable->column('id')} = {$exampleTable->column('test_id')}");
 
         static::assertSame('SELECT * FROM example LEFT JOIN test ON test.id = example.test_id', $qb->buildSQL());
     }
@@ -226,11 +226,11 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $qb->addSelect('*');
 
         $contactTable = $qb->leftJoin('contact');
-        $contactTable->joinOn($userTable->column('id'), ' = ', $contactTable->column('user_id'));
+        $contactTable->joinOn("{$userTable->column('id')} = {$contactTable->column('user_id')}");
         $contactTable->setAlias('c');
 
         $profileTable = $qb->innerJoin('profile');
-        $profileTable->joinOn($userTable->column('id'), ' = ', $profileTable->column('user_id'));
+        $profileTable->joinOn("{$userTable->column('id')} = {$profileTable->column('user_id')}");
         $profileTable->setAlias('p');
 
         $expectedSQL = 'SELECT * FROM users AS u'
@@ -256,18 +256,21 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         static::assertSame($expectedSQL, $qb->buildSQL());
     }
 
-    public function testOrderBy()
+    /**
+     * @test
+     */
+    public function itWillHaveOrderByClause()
     {
         $qb = $this->createQb();
 
         $exampleTable = $qb->from('example');
         $qb->addSelect('*');
-        $qb->addOrderBy($exampleTable->column('id'), ' DESC');
+        $qb->addOrderBy("{$exampleTable->column('id')} DESC");
 
         $expectedSQL = 'SELECT * FROM example ORDER BY example.id DESC';
         static::assertSame($expectedSQL, $qb->buildSQL());
 
-        $qb->addOrderBy($exampleTable->column('name'), ' ASC');
+        $qb->addOrderBy("{$exampleTable->column('name')} ASC");
 
         $expectedSQL .= ', example.name ASC';
         $qb->addOrderBy($expectedSQL, $qb->buildSQL());
@@ -283,7 +286,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $expectedSQL = 'UPDATE example SET example.name = NULL';
         static::assertSame($expectedSQL, $qb->buildSQL());
 
-        $qb->addSet($exampleTable->column('value'), ' = 10');
+        $qb->addSet("{$exampleTable->column('value')} = 10");
 
         $expectedSQL .= ', example.value = 10';
         static::assertSame($expectedSQL, $qb->buildSQL());
@@ -359,7 +362,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
 
         static::assertSame('SELECT * FROM example LIMIT 10', $qb->buildSQL());
 
-        $qb->limit(10, 20);
+        $qb->limit('10, 20');
 
         static::assertSame('SELECT * FROM example LIMIT 10, 20', $qb->buildSQL());
     }

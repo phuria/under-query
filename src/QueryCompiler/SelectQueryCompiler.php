@@ -28,13 +28,13 @@ class SelectQueryCompiler implements QueryCompilerInterface
 
         $rawSql = implode(' ', array_filter([
             $clauses->getRawSelectClause(),
-            $qb->getRootTables()->isEmpty() ? '' : 'FROM ' . $qb->getRootTables()->compile(),
-            $qb->getJoinTables()->compile(),
+            $clauses->getRawFromClause(),
+            $clauses->getRawJoinClause(),
             $clauses->getRawWhereClause(),
-            $clauses->getGroupByExpression()->compile(),
-            $clauses->getHavingExpression()->compile(),
-            $clauses->getOrderByExpression()->compile(),
-            $qb->getLimitExpression()->compile()
+            $clauses->getRawGroupByClause(),
+            $clauses->getRawHavingClause(),
+            $clauses->getRawOrderByClause(),
+            $clauses->getRawLimitClause()
         ]));
 
         $references = $qb->getReferenceManager()->all();

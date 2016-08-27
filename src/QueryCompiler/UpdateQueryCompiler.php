@@ -25,9 +25,8 @@ class UpdateQueryCompiler implements QueryCompilerInterface
     public function compile(QueryBuilder $qb)
     {
         $rawSQL = implode(' ', array_filter([
-            'UPDATE',
-            $qb->getRootTables()->compile(),
-            $qb->getQueryClauses()->getSetExpression()->compile()
+            $qb->getQueryClauses()->getRawUpdateClause(),
+            $qb->getQueryClauses()->getRawSetClause()
         ]));
 
         $references = $qb->getReferenceManager()->all();
