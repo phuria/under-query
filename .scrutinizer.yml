@@ -18,7 +18,6 @@ coding_style:
 build:
   dependencies:
     before:
-      - 'sudo service mysql start'
       - 'sudo mysql < tests/mysql_db.sql'
   tests:
     override:
