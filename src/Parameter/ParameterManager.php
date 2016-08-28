@@ -9,12 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Phuria\QueryBuilder;
+namespace Phuria\QueryBuilder\Parameter;
+
+use Phuria\QueryBuilder\Statement\StatementInterface;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-class ParameterManager
+class ParameterManager implements ParameterManagerInterface
 {
     /**
      * @var QueryParameter[] $params
@@ -33,5 +35,15 @@ class ParameterManager
         }
 
         return $this->params[$name];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function bindStatement(StatementInterface $stmt)
+    {
+        foreach ($this->params as $param) {
+            $stmt->bindValue($param->getName(), $param->getValue());
+        }
     }
 }

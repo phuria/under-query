@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Phuria\QueryBuilder;
+namespace Phuria\QueryBuilder\Parameter;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -54,5 +54,21 @@ class QueryParameter
         $this->value = $value;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getValue()
+    {
+        return $this->value;
     }
 }

@@ -16,9 +16,19 @@ coding_style:
         concatenation: true
 
 build:
+  environment:
+    mysql: 5.7
+    postgresql: true
+    mongodb: false
+    elasticsearch: false
+    redis: false
+    memcached: false
+    neo4j: false
+    rabbitmq: false
   dependencies:
     before:
-      - 'sudo mysql < tests/mysql_db.sql'
+      - 'sudo mysql -e "CREATE DATABASE IF NOT EXISTS phuria_sql_builder_test"'
+      - 'sudo mysql phuria_sql_builder_test < tests/_resources/schema.sql'
   tests:
     override:
       -

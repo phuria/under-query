@@ -1,0 +1,36 @@
+<?php
+
+/**
+ * This file is part of Phuria SQL Builder package.
+ *
+ * Copyright (c) 2016 Beniamin Jonatan Šimko
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Phuria\QueryBuilder\Test\Integration;
+
+use Phuria\QueryBuilder\QueryBuilder;
+use Phuria\QueryBuilder\Test\TestCase\DatabaseTestCase;
+
+/**
+ * @author Beniamin Jonatan Šimko <spam@simko.it>
+ */
+class ParametersTest extends DatabaseTestCase
+{
+    /**
+     * @test
+     */
+    public function itWillParseParameter()
+    {
+        $connection = $this->createQueryConnection();
+
+        $qb = new QueryBuilder();
+        $userTable = $qb->from('user');
+        $qb->addSelect($userTable->column('username'));
+        $qb->andWhere("{$userTable->column('id')} = {$qb->param('id', 1)}");
+
+        static::assertSame('phuria', $qb->buildQuery($connection)->fetchScalar());
+    }
+}

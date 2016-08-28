@@ -11,6 +11,8 @@
 
 namespace Phuria\QueryBuilder;
 
+use Phuria\QueryBuilder\Connection\ConnectionInterface;
+use Phuria\QueryBuilder\Parameter\ParameterManager;
 use Phuria\QueryBuilder\Table\AbstractTable;
 
 /**
@@ -253,11 +255,17 @@ class QueryBuilder
     }
 
     /**
+     * @param ConnectionInterface $connection
+     *
      * @return Query
      */
-    public function buildQuery()
+    public function buildQuery(ConnectionInterface $connection = null)
     {
-        return new Query($this->buildSQL());
+        return new Query(
+            $this->buildSQL(),
+            $this->parameterManager,
+            $connection
+        );
     }
 
     /**

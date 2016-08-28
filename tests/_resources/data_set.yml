@@ -1,0 +1,9 @@
+user:
+  -
+    id: 1
+    username: "phuria"
+    email: "beniamin@simko.it"
+  -
+    id: 2
+    username: "romero"
+    email: "irwinvromero@rhyta.com"
