@@ -11,6 +11,13 @@
     syntaxCheck                 = "false"
     bootstrap                   = "vendor/autoload.php" >
 
+    <php>
+        <var name="DB_DSN" value="mysql:dbname=phuria_sql_builder_test;host=localhost"/>
+        <var name="DB_USER" value="root"/>
+        <var name="DB_PASSWORD" value=""/>
+        <var name="DB_DBNAME" value="phuria_sql_builder_test"/>
+    </php>
+
     <testsuites>
         <testsuite name="PHPUnit">
             <directory suffix="Test.php">tests</directory>
