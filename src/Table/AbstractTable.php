@@ -66,6 +66,14 @@ abstract class AbstractTable
     abstract public function getTableName();
 
     /**
+     * @return QueryBuilder
+     */
+    public function getQueryBuilder()
+    {
+        return $this->qb;
+    }
+
+    /**
      * @return string
      */
     public function getAlias()

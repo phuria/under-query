@@ -16,6 +16,10 @@ coding_style:
         concatenation: true
 
 build:
+  dependencies:
+    before:
+      - 'sudo service mysql start'
+      - 'sudo mysql < tests/mysql_db.sql'
   tests:
     override:
       -

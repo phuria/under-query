@@ -240,7 +240,10 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         static::assertSame($expectedSQL, $qb->buildSQL());
     }
 
-    public function testSubQuery()
+    /**
+     * @test
+     */
+    public function itWillHaveSubQuery()
     {
         $maxQb = $this->createQb();
 
@@ -253,6 +256,11 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $qb->addSelect($subQuery->column('max_value'));
 
         $expectedSQL = 'SELECT SRC.max_value FROM (SELECT MAX(example.value) AS max_value FROM example) AS SRC';
+        static::assertSame($expectedSQL, $qb->buildSQL());
+
+        $maxQb->addGroupBy($exampleTable->column('user_id'));
+
+        $expectedSQL = 'SELECT SRC.max_value FROM (SELECT MAX(example.value) AS max_value FROM example GROUP BY example.user_id) AS SRC';
         static::assertSame($expectedSQL, $qb->buildSQL());
     }
 

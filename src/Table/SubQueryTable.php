@@ -29,6 +29,8 @@ class SubQueryTable extends AbstractTable
      */
     public function getTableName()
     {
-        return '(' . $this->subQb->buildSQL() . ')';
+        $ref = $this->getQueryBuilder()->getReferenceManager()->register($this->subQb);
+
+        return '(' . $ref . ')';
     }
 }
