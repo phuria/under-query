@@ -273,7 +273,7 @@ class QueryBuilder
      */
     public function getRootTables()
     {
-        return array_filter($this->getTables(), function (AbstractTable $table) {
+        return array_filter($this->getTables(), function(AbstractTable $table) {
             return $table->isRoot();
         });
     }
@@ -283,7 +283,7 @@ class QueryBuilder
      */
     public function getJoinTables()
     {
-        return array_filter($this->getTables(), function (AbstractTable $table) {
+        return array_filter($this->getTables(), function(AbstractTable $table) {
             return $table->isJoin();
         });
     }
