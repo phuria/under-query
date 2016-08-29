@@ -62,7 +62,7 @@ class PDOStatement implements StatementInterface
      */
     public function fetchScalar()
     {
-        if(0 === $this->rowCount()) {
+        if (0 === $this->rowCount()) {
             return null;
         }
 
