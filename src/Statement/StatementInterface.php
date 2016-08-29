@@ -33,4 +33,9 @@ interface StatementInterface
      * @return $this
      */
     public function execute();
+
+    /**
+     * @return int
+     */
+    public function rowCount();
 }

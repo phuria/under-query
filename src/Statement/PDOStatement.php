@@ -42,6 +42,14 @@ class PDOStatement implements StatementInterface
     /**
      * @inheritdoc
      */
+    public function rowCount()
+    {
+        return $this->wrappedStatement->rowCount();
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function execute()
     {
         $this->wrappedStatement->execute();
@@ -54,6 +62,10 @@ class PDOStatement implements StatementInterface
      */
     public function fetchScalar()
     {
+        if(0 === $this->rowCount()) {
+            return null;
+        }
+
         return $this->wrappedStatement->fetch(\PDO::FETCH_COLUMN);
     }
 }

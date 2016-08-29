@@ -52,4 +52,21 @@ class ParametersTest extends DatabaseTestCase
 
         static::assertSame('romero', $query->fetchScalar());
     }
+
+    /**
+     * @test
+     */
+    public function itWillSelectNotExistingUser()
+    {
+        $connection = $this->createQueryConnection();
+        $qb = new QueryBuilder();
+        $userTable = $qb->from('user');
+        $qb->addSelect($userTable->column('username'));
+        $qb->andWhere("{$userTable->column('id')} = :id");
+
+        $query = $qb->buildQuery($connection);
+        $query->setParameter('id', 65646565);
+
+        static::assertNull($query->fetchScalar());
+    }
 }
