@@ -24,14 +24,12 @@ class ParameterManager implements ParameterManagerInterface
     private $params = [];
 
     /**
-     * @param string $name
-     *
-     * @return QueryParameter
+     * @inheritdoc
      */
     public function createOrGetParameter($name)
     {
         if (false === array_key_exists($name, $this->params)) {
-            $this->params[$name] = new QueryParameter($name, null);
+            $this->params[$name] = new QueryParameter($name);
         }
 
         return $this->params[$name];

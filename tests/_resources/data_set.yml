@@ -7,3 +7,7 @@ user:
     id: 2
     username: "romero"
     email: "irwinvromero@rhyta.com"
+  -
+    id: 3
+    username: "alice"
+    email: "alice@rytha.com"

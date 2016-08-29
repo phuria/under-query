@@ -28,20 +28,10 @@ class QueryParameter
 
     /**
      * @param string $name
-     * @param mixed  $value
      */
-    public function __construct($name, $value)
+    public function __construct($name)
     {
         $this->name = $name;
-        $this->value = $value;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return sprintf(':%s', $this->name);
     }
 
     /**

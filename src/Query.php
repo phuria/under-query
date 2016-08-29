@@ -4,6 +4,7 @@ namespace Phuria\QueryBuilder;
 
 use Phuria\QueryBuilder\Connection\ConnectionInterface;
 use Phuria\QueryBuilder\Parameter\ParameterManagerInterface;
+use Phuria\QueryBuilder\Statement\StatementInterface;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -49,14 +50,37 @@ class Query
     }
 
     /**
+     * @return StatementInterface
+     */
+    public function buildStatement()
+    {
+        $stmt = $this->connection->prepare($this->sql);
+        $this->parameterManager->bindStatement($stmt);
+
+        return $stmt;
+    }
+
+    /**
      * @return mixed
      */
     public function fetchScalar()
     {
-        $stmt = $this->connection->prepare($this->sql);
-        $this->parameterManager->bindStatement($stmt);
+        $stmt = $this->buildStatement();
         $stmt->execute();
 
         return $stmt->fetchScalar();
+    }
+
+    /**
+     * @param int|string $name
+     * @param mixed      $value
+     *
+     * @return $this
+     */
+    public function setParameter($name, $value)
+    {
+        $this->parameterManager->createOrGetParameter($name)->setValue($value);
+
+        return $this;
     }
 }

@@ -22,15 +22,34 @@ class ParametersTest extends DatabaseTestCase
     /**
      * @test
      */
-    public function itWillParseParameter()
+    public function itWillSetParameterInQueryBuilder()
     {
         $connection = $this->createQueryConnection();
 
         $qb = new QueryBuilder();
         $userTable = $qb->from('user');
         $qb->addSelect($userTable->column('username'));
-        $qb->andWhere("{$userTable->column('id')} = {$qb->param('id', 1)}");
+        $qb->andWhere("{$userTable->column('id')} = :id");
+        $qb->setParameter('id', 1);
 
         static::assertSame('phuria', $qb->buildQuery($connection)->fetchScalar());
+    }
+
+    /**
+     * @test
+     */
+    public function itWillSetParameterInQuery()
+    {
+        $connection = $this->createQueryConnection();
+
+        $qb = new QueryBuilder();
+        $userTable = $qb->from('user');
+        $qb->addSelect($userTable->column('username'));
+        $qb->andWhere("{$userTable->column('id')} = :id");
+
+        $query = $qb->buildQuery($connection);
+        $query->setParameter('id', 2);
+
+        static::assertSame('romero', $query->fetchScalar());
     }
 }

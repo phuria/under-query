@@ -24,4 +24,11 @@ interface ParameterManagerInterface
      * @return ParameterManagerInterface
      */
     public function bindStatement(StatementInterface $stmt);
+
+    /**
+     * @param string $name
+     *
+     * @return QueryParameter
+     */
+    public function createOrGetParameter($name);
 }

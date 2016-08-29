@@ -13,6 +13,7 @@ namespace Phuria\QueryBuilder;
 
 use Phuria\QueryBuilder\Connection\ConnectionInterface;
 use Phuria\QueryBuilder\Parameter\ParameterManager;
+use Phuria\QueryBuilder\Parameter\ParameterManagerInterface;
 use Phuria\QueryBuilder\Table\AbstractTable;
 
 /**
@@ -46,7 +47,7 @@ class QueryBuilder
     private $referenceManager;
 
     /**
-     * @var ParameterManager $parameterManager
+     * @var ParameterManagerInterface $parameterManager
      */
     private $parameterManager;
 
@@ -297,20 +298,16 @@ class QueryBuilder
     }
 
     /**
-     * @param string $name
-     * @param mixed  $value
+     * @param int|string $name
+     * @param mixed      $value
      *
-     * @return string
+     * @return $this
      */
-    public function param($name, $value = null)
+    public function setParameter($name, $value)
     {
-        $param = $this->parameterManager->createOrGetParameter($name);
+        $this->parameterManager->createOrGetParameter($name)->setValue($value);
 
-        if ($value) {
-            $param->setValue($value);
-        }
-
-        return $param;
+        return $this;
     }
 
     /**
