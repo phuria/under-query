@@ -117,19 +117,3 @@ $sql = $qb->getSQL();
 ```sql
 SELECT SUM(IFNULL(price_list.price, 0)) AS price FROM price_list
 ```
-
-### String functions
-
-```php
-$qb = new QueryBuilder();
-
-$qb->addSelect(
-    $qb->expr(10, 30, 40, $qb->expr('utf8')->using())->char()
-);
-
-$sql = $qb->buildSQL();
-```
-
-```sql
-SELECT CHAR(10, 30, 40 USING utf8)
-```
