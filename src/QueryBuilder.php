@@ -252,6 +252,19 @@ class QueryBuilder
     }
 
     /**
+     * @param int   $hint
+     * @param mixed $value
+     *
+     * @return $this
+     */
+    public function addQueryHint($hint, $value = null)
+    {
+        $this->queryClauses->addQueryHint($hint, $value);
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function buildSQL()

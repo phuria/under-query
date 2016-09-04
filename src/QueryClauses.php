@@ -55,6 +55,11 @@ class QueryClauses
     private $limitClause;
 
     /**
+     * @var array $queryHints
+     */
+    private $queryHints = [];
+
+    /**
      * @return int
      */
     public function guessQueryType()
@@ -151,6 +156,19 @@ class QueryClauses
     }
 
     /**
+     * @param int    $hint
+     * @param mixed $value
+     *
+     * @return $this
+     */
+    public function addQueryHint($hint, $value = null)
+    {
+        $this->queryHints[$hint] = $value;
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getSelectClauses()
@@ -204,5 +222,13 @@ class QueryClauses
     public function getLimitClause()
     {
         return $this->limitClause;
+    }
+
+    /**
+     * @return array
+     */
+    public function getQueryHints()
+    {
+        return $this->queryHints;
     }
 }

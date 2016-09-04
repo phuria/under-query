@@ -13,6 +13,7 @@ namespace Phuria\QueryBuilder\Parser;
 
 use Phuria\QueryBuilder\QueryBuilder;
 use Phuria\QueryBuilder\QueryClauses;
+use Phuria\QueryBuilder\QueryHint;
 use Phuria\QueryBuilder\Table\AbstractTable;
 
 /**
@@ -62,9 +63,11 @@ class QueryClausesParser
             return '';
         }
 
-        return 'UPDATE ' . implode(', ', array_map(function (AbstractTable $table) {
+        $rootTableDeclaration = implode(', ', array_map(function (AbstractTable $table) {
             return $this->parseTableDeclaration($table);
         }, $rootTables));
+
+        return implode(' ', array_filter(['UPDATE', $this->parseQueryHints(), $rootTableDeclaration]));
     }
 
     /**
@@ -199,5 +202,20 @@ class QueryClausesParser
         }
 
         return $declaration;
+    }
+
+    /**
+     * @return string
+     */
+    private function parseQueryHints()
+    {
+        $hints = $this->queryClauses->getQueryHints();
+        $parsedHint = '';
+
+        if (array_key_exists(QueryHint::IGNORE, $hints)) {
+            $parsedHint .= 'IGNORE';
+        }
+
+        return $parsedHint;
     }
 }

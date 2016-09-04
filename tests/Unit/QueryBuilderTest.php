@@ -12,6 +12,7 @@
 namespace Phuria\QueryBuilder\Test\Unit;
 
 use Phuria\QueryBuilder\QueryBuilder;
+use Phuria\QueryBuilder\QueryHint;
 use Phuria\QueryBuilder\Table\UnknownTable;
 use Phuria\QueryBuilder\TableFactory;
 use Phuria\QueryBuilder\TableRegistry;
@@ -373,5 +374,19 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $qb->limit('10, 20');
 
         static::assertSame('SELECT * FROM example LIMIT 10, 20', $qb->buildSQL());
+    }
+
+    /**
+     * @test
+     */
+    public function itWillUseIgnoreHint()
+    {
+        $qb = $this->createQb();
+
+        $qb->update('example');
+        $qb->addSet('name = "test"');
+        $qb->addQueryHint(QueryHint::IGNORE);
+
+        static::assertSame('UPDATE IGNORE example SET name = "test"', $qb->buildSQL());
     }
 }
