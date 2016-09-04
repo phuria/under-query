@@ -5,7 +5,7 @@ namespace Phuria\QueryBuilder\QueryCompiler;
 use Phuria\QueryBuilder\Parser\QueryClausesParser;
 use Phuria\QueryBuilder\Parser\ReferenceParser;
 use Phuria\QueryBuilder\QueryBuilder;
-use Phuria\QueryBuilder\QueryClauses;
+use Phuria\QueryBuilder\Table\AbstractTable;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -17,7 +17,13 @@ class UpdateQueryCompiler implements QueryCompilerInterface
      */
     public function canHandleQuery(QueryBuilder $qb)
     {
-        return QueryClauses::QUERY_UPDATE === $qb->getQueryClauses()->guessQueryType();
+        foreach ($qb->getRootTables() as $rootTable) {
+            if (AbstractTable::ROOT_UPDATE === $rootTable->getRootType()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

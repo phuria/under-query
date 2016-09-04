@@ -149,14 +149,15 @@ class QueryBuilder
     }
 
     /**
-     * @param $table
+     * @param mixed $table
+     * @param int   $rootType
      *
      * @return AbstractTable
      */
-    private function addRootTable($table)
+    private function addRootTable($table, $rootType)
     {
         $table = $this->tableFactory->createNewTable($table, $this);
-        $table->setRoot(true);
+        $table->setRootType($rootType);
 
         $this->tables[] = $table;
 
@@ -180,7 +181,7 @@ class QueryBuilder
      */
     public function addFrom($table)
     {
-        return $this->addRootTable($table);
+        return $this->addRootTable($table, AbstractTable::ROOT_FROM);
     }
 
     /**
@@ -190,7 +191,7 @@ class QueryBuilder
      */
     public function update($table)
     {
-        return $this->addRootTable($table);
+        return $this->addRootTable($table, AbstractTable::ROOT_UPDATE);
     }
 
     /**

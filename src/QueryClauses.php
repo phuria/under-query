@@ -60,18 +60,6 @@ class QueryClauses
     private $queryHints = [];
 
     /**
-     * @return int
-     */
-    public function guessQueryType()
-    {
-        if ($this->selectClauses) {
-            return static::QUERY_SELECT;
-        }
-
-        return static::QUERY_UPDATE;
-    }
-
-    /**
      * @param string $clause
      *
      * @return $this
