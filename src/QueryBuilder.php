@@ -14,6 +14,8 @@ namespace Phuria\QueryBuilder;
 use Phuria\QueryBuilder\Connection\ConnectionInterface;
 use Phuria\QueryBuilder\Parameter\ParameterManager;
 use Phuria\QueryBuilder\Parameter\ParameterManagerInterface;
+use Phuria\QueryBuilder\QueryCompiler\QueryCompiler;
+use Phuria\QueryBuilder\QueryCompiler\QueryCompilerInterface;
 use Phuria\QueryBuilder\Table\AbstractTable;
 
 /**
@@ -27,9 +29,9 @@ class QueryBuilder
     private $tableFactory;
 
     /**
-     * @var CompilerManager $compilerManager
+     * @var QueryCompilerInterface $queryCompiler
      */
-    private $compilerManager;
+    private $queryCompiler;
 
     /**
      * @var QueryClauses
@@ -52,13 +54,15 @@ class QueryBuilder
     private $parameterManager;
 
     /**
-     * @param TableFactory    $tableFactory
-     * @param CompilerManager $compilerManager
+     * @param TableFactory           $tableFactory
+     * @param QueryCompilerInterface $queryCompiler
      */
-    public function __construct(TableFactory $tableFactory = null, CompilerManager $compilerManager = null)
-    {
+    public function __construct(
+        TableFactory $tableFactory = null,
+        QueryCompilerInterface $queryCompiler = null
+    ) {
         $this->tableFactory = $tableFactory ?: new TableFactory();
-        $this->compilerManager = $compilerManager ?: new CompilerManager();
+        $this->queryCompiler = $queryCompiler ?: new QueryCompiler();
         $this->queryClauses = new QueryClauses();
         $this->referenceManager = new ReferenceManager();
         $this->parameterManager = new ParameterManager();
@@ -252,7 +256,7 @@ class QueryBuilder
      */
     public function buildSQL()
     {
-        return $this->compilerManager->compile($this);
+        return $this->queryCompiler->compile($this);
     }
 
     /**

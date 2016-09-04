@@ -9,16 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Phuria\QueryBuilder;
+namespace Phuria\QueryBuilder\QueryCompiler;
 
-use Phuria\QueryBuilder\QueryCompiler\QueryCompilerInterface;
-use Phuria\QueryBuilder\QueryCompiler\SelectQueryCompiler;
-use Phuria\QueryBuilder\QueryCompiler\UpdateQueryCompiler;
+use Phuria\QueryBuilder\QueryBuilder;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-class CompilerManager
+class QueryCompiler implements QueryCompilerInterface
 {
     /**
      * @var \SplPriorityQueue|QueryCompilerInterface[] $compilers
@@ -47,9 +45,15 @@ class CompilerManager
     }
 
     /**
-     * @param QueryBuilder $qb
-     *
-     * @return string
+     * @inheritdoc
+     */
+    public function canHandleQuery(QueryBuilder $qb)
+    {
+        return true;
+    }
+
+    /**
+     * @inheritdoc
      */
     public function compile(QueryBuilder $qb)
     {
