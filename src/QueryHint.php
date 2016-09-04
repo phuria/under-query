@@ -14,7 +14,7 @@ namespace Phuria\QueryBuilder;
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-abstract class QueryHint
+class QueryHint
 {
     const IGNORE = 1;
 }

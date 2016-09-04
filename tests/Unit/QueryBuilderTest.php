@@ -87,7 +87,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function itWillSelectWithWhere()
+    public function itWillInsertWithWhereClause()
     {
         $qb = $this->createQb();
 
@@ -100,6 +100,20 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
             'SELECT example.id, example.name FROM example WHERE example.id BETWEEN 1 AND 10',
             $qb->buildQuery()->getSQL()
         );
+    }
+
+    /**
+     * @test
+     */
+    public function itWillUpdateWithWhereClause()
+    {
+        $qb = $this->createQb();
+
+        $rootTable = $qb->update('example');
+        $qb->addSet("{$rootTable->column('name')} = NULL");
+        $qb->andWhere("{$rootTable->column('id')} = 1");
+
+        static::assertSame('UPDATE example SET example.name = NULL WHERE example.id = 1', $qb->buildSQL());
     }
 
     /**
