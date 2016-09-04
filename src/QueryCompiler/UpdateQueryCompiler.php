@@ -30,7 +30,9 @@ class UpdateQueryCompiler implements QueryCompilerInterface
         $rawSQL = implode(' ', array_filter([
             $clausesParser->parseUpdateClause(),
             $clausesParser->parseSetClause(),
-            $clausesParser->parseWhereClause()
+            $clausesParser->parseWhereClause(),
+            $clausesParser->parseOrderByClause(),
+            $clausesParser->parseLimitClause()
         ]));
 
         $referenceParser = new ReferenceParser($rawSQL, $qb->getReferenceManager());

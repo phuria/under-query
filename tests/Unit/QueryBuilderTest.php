@@ -119,6 +119,21 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function itWillUpdateWithOrderByAndLimit()
+    {
+        $qb = $this->createQb();
+
+        $rootTable = $qb->update('example');
+        $qb->addSet("{$rootTable->column('salary')} = 100");
+        $qb->addOrderBy("{$rootTable->column('name')} DESC");
+        $qb->limit('1');
+
+        static::assertSame('UPDATE example SET example.salary = 100 ORDER BY example.name DESC LIMIT 1', $qb->buildSQL());
+    }
+
+    /**
+     * @test
+     */
     public function itWillSelectColumnReferences()
     {
         $qb = $this->createQb();
