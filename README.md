@@ -6,29 +6,26 @@
 [![license](https://img.shields.io/github/license/phuria/sql-builder.svg?maxAge=2592000?style=flat-square)]()
 [![php](https://img.shields.io/badge/PHP-5.6-blue.svg)]()
 
-### Requirements
+A easy to use, lightweight query builder.
 
-PHP: `>=5.6.0`
+```sh
+php composer.phar require phuria/sql-builder
+```
 
-### Examples
 
-__Simple Query__
+## Quick start
+
+If you want, you can only use native SQL.
+
 
 ```php
 $qb = new QueryBuilder();
 
-$userTable = $qb->from('user');
-$qb->addSelect($userTable->column('name'));
-$userTable->setAlias('u');
+$qb->addSelect('u.name, c.phone_number');
+$qb->from('user')->alias('u');
+$qb->leftJoin('contact')->on('u.id = c.user_id');
 
-$contactTable = $qb->leftJoin('contact');
-$qb->addSelect($contactTable->column('phone_number');
-$contactTable->setAlias('c');
-$contactTable->joinOn(
-    $userTable->column('id')->eq($contactTable->column('user_id'))
-);
-
-$sql = $qb->buildSQL();
+echo $qb->buildSQL();
 ```
 
 ```sql
