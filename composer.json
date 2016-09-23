@@ -1,7 +1,7 @@
 {
-  "name": "phuria/query-builder",
+  "name": "phuria/sql-builder",
   "description": "Query builder for PHP.",
-  "homepage": "https://github.com/phuria/query-builder",
+  "homepage": "https://github.com/phuria/sql-builder",
   "keywords": [
     "query builder",
     "sql"
@@ -25,8 +25,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Phuria\\QueryBuilder\\": "src/",
-      "Phuria\\QueryBuilder\\Test\\": "tests/"
+      "": ["src/", "tests/"]
     }
   }
 }

@@ -37,7 +37,7 @@ LEFT JOIN contact AS c ON u.id = c.user_id;
 __Custom table__
 
 ```php
-use Phuria\QueryBuilder\Table\AbstractTable;
+use Phuria\SQLBuilder\Table\AbstractTable;
 
 class AccountTable extends AbstractTable
 {
