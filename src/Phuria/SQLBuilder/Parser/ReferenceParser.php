@@ -48,19 +48,27 @@ class ReferenceParser
         $references = $this->manager->all();
 
         foreach ($references as &$value) {
-            if (is_string($value)) {
-                $value = "\"" . $value ."\"";
-            }
-
-            if ($value instanceof AbstractTable) {
-                $value = $value->getAliasOrName();
-            }
-
-            if ($value instanceof QueryComponentInterface) {
-                $value = $value->buildSQL();
-            }
+            $value = $this->convertReferenceToValue($value);
         }
 
         return str_replace(array_keys($references), array_values($references), $this->rawSQL);
+    }
+
+    /**
+     * @param $reference
+     *
+     * @return string
+     */
+    private function convertReferenceToValue($reference)
+    {
+        if (is_string($reference)) {
+            return "\"" . $reference ."\"";
+        } elseif ($reference instanceof AbstractTable) {
+            return $reference->getAliasOrName();
+        } elseif ($reference instanceof QueryComponentInterface) {
+            return $reference->buildSQL();
+        }
+
+        return '';
     }
 }
