@@ -66,7 +66,7 @@ abstract class DatabaseTestCase extends \PHPUnit_Extensions_Database_TestCase
     public function getDataSet()
     {
         return new \PHPUnit_Extensions_Database_DataSet_YamlDataSet(
-            dirname(__FILE__) . '/../_resources/data_set.yml'
+            dirname(__FILE__) . '/../Resources/data_set.yml'
         );
     }
 }

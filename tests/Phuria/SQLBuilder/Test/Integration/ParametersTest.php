@@ -11,7 +11,7 @@
 
 namespace Phuria\SQLBuilder\Test\Integration;
 
-use Phuria\SQLBuilder\QueryBuilder;
+use Phuria\SQLBuilder\QueryBuilder\SelectBuilder;
 use Phuria\SQLBuilder\Test\TestCase\DatabaseTestCase;
 
 /**
@@ -26,7 +26,7 @@ class ParametersTest extends DatabaseTestCase
     {
         $connection = $this->createQueryConnection();
 
-        $qb = new QueryBuilder();
+        $qb = new SelectBuilder();
         $userTable = $qb->from('user');
         $qb->addSelect($userTable->column('username'));
         $qb->andWhere("{$userTable->column('id')} = :id");
@@ -42,7 +42,7 @@ class ParametersTest extends DatabaseTestCase
     {
         $connection = $this->createQueryConnection();
 
-        $qb = new QueryBuilder();
+        $qb = new SelectBuilder();
         $userTable = $qb->from('user');
         $qb->addSelect($userTable->column('username'));
         $qb->andWhere("{$userTable->column('id')} = :id");
@@ -59,7 +59,7 @@ class ParametersTest extends DatabaseTestCase
     public function itWillSelectNotExistingUser()
     {
         $connection = $this->createQueryConnection();
-        $qb = new QueryBuilder();
+        $qb = new SelectBuilder();
         $userTable = $qb->from('user');
         $qb->addSelect($userTable->column('username'));
         $qb->andWhere("{$userTable->column('id')} = :id");

@@ -9,11 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Phuria\SQLBuilder\QueryCompiler;
+namespace Phuria\SQLBuilder\QueryBuilder\Component;
+
+use Phuria\SQLBuilder\Table\AbstractTable;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-abstract class InsertQueryCompiler implements QueryCompilerInterface
+interface TableComponentInterface
 {
+    /**
+     * @return AbstractTable[]
+     */
+    public function getRootTables();
 }

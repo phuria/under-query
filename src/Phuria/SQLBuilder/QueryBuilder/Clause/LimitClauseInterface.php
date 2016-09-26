@@ -9,12 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Phuria\SQLBuilder;
+namespace Phuria\SQLBuilder\QueryBuilder\Clause;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-class QueryHint
+interface LimitClauseInterface
 {
-    const IGNORE = 1;
+    /**
+     * @return string
+     */
+    public function getLimitClause();
 }

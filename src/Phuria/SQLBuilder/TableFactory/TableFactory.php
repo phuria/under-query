@@ -9,16 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Phuria\SQLBuilder;
+namespace Phuria\SQLBuilder\TableFactory;
 
-use Phuria\SQLBuilder\Table\AbstractTable;
+use Phuria\SQLBuilder\QueryBuilder\AbstractBuilder;
 use Phuria\SQLBuilder\Table\SubQueryTable;
 use Phuria\SQLBuilder\Table\UnknownTable;
+use Phuria\SQLBuilder\TableRecognizer;
+use Phuria\SQLBuilder\TableRegistry;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-class TableFactory
+class TableFactory implements TableFactoryInterface
 {
     /**
      * @var TableRegistry $registry
@@ -40,12 +42,9 @@ class TableFactory
     }
 
     /**
-     * @param mixed        $table
-     * @param QueryBuilder $qb
-     *
-     * @return AbstractTable
+     * @inheritdoc
      */
-    public function createNewTable($table, QueryBuilder $qb)
+    public function createNewTable($table, AbstractBuilder $qb)
     {
         $tableType = $this->tableRecognizer->recognizeType($table);
 
@@ -69,13 +68,13 @@ class TableFactory
     }
 
     /**
-     * @param string       $requestedTable
-     * @param string       $tableClass
-     * @param QueryBuilder $qb
+     * @param string          $requestedTable
+     * @param string          $tableClass
+     * @param AbstractBuilder $qb
      *
      * @return mixed
      */
-    private function doCreate($requestedTable, $tableClass, QueryBuilder $qb)
+    private function doCreate($requestedTable, $tableClass, AbstractBuilder $qb)
     {
         $tableObject = new $tableClass($qb);
 
@@ -87,12 +86,12 @@ class TableFactory
     }
 
     /**
-     * @param QueryBuilder $subQb
-     * @param QueryBuilder $qb
+     * @param AbstractBuilder $subQb
+     * @param AbstractBuilder $qb
      *
      * @return SubQueryTable
      */
-    public function createSubQueryTable(QueryBuilder $subQb, QueryBuilder $qb)
+    private function createSubQueryTable(AbstractBuilder $subQb, AbstractBuilder $qb)
     {
         return new SubQueryTable($subQb, $qb);
     }

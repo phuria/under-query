@@ -11,6 +11,8 @@
 
 namespace Phuria\SQLBuilder;
 
+use Phuria\SQLBuilder\QueryBuilder\AbstractBuilder;
+
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
@@ -31,7 +33,7 @@ class TableRecognizer
         switch (true) {
             case $stuff instanceof \Closure:
                 return static::TYPE_CLOSURE;
-            case $stuff instanceof QueryBuilder:
+            case $stuff instanceof AbstractBuilder:
                 return static::TYPE_SUB_QUERY;
             case false !== strpos($stuff, '\\'):
                 return static::TYPE_CLASS_NAME;

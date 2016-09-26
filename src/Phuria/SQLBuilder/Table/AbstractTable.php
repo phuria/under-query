@@ -2,8 +2,7 @@
 
 namespace Phuria\SQLBuilder\Table;
 
-use Phuria\SQLBuilder\QueryBuilder;
-use Phuria\SQLBuilder\ReferenceManager;
+use Phuria\SQLBuilder\QueryBuilder\AbstractBuilder;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -19,7 +18,7 @@ abstract class AbstractTable
     const ROOT_INSERT = 3;
 
     /**
-     * @var QueryBuilder $qb
+     * @var AbstractBuilder $qb
      */
     private $qb;
 
@@ -49,15 +48,15 @@ abstract class AbstractTable
     private $join = false;
 
     /**
-     * @param QueryBuilder $qb
+     * @param AbstractBuilder $qb
      */
-    public function __construct(QueryBuilder $qb)
+    public function __construct(AbstractBuilder $qb)
     {
         $this->qb = $qb;
     }
 
     /**
-     * @return ReferenceManager
+     * @return string
      */
     public function __toString()
     {
@@ -70,7 +69,7 @@ abstract class AbstractTable
     abstract public function getTableName();
 
     /**
-     * @return QueryBuilder
+     * @return AbstractBuilder
      */
     public function getQueryBuilder()
     {

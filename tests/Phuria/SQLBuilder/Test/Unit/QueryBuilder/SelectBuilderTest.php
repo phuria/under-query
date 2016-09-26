@@ -9,45 +9,34 @@
  * file that was distributed with this source code.
  */
 
-namespace Phuria\SQLBuilder\Test\Unit;
+namespace Phuria\SQLBuilder\Test\Unit\QueryBuilder;
 
-use Phuria\SQLBuilder\QueryBuilder;
-use Phuria\SQLBuilder\QueryHint;
-use Phuria\SQLBuilder\Table\UnknownTable;
-use Phuria\SQLBuilder\TableFactory;
-use Phuria\SQLBuilder\TableRegistry;
-use Phuria\SQLBuilder\Test\Helper\ExampleTable;
+use Phuria\SQLBuilder\QueryBuilder\SelectBuilder;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-class QueryBuilderTest extends \PHPUnit_Framework_TestCase
+class SelectBuilderTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @return QueryBuilder
+     * @test
      */
-    private function createQb()
+    public function selectMinFromTest()
     {
-        $tableRegistry = new TableRegistry();
-        $tableRegistry->registerTable(ExampleTable::class, 'example');
-        $tableFactory = new TableFactory($tableRegistry);
+        $qb = new SelectBuilder();
 
-        return new QueryBuilder($tableFactory);
-    }
-
-    public function testSimpleSelect()
-    {
-        $qb = new QueryBuilder();
-
-        $rootTable = $qb->from('test');
-        $rootTable->addSelect('MIN(test.id)');
+        $qb->from('test');
+        $qb->addSelect('MIN(test.id)');
 
         static::assertSame('SELECT MIN(test.id) FROM test', $qb->buildQuery()->getSQL());
     }
 
-    public function testSimpleSelectWithAlias()
+    /**
+     * @test
+     */
+    public function selectTableWithAlias()
     {
-        $qb = new QueryBuilder();
+        $qb = new SelectBuilder();
 
         $rootTable = $qb->from('test');
         $rootTable->setAlias('SRC');
@@ -56,9 +45,12 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         static::assertSame('SELECT MIN(SRC.id) FROM test AS SRC', $qb->buildQuery()->getSQL());
     }
 
-    public function testTwoSelects()
+    /**
+     * @test
+     */
+    public function selectTwoColumns()
     {
-        $qb = new QueryBuilder();
+        $qb = new SelectBuilder();
 
         $rootTable = $qb->from('test');
         $rootTable->addSelect('test.id');
@@ -67,76 +59,12 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         static::assertSame('SELECT test.id, test.name FROM test', $qb->buildQuery()->getSQL());
     }
 
-    public function testCreateUnknownTable()
-    {
-        $qb = new QueryBuilder();
-
-        $rootTable = $qb->from('unknown_table');
-
-        static::assertInstanceOf(UnknownTable::class, $rootTable);
-    }
-
-    public function testCreateExampleTable()
-    {
-        $qb = $this->createQb();
-        $rootTable = $qb->from('example');
-
-        static::assertInstanceOf(ExampleTable::class, $rootTable);
-    }
-
     /**
      * @test
      */
-    public function itWillInsertWithWhereClause()
+    public function selectColumnReferences()
     {
-        $qb = $this->createQb();
-
-        $rootTable = $qb->from('example');
-        $rootTable->addSelect('example.id');
-        $rootTable->addSelect('example.name');
-        $qb->andWhere('example.id BETWEEN 1 AND 10');
-
-        static::assertSame(
-            'SELECT example.id, example.name FROM example WHERE example.id BETWEEN 1 AND 10',
-            $qb->buildQuery()->getSQL()
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function itWillUpdateWithWhereClause()
-    {
-        $qb = $this->createQb();
-
-        $rootTable = $qb->update('example');
-        $qb->addSet("{$rootTable->column('name')} = NULL");
-        $qb->andWhere("{$rootTable->column('id')} = 1");
-
-        static::assertSame('UPDATE example SET example.name = NULL WHERE example.id = 1', $qb->buildSQL());
-    }
-
-    /**
-     * @test
-     */
-    public function itWillUpdateWithOrderByAndLimit()
-    {
-        $qb = $this->createQb();
-
-        $rootTable = $qb->update('example');
-        $qb->addSet("{$rootTable->column('salary')} = 100");
-        $qb->addOrderBy("{$rootTable->column('name')} DESC");
-        $qb->limit('1');
-
-        static::assertSame('UPDATE example SET example.salary = 100 ORDER BY example.name DESC LIMIT 1', $qb->buildSQL());
-    }
-
-    /**
-     * @test
-     */
-    public function itWillSelectColumnReferences()
-    {
-        $qb = $this->createQb();
+        $qb = new SelectBuilder();
 
         $rootTable = $qb->from('example');
         $rootTable->addSelect($rootTable->column('id'));
@@ -149,9 +77,12 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         static::assertSame('SELECT SRC.id, SRC.name FROM example AS SRC', $qb->buildQuery()->getSQL());
     }
 
-    public function testSelectMax()
+    /**
+     * @test
+     */
+    public function selectMaxColumnReference()
     {
-        $qb = $this->createQb();
+        $qb = new SelectBuilder();
 
         $rootTable = $qb->from('example');
         $qb->addSelect("MAX({$rootTable->column('points')})");
@@ -166,9 +97,9 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function itWilHaveWhereClause()
+    public function selectWithWhereClause()
     {
-        $qb = $this->createQb();
+        $qb = new SelectBuilder();
 
         $rootTable = $qb->from('example');
         $qb->addSelect($rootTable->column('*'));
@@ -184,9 +115,25 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function itWillHaveConnectedWhereClause()
+    public function selectWithWhereColumnReference()
     {
-        $qb = $this->createQb();
+        $qb = new SelectBuilder();
+
+        $rootTable = $qb->from('example');
+        $rootTable->addSelect('example.id');
+        $rootTable->addSelect('example.name');
+        $qb->andWhere("{$rootTable->column('id')} BETWEEN 1 AND 10");
+
+        $expectedSQL = 'SELECT example.id, example.name FROM example WHERE example.id BETWEEN 1 AND 10';
+        static::assertSame($expectedSQL, $qb->buildQuery()->getSQL());
+    }
+
+    /**
+     * @test
+     */
+    public function selectWithConnectedWhereClause()
+    {
+        $qb = new SelectBuilder();
 
         $rootTable = $qb->from('example');
         $qb->addSelect('*');
@@ -205,9 +152,9 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function itWillHaveCrossJoinClause()
+    public function selectWithCrossJoinClause()
     {
-        $qb = $this->createQb();
+        $qb = new SelectBuilder();
 
         $qb->from('example');
         $qb->addSelect('*');
@@ -219,9 +166,9 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function itWillHaveMultipleFromTables()
+    public function selectWithMultipleFromTables()
     {
-        $qb = $this->createQb();
+        $qb = new SelectBuilder();
 
         $exampleTable = $qb->from('example');
         $testTable = $qb->addFrom('test');
@@ -235,9 +182,12 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         static::assertSame('SELECT * FROM example AS SRC, test AS OTHER', $qb->buildSQL());
     }
 
-    public function testLeftJoin()
+    /**
+     * @test
+     */
+    public function selectWithLeftJoinClause()
     {
-        $qb = $this->createQb();
+        $qb = new SelectBuilder();
 
         $exampleTable = $qb->from('example');
         $qb->addSelect('*');
@@ -247,9 +197,12 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         static::assertSame('SELECT * FROM example LEFT JOIN test ON test.id = example.test_id', $qb->buildSQL());
     }
 
-    public function testJoins()
+    /**
+     * @test
+     */
+    public function selectWithDifferentJoins()
     {
-        $qb = $this->createQb();
+        $qb = new SelectBuilder();
 
         $userTable = $qb->from('users');
         $userTable->setAlias('u');
@@ -273,14 +226,48 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function itWillHaveSubQuery()
+    public function selectWithLimitClause()
     {
-        $maxQb = $this->createQb();
+        $qb = new SelectBuilder();
+
+        $qb->from('example');
+        $qb->addSelect('*');
+        $qb->setLimit(10);
+
+        static::assertSame('SELECT * FROM example LIMIT 10', $qb->buildSQL());
+
+        $qb->setLimit('10, 20');
+
+        static::assertSame('SELECT * FROM example LIMIT 10, 20', $qb->buildSQL());
+    }
+
+    /**
+     * @test
+     */
+    public function selectWithGroupByClause()
+    {
+        $qb = new SelectBuilder();
+
+        $exampleTable = $qb->from('price_list');
+        $exampleTable->setAlias('p');
+        $qb->addSelect($exampleTable->column('user_id'));
+        $qb->addSelect("SUM({$exampleTable->column('price')})");
+        $qb->addGroupBy($exampleTable->column('user_id'));
+
+        static::assertSame('SELECT p.user_id, SUM(p.price) FROM price_list AS p GROUP BY p.user_id', $qb->buildSQL());
+    }
+
+    /**
+     * @test
+     */
+    public function selectFromSubQuery()
+    {
+        $maxQb = new SelectBuilder();
 
         $exampleTable = $maxQb->from('example');
         $maxQb->addSelect("MAX({$exampleTable->column('value')}) AS max_value");
 
-        $qb = $this->createQb();
+        $qb = new SelectBuilder();
         $subQuery = $qb->from($maxQb);
         $subQuery->setAlias('SRC');
         $qb->addSelect($subQuery->column('max_value'));
@@ -297,9 +284,9 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function itWillHaveOrderByClause()
+    public function selectWithOrderByClause()
     {
-        $qb = $this->createQb();
+        $qb = new SelectBuilder();
 
         $exampleTable = $qb->from('example');
         $qb->addSelect('*');
@@ -314,44 +301,12 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         static::assertSame($expectedSQL, $qb->buildSQL());
     }
 
-    public function testUpdateSet()
-    {
-        $qb = $this->createQb();
-
-        $exampleTable = $qb->update('example');
-        $qb->addSet("{$exampleTable->column('name')} = NULL");
-
-        $expectedSQL = 'UPDATE example SET example.name = NULL';
-        static::assertSame($expectedSQL, $qb->buildSQL());
-
-        $qb->addSet("{$exampleTable->column('value')} = 10");
-
-        $expectedSQL .= ', example.value = 10';
-        static::assertSame($expectedSQL, $qb->buildSQL());
-    }
-
     /**
      * @test
      */
-    public function itWillGroupBy()
+    public function selectOnly()
     {
-        $qb = $this->createQb();
-
-        $exampleTable = $qb->from('price_list');
-        $exampleTable->setAlias('p');
-        $qb->addSelect($exampleTable->column('user_id'));
-        $qb->addSelect("SUM({$exampleTable->column('price')})");
-        $qb->addGroupBy($exampleTable->column('user_id'));
-
-        static::assertSame('SELECT p.user_id, SUM(p.price) FROM price_list AS p GROUP BY p.user_id', $qb->buildSQL());
-    }
-
-    /**
-     * @test
-     */
-    public function itWillReturnOnlySelect()
-    {
-        $qb = $this->createQb();
+        $qb = new SelectBuilder();
         $qb->addSelect('1 + 1');
 
         static::assertSame('SELECT 1 + 1', $qb->buildSQL());
@@ -360,24 +315,23 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function itWillHaveOrderedGroupBy()
+    public function selectWithOrderedGroupBy()
     {
-        $qb = $this->createQb();
+        $qb = new SelectBuilder();
 
         $exampleTable = $qb->from('example');
         $qb->addSelect('*');
         $qb->addGroupBy("{$exampleTable->column('user_id')} DESC");
 
-        $expectedSQL = 'SELECT * FROM example GROUP BY example.user_id DESC';
-        static::assertSame($expectedSQL, $qb->buildSQL());
+        static::assertSame('SELECT * FROM example GROUP BY example.user_id DESC', $qb->buildSQL());
     }
 
     /**
      * @test
      */
-    public function itWillHaveHavingClause()
+    public function selectWithHavingClause()
     {
-        $qb = $this->createQb();
+        $qb = new SelectBuilder();
 
         $exampleTable = $qb->from('example');
         $qb->addSelect("SUM({$exampleTable->column('price')}) AS price");
@@ -385,52 +339,5 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
 
         $expectedSQL = 'SELECT SUM(example.price) AS price FROM example HAVING price > 100';
         static::assertSame($expectedSQL, $qb->buildSQL());
-    }
-
-    /**
-     * @test
-     */
-    public function itWillHaveLimit()
-    {
-        $qb = $this->createQb();
-
-        $qb->from('example');
-        $qb->addSelect('*');
-        $qb->limit(10);
-
-        static::assertSame('SELECT * FROM example LIMIT 10', $qb->buildSQL());
-
-        $qb->limit('10, 20');
-
-        static::assertSame('SELECT * FROM example LIMIT 10, 20', $qb->buildSQL());
-    }
-
-    /**
-     * @test
-     */
-    public function itWillUseIgnoreHint()
-    {
-        $qb = $this->createQb();
-
-        $qb->update('example');
-        $qb->addSet('name = "test"');
-        $qb->addQueryHint(QueryHint::IGNORE);
-
-        static::assertSame('UPDATE IGNORE example SET name = "test"', $qb->buildSQL());
-    }
-
-    /**
-     * @test
-     */
-    public function itWillInsert()
-    {
-        $qb = $this->createQb();
-
-        $qb->insert('example');
-        $qb->setInsertColumns(['id', 'name']);
-        $qb->addInsertValues([1, 'foo']);
-        $qb->addInsertValues([2, 'boo']);
-
-        static::assertSame('INSERT example (id, name) VALUES (1, "foo"), (2, "boo")', $qb->buildSQL());
     }
 }

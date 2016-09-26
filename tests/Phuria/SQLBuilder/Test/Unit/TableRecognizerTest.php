@@ -11,9 +11,9 @@
 
 namespace Phuria\SQLBuilder\Test\Unit;
 
-use Phuria\SQLBuilder\QueryBuilder;
 use Phuria\SQLBuilder\TableRecognizer;
 use Phuria\SQLBuilder\Test\Helper\ExampleTable;
+use Phuria\SQLBuilder\Test\Helper\NullQueryBuilder;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -36,7 +36,7 @@ class TableRecognizerTest extends \PHPUnit_Framework_TestCase
         $type = $recognizer->recognizeType('example_table_name');
         static::assertSame(TableRecognizer::TYPE_TABLE_NAME, $type);
 
-        $type = $recognizer->recognizeType(new QueryBuilder());
+        $type = $recognizer->recognizeType(new NullQueryBuilder());
         static::assertSame(TableRecognizer::TYPE_SUB_QUERY, $type);
     }
 }

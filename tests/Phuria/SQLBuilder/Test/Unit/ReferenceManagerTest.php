@@ -26,9 +26,9 @@ class ReferenceManagerTest extends \PHPUnit_Framework_TestCase
         $manager = new ReferenceManager();
 
         $reference = $manager->register(new \DateTime());
-        static::assertSame('@0@', $reference);
+        static::assertSame('@[0]', $reference);
 
         $reference = $manager->register(new \DateTime());
-        static::assertSame('@1@', $reference);
+        static::assertSame('@[1]', $reference);
     }
 }

@@ -52,6 +52,6 @@ class ReferenceManager
      */
     private function generateNextReference()
     {
-        return sprintf('@%d@', $this->referenceCounter++);
+        return sprintf('@[%d]', $this->referenceCounter++);
     }
 }
