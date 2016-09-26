@@ -37,45 +37,61 @@ trait JoinComponentTrait
     /**
      * @param string $joinType
      * @param mixed  $table
+     * @param string $alias
+     * @param string $joinOn
      *
      * @return AbstractTable
      */
-    public function join($joinType, $table)
+    private function join($joinType, $table, $alias = null, $joinOn = null)
     {
         $this->joinTables[] = $table = $this->getTableFactory()->createNewTable($table, $this->getQueryBuilder());
         $table->setJoinType($joinType);
+
+        if ($alias) {
+            $table->setAlias($alias);
+        }
+
+        if ($joinOn) {
+            $table->joinOn($joinOn);
+        }
 
         return $table;
     }
 
     /**
-     * @param mixed $table
+     * @param mixed  $table
+     * @param string $alias
+     * @param string $joinOn
      *
      * @return AbstractTable
      */
-    public function crossJoin($table)
+    public function crossJoin($table, $alias = null, $joinOn = null)
     {
-        return $this->join(AbstractTable::CROSS_JOIN, $table);
+        return $this->join(AbstractTable::CROSS_JOIN, $table, $alias, $joinOn);
     }
 
     /**
-     * @param mixed $table
+     * @param mixed  $table
+     * @param string $alias
+     * @param string $joinOn
      *
      * @return AbstractTable
      */
-    public function leftJoin($table)
+    public function leftJoin($table, $alias = null, $joinOn = null)
     {
-        return $this->join(AbstractTable::LEFT_JOIN, $table);
+        return $this->join(AbstractTable::LEFT_JOIN, $table, $alias, $joinOn);
     }
 
     /**
-     * @param string $table
+     * @param mixed  $table
+     * @param string $alias
+     * @param string $joinOn
      *
      * @return AbstractTable
      */
-    public function innerJoin($table)
+    public function innerJoin($table, $alias = null, $joinOn = null)
     {
-        return $this->join(AbstractTable::INNER_JOIN, $table);
+        return $this->join(AbstractTable::INNER_JOIN, $table, $alias, $joinOn);
     }
 
     /**

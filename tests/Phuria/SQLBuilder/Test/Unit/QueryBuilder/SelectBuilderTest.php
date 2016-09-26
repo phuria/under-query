@@ -221,6 +221,15 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
             . ' INNER JOIN profile AS p ON u.id = p.user_id';
 
         static::assertSame($expectedSQL, $qb->buildSQL());
+
+        $qb = new SelectBuilder();
+
+        $qb->from('users', 'u');
+        $qb->addSelect('*');
+        $qb->leftJoin('contact', 'c', 'u.id = c.user_id');
+        $qb->innerJoin('profile', 'p', 'u.id = p.user_id');
+
+        static::assertSame($expectedSQL, $qb->buildSQL());
     }
 
     /**
