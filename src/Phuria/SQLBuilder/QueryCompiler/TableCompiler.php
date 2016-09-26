@@ -13,6 +13,7 @@ namespace Phuria\SQLBuilder\QueryCompiler;
 
 use Phuria\SQLBuilder\QueryBuilder\AbstractBuilder;
 use Phuria\SQLBuilder\QueryBuilder\Component;
+use Phuria\SQLBuilder\QueryBuilder\DeleteBuilder;
 use Phuria\SQLBuilder\QueryBuilder\SelectBuilder;
 use Phuria\SQLBuilder\Table\AbstractTable;
 
@@ -56,7 +57,7 @@ class TableCompiler
     {
         $rootTables = '';
 
-        if ($qb instanceof SelectBuilder) {
+        if ($qb instanceof SelectBuilder || $qb instanceof DeleteBuilder) {
             $rootTables .= 'FROM ';
         }
 

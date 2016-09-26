@@ -15,6 +15,7 @@ use Phuria\SQLBuilder\Parser\ReferenceParser;
 use Phuria\SQLBuilder\QueryBuilder\AbstractBuilder;
 use Phuria\SQLBuilder\QueryBuilder\Clause;
 use Phuria\SQLBuilder\QueryBuilder\Component;
+use Phuria\SQLBuilder\QueryBuilder\DeleteBuilder;
 use Phuria\SQLBuilder\QueryBuilder\InsertBuilder;
 use Phuria\SQLBuilder\QueryBuilder\UpdateBuilder;
 
@@ -49,6 +50,7 @@ class QueryCompiler implements QueryCompilerInterface
     private function compileRaw(AbstractBuilder $qb)
     {
         return implode(' ', array_filter([
+            $this->compileDelete($qb),
             $this->compileInsert($qb),
             $this->compileUpdate($qb),
             $this->compileSelect($qb),
@@ -74,6 +76,20 @@ class QueryCompiler implements QueryCompilerInterface
     private function compileReferences($rawSQL, AbstractBuilder $qb)
     {
         return (new ReferenceParser($rawSQL, $qb->getReferenceManager()))->parseSQL();
+    }
+
+    /**
+     * @param AbstractBuilder $qb
+     *
+     * @return string
+     */
+    private function compileDelete(AbstractBuilder $qb)
+    {
+        if ($qb instanceof DeleteBuilder) {
+            return 'DELETE';
+        }
+
+        return '';
     }
 
     /**
