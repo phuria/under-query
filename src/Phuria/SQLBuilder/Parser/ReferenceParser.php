@@ -69,6 +69,6 @@ class ReferenceParser
             return $reference->buildSQL();
         }
 
-        return '';
+        return $reference;
     }
 }
