@@ -11,34 +11,10 @@
 
 namespace Phuria\SQLBuilder\QueryBuilder;
 
-use Phuria\SQLBuilder\Table\AbstractTable;
-
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-class InsertBuilder extends AbstractBuilder implements
-    Clause\InsertColumnsClauseInterface,
-    Component\InsertValuesComponentInterface,
-    Component\QueryComponentInterface,
-    Component\TableComponentInterface
+class InsertBuilder extends AbstractInsertBuilder implements Component\InsertValuesComponentInterface
 {
-    use Clause\InsertColumnsClauseTrait;
     use Component\InsertValuesComponentTrait;
-    use Component\QueryComponentTrait;
-    use Component\TableComponentTrait;
-
-    /**
-     * @param mixed $table
-     * @param array $columns
-     *
-     * @return AbstractTable
-     */
-    public function into($table, array $columns = [])
-    {
-        if ($columns) {
-            $this->setColumns($columns);
-        }
-
-        return $this->addRootTable($table);
-    }
 }

@@ -13,9 +13,10 @@ namespace Phuria\SQLBuilder\QueryCompiler;
 
 use Phuria\SQLBuilder\Parser\ReferenceParser;
 use Phuria\SQLBuilder\QueryBuilder\AbstractBuilder;
+use Phuria\SQLBuilder\QueryBuilder\AbstractInsertBuilder;
 use Phuria\SQLBuilder\QueryBuilder\Clause;
 use Phuria\SQLBuilder\QueryBuilder\Component;
-use Phuria\SQLBuilder\QueryBuilder\InsertBuilder;
+use Phuria\SQLBuilder\QueryBuilder\InsertSelectBuilder;
 use Phuria\SQLBuilder\QueryBuilder\UpdateBuilder;
 
 /**
@@ -56,6 +57,7 @@ class QueryCompiler implements QueryCompilerInterface
             $this->tableCompiler->compileRootTables($qb),
             $this->tableCompiler->compileJoinTables($qb),
             $this->compileInsertColumns($qb),
+            $this->compileInsertSelect($qb),
             $this->compileSet($qb),
             $this->compileWhere($qb),
             $this->compileInsertValues($qb),
@@ -98,7 +100,7 @@ class QueryCompiler implements QueryCompilerInterface
      */
     private function compileInsert(AbstractBuilder $qb)
     {
-        if ($qb instanceof InsertBuilder) {
+        if ($qb instanceof AbstractInsertBuilder) {
             return 'INSERT INTO';
         }
 
@@ -230,6 +232,20 @@ class QueryCompiler implements QueryCompilerInterface
             return 'VALUES ' . implode(', ', array_map(function (array $values) {
                 return '('. implode(', ', $values) . ')';
             }, $qb->getValues()));
+        }
+
+        return '';
+    }
+
+    /**
+     * @param AbstractBuilder $qb
+     *
+     * @return string
+     */
+    private function compileInsertSelect(AbstractBuilder $qb)
+    {
+        if ($qb instanceof InsertSelectBuilder) {
+            return $qb->getSelectInsert()->buildSQL();
         }
 
         return '';

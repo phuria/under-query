@@ -22,8 +22,10 @@ use Phuria\SQLBuilder\TableFactory\TableFactoryInterface;
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-abstract class AbstractBuilder
+abstract class AbstractBuilder implements Component\QueryComponentInterface
 {
+    use Component\QueryComponentTrait;
+
     /**
      * @var TableFactoryInterface
      */

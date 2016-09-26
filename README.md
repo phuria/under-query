@@ -73,11 +73,30 @@ $qb = new InsertBuilder();
 $qb->into('user', 'u', ['username', 'email']);
 $qb->addValues(['phuria', 'spam@simko.it']);
 
-echo $buildSQL();
+echo $qb->buildSQL();
 ```
 
 ```sql
-INSERT INTO user (usernme, email) VALUES ("phuria", "spam@simko.it")
+INSERT INTO user (username, email) VALUES ("phuria", "spam@simko.it")
+```
+
+#### INSERT ... SELECT
+```php
+$sourceQb = new SelectBuilder();
+
+$sourceQb->from('transactions', 't');
+$sourceQb->addSelect('t.user_id', 'SUM(t.amount)');
+$sourceQb->addGroupBy('t.user_id');
+
+$targetQb = new InsertSelectBuilder();
+$targetQb->into('user_summary', ['user_id', 'total_price']);
+$targetQb->selectInsert($sourceQb);
+
+echo $targetQb->buildSQL();
+```
+
+```sql
+INSERT INTO user_summary (user_id, total_price) SELECT t.user_id, SUM(t.amount) FROM transactions AS t GROUP BY t.user_id
 ```
 
 
