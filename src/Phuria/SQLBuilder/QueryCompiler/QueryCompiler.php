@@ -146,7 +146,9 @@ class QueryCompiler implements QueryCompilerInterface
     private function compileGroupBy(AbstractBuilder $qb)
     {
         if ($qb instanceof Clause\GroupByClauseInterface && $qb->getGroupByClauses()) {
-            return 'GROUP BY ' . implode(', ', $qb->getGroupByClauses());
+            $clause = 'GROUP BY ' . implode(', ', $qb->getGroupByClauses());
+
+            return $qb->isGroupByWithRollUp() ? $clause . ' WITH ROLLUP' : $clause;
         }
 
         return '';

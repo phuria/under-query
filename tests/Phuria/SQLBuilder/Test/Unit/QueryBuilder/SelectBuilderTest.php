@@ -340,4 +340,21 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
         $expectedSQL = 'SELECT SUM(example.price) AS price FROM example HAVING price > 100';
         static::assertSame($expectedSQL, $qb->buildSQL());
     }
+
+    /**
+     * @test
+     */
+    public function selectWithGroupByRollUp()
+    {
+        $qb = new SelectBuilder();
+
+        $table = $qb->from('example');
+        $qb->addSelect("SUM(".$table->column('price').")");
+        $qb->addGroupBy($table->column('symbol'));
+        $qb->addGroupBy($table->column('year'));
+        $qb->setGroupByWithRollUp(true);
+
+        $expectedSQL = 'SELECT SUM(example.price) FROM example GROUP BY example.symbol, example.year WITH ROLLUP';
+        static::assertSame($expectedSQL, $qb->buildSQL());
+    }
 }

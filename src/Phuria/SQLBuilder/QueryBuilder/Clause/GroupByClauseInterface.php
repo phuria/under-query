@@ -20,4 +20,9 @@ interface GroupByClauseInterface
      * @return array
      */
     public function getGroupByClauses();
+
+    /**
+     * @return array
+     */
+    public function isGroupByWithRollUp();
 }

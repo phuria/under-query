@@ -17,7 +17,12 @@ namespace Phuria\SQLBuilder\QueryBuilder\Clause;
 trait GroupByClauseTrait
 {
     /**
-     * @var array $groupByClauses
+     * @var bool
+     */
+    private $groupByWithRollUp = false;
+
+    /**
+     * @var array
      */
     private $groupByClauses = [];
 
@@ -39,5 +44,21 @@ trait GroupByClauseTrait
     public function getGroupByClauses()
     {
         return $this->groupByClauses;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isGroupByWithRollUp()
+    {
+        return $this->groupByWithRollUp;
+    }
+
+    /**
+     * @param boolean $groupByWithRollUp
+     */
+    public function setGroupByWithRollUp($groupByWithRollUp)
+    {
+        $this->groupByWithRollUp = $groupByWithRollUp;
     }
 }
