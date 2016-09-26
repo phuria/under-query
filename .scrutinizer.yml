@@ -9,7 +9,7 @@ before_commands:
 checks:
   php:
     code_rating: true
-    duplication_code: true
+    duplication: true
 
 coding_style:
   php:
