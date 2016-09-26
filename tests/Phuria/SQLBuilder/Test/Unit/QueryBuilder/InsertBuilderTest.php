@@ -25,11 +25,24 @@ class InsertBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $qb = new InsertBuilder();
 
-        $qb->insert('example');
+        $qb->into('example');
         $qb->setColumns(['id', 'name']);
         $qb->addValues([1, 'foo']);
         $qb->addValues([2, 'boo']);
 
-        static::assertSame('INSERT example (id, name) VALUES (1, "foo"), (2, "boo")', $qb->buildSQL());
+        static::assertSame('INSERT INTO example (id, name) VALUES (1, "foo"), (2, "boo")', $qb->buildSQL());
+    }
+
+    /**
+     * @test
+     */
+    public function insertMultipleArguments()
+    {
+        $qb = new InsertBuilder();
+
+        $qb->into('user', ['username', 'email']);
+        $qb->addValues(['foo', 'bar']);
+
+        static::assertSame('INSERT INTO user (username, email) VALUES ("foo", "bar")', $qb->buildSQL());
     }
 }

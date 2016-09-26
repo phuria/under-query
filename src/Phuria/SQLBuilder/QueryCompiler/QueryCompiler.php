@@ -99,7 +99,7 @@ class QueryCompiler implements QueryCompilerInterface
     private function compileInsert(AbstractBuilder $qb)
     {
         if ($qb instanceof InsertBuilder) {
-            return 'INSERT';
+            return 'INSERT INTO';
         }
 
         return '';

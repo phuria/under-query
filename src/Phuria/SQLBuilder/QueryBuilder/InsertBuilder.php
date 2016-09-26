@@ -29,11 +29,16 @@ class InsertBuilder extends AbstractBuilder implements
 
     /**
      * @param mixed $table
+     * @param array $columns
      *
      * @return AbstractTable
      */
-    public function insert($table)
+    public function into($table, array $columns = [])
     {
+        if ($columns) {
+            $this->setColumns($columns);
+        }
+
         return $this->addRootTable($table);
     }
 }

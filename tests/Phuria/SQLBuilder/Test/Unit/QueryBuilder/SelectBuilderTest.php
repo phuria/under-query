@@ -379,4 +379,16 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
 
         static::assertSame('SELECT e.name FROM example AS e', $qb->buildSQL());
     }
+
+    /**
+     * @test
+     */
+    public function selectMultipleArguments()
+    {
+        $qb = new SelectBuilder();
+
+        $qb->addSelect('1+1', '2+2');
+
+        static::assertSame('SELECT 1+1, 2+2', $qb->buildSQL());
+    }
 }

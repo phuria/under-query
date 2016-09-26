@@ -22,15 +22,23 @@ trait SelectClauseTrait
     private $selectClauses = [];
 
     /**
-     * @param string $clause
-     *
      * @return $this
      */
-    public function addSelect($clause)
+    public function addSelect()
     {
-        $this->selectClauses[] = $clause;
+        foreach (func_get_args() as $clause) {
+            $this->doAddSelect($clause);
+        }
 
         return $this;
+    }
+
+    /**
+     * @param string $clause
+     */
+    private function doAddSelect($clause)
+    {
+        $this->selectClauses[] = $clause;
     }
 
     /**

@@ -25,9 +25,9 @@ There are different query builders classes for each SQL query type: `SelectBuild
 ```php
 $qb = new SelectBuilder();
 
-$qb->addSelect('u.name, c.phone_number');
-$qb->from('user')->alias('u');
-$qb->leftJoin('contact')->alias('c')->on('u.id = c.user_id');
+$qb->addSelect('u.name', 'c.phone_number');
+$qb->from('user', 'u');
+$qb->leftJoin('contact', 'c', 'u.id = c.user_id');
 
 echo $qb->buildSQL();
 ```
@@ -65,6 +65,21 @@ echo $qb->builidSQL();
 ```sql
 DELETE u, c FROM user u LEFT JOIN contact c ON u.id = c.user_id WHERE u.id = 1 
 ```
+
+#### Simple INSERT
+```php
+$qb = new InsertBuilder();
+
+$qb->into('user', 'u', ['username', 'email']);
+$qb->addValues(['phuria', 'spam@simko.it']);
+
+echo $buildSQL();
+```
+
+```sql
+INSERT INTO user (usernme, email) VALUES ("phuria", "spam@simko.it")
+```
+
 
 ## Create your own custom table
 
