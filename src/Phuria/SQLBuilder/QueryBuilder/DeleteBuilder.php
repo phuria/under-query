@@ -17,11 +17,13 @@ use Phuria\SQLBuilder\Table\AbstractTable;
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
 class DeleteBuilder extends AbstractBuilder implements
+    Clause\DeleteClauseInterface,
     Clause\WhereClauseInterface,
     Component\JoinComponentInterface,
     Component\QueryComponentInterface,
     Component\TableComponentInterface
 {
+    use Clause\DeleteClauseTrait;
     use Clause\WhereClauseTrait;
     use Component\JoinComponentTrait;
     use Component\ParameterComponentTrait;

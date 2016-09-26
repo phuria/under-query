@@ -10,7 +10,7 @@ SQL query builder focused on:
  + object-oriented inheritance behavior in database's tables
  + possibility of doing everything that can be done in native syntax
  + being lightweight and fast (also in development)
- + easily to extend and modify
+ + easily to extend
 
 ```sh
 php composer.phar require phuria/sql-builder
@@ -21,13 +21,13 @@ php composer.phar require phuria/sql-builder
 
 There are different query builders classes for each SQL query type: `SelectBuilder`, `UpdateBuilder`, `DeleteBuilder` and `InsertBuilder`.
 
-
+#### Simple SELECT
 ```php
 $qb = new SelectBuilder();
 
 $qb->addSelect('u.name, c.phone_number');
 $qb->from('user')->alias('u');
-$qb->leftJoin('contact')->aliac('c')->on('u.id = c.user_id');
+$qb->leftJoin('contact')->alias('c')->on('u.id = c.user_id');
 
 echo $qb->buildSQL();
 ```
@@ -36,8 +36,37 @@ echo $qb->buildSQL();
 SELECT u.name, c.phone_number FROM user AS u LEFT JOIN contact AS c ON u.id = c.user_id;
 ```
 
+#### Single Table DELETE
+```php
+$qb = new DeleteBuilder();
 
-__Custom table__
+$qb->from('user');
+$qb->andWhere('id = 1');
+
+echo $qb->buildSQL();
+```
+
+```sql
+DELETE FROM user WHERE id = 1;
+```
+
+#### Multiple Table DELETE
+```php
+$qb = new DeleteBuilder();
+
+$qb->from('user', 'u');
+$qb->innerJoin('contact', 'c', 'u.id = c.user_id')
+$qb->addDelete('u', 'c');
+$qb->andWhere('u.id = 1');
+
+echo $qb->builidSQL();
+```
+
+```sql
+DELETE u, c FROM user u LEFT JOIN contact c ON u.id = c.user_id WHERE u.id = 1 
+```
+
+## Create your own custom table
 
 ```php
 use Phuria\SQLBuilder\Table\AbstractTable;

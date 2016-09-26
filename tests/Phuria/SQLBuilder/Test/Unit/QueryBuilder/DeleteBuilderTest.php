@@ -19,7 +19,7 @@ use Phuria\SQLBuilder\QueryBuilder\DeleteBuilder;
 class DeleteBuilderTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @teste
+     * @test
      */
     public function simpleDelete()
     {
@@ -29,5 +29,31 @@ class DeleteBuilderTest extends \PHPUnit_Framework_TestCase
         $qb->andWhere("{$table->column('name')} = 'Foo'");
 
         static::assertSame('DELETE FROM example WHERE example.name = \'Foo\'', $qb->buildSQL());
+    }
+
+    /**
+     * @test
+     */
+    public function multipleTableDelete()
+    {
+        $qb = new DeleteBuilder();
+
+        $qb->from('user', 'u');
+        $qb->innerJoin('contact', 'c', 'u.id = c.user_id');
+        $qb->addDelete('u');
+        $qb->addDelete('c');
+        $qb->andWhere('u.id = 1');
+
+        $expectedSQL = 'DELETE u, c FROM user AS u INNER JOIN contact AS c ON u.id = c.user_id WHERE u.id = 1';
+        static::assertSame($expectedSQL, $qb->buildSQL());
+
+        $qb = new DeleteBuilder();
+
+        $userTable = $qb->from('user', 'u');
+        $contactTable = $qb->innerJoin('contact', 'c', 'u.id = c.user_id');
+        $qb->addDelete($userTable, $contactTable);
+        $qb->andWhere('u.id = 1');
+
+        static::assertSame($expectedSQL, $qb->buildSQL());
     }
 }

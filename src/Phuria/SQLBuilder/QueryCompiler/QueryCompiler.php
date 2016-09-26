@@ -15,7 +15,6 @@ use Phuria\SQLBuilder\Parser\ReferenceParser;
 use Phuria\SQLBuilder\QueryBuilder\AbstractBuilder;
 use Phuria\SQLBuilder\QueryBuilder\Clause;
 use Phuria\SQLBuilder\QueryBuilder\Component;
-use Phuria\SQLBuilder\QueryBuilder\DeleteBuilder;
 use Phuria\SQLBuilder\QueryBuilder\InsertBuilder;
 use Phuria\SQLBuilder\QueryBuilder\UpdateBuilder;
 
@@ -85,8 +84,8 @@ class QueryCompiler implements QueryCompilerInterface
      */
     private function compileDelete(AbstractBuilder $qb)
     {
-        if ($qb instanceof DeleteBuilder) {
-            return 'DELETE';
+        if ($qb instanceof Clause\DeleteClauseInterface) {
+            return $qb->getDeleteClauses() ? 'DELETE ' . implode(', ', $qb->getDeleteClauses()) : 'DELETE';
         }
 
         return '';
