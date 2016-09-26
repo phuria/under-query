@@ -24,6 +24,26 @@ use Phuria\SQLBuilder\TableFactory\TableFactoryInterface;
  */
 abstract class AbstractBuilder
 {
+    /**
+     * @var TableFactoryInterface
+     */
+    private $tableFactory;
+
+    /**
+     * @var QueryCompilerInterface
+     */
+    private $queryCompiler;
+
+    /**
+     * @var ParameterManagerInterface
+     */
+    private $parameterManager;
+
+    /**
+     * @var ReferenceManager
+     */
+    private $referenceManager;
+
     public function __construct()
     {
         $this->tableFactory = new TableFactory();
