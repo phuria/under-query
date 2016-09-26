@@ -16,15 +16,23 @@ use Phuria\SQLBuilder\QueryBuilder\AbstractBuilder;
 use Phuria\SQLBuilder\QueryBuilder\Clause;
 use Phuria\SQLBuilder\QueryBuilder\Component;
 use Phuria\SQLBuilder\QueryBuilder\InsertBuilder;
-use Phuria\SQLBuilder\QueryBuilder\SelectBuilder;
 use Phuria\SQLBuilder\QueryBuilder\UpdateBuilder;
-use Phuria\SQLBuilder\Table\AbstractTable;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
 class QueryCompiler implements QueryCompilerInterface
 {
+    /**
+     * @var TableCompiler
+     */
+    private $tableCompiler;
+
+    public function __construct()
+    {
+        $this->tableCompiler = new TableCompiler();
+    }
+
     /**
      * @inheritdoc
      */
@@ -44,8 +52,8 @@ class QueryCompiler implements QueryCompilerInterface
             $this->compileInsert($qb),
             $this->compileUpdate($qb),
             $this->compileSelect($qb),
-            $this->compileRootTables($qb),
-            $this->compileJoinTables($qb),
+            $this->tableCompiler->compileRootTables($qb),
+            $this->tableCompiler->compileJoinTables($qb),
             $this->compileInsertColumns($qb),
             $this->compileSet($qb),
             $this->compileWhere($qb),
@@ -201,42 +209,6 @@ class QueryCompiler implements QueryCompilerInterface
      *
      * @return string
      */
-    private function compileRootTables(AbstractBuilder $qb)
-    {
-        $rootTables = '';
-
-        if ($qb instanceof SelectBuilder) {
-            $rootTables .= 'FROM ';
-        }
-
-        if ($qb instanceof Component\TableComponentInterface && $qb->getRootTables()) {
-            $rootTables .= implode(', ', array_map([$this, 'compileTableDeclaration'], $qb->getRootTables()));
-        } else {
-            return '';
-        }
-
-        return $rootTables;
-    }
-
-    /**
-     * @param AbstractBuilder $qb
-     *
-     * @return string
-     */
-    private function compileJoinTables(AbstractBuilder $qb)
-    {
-        if ($qb instanceof Component\JoinComponentInterface) {
-            return implode(' ', array_map([$this, 'compileTableDeclaration'], $qb->getJoinTables()));
-        }
-
-        return '';
-    }
-
-    /**
-     * @param AbstractBuilder $qb
-     *
-     * @return string
-     */
     private function compileInsertValues(AbstractBuilder $qb)
     {
         if ($qb instanceof Component\InsertValuesComponentInterface) {
@@ -260,31 +232,5 @@ class QueryCompiler implements QueryCompilerInterface
         }
 
         return '';
-    }
-
-    /**
-     * @param AbstractTable $table
-     *
-     * @return string
-     */
-    private function compileTableDeclaration(AbstractTable $table)
-    {
-        $declaration = '';
-
-        if ($table->isJoin()) {
-            $declaration .= $table->getJoinType() . ' ';
-        }
-
-        $declaration .= $table->getTableName();
-
-        if ($alias = $table->getAlias()) {
-            $declaration .= ' AS ' . $alias;
-        }
-
-        if ($joinOn = $table->getJoinOn()) {
-            $declaration .= ' ON ' . $joinOn;
-        }
-
-        return $declaration;
     }
 }
