@@ -7,7 +7,9 @@ before_commands:
   - 'composer install'
 
 checks:
-  php: true
+  php:
+    code_rating: true
+    duplication_code: true
 
 coding_style:
   php:
