@@ -6,7 +6,11 @@
 [![license](https://img.shields.io/github/license/phuria/sql-builder.svg?maxAge=2592000?style=flat-square)]()
 [![php](https://img.shields.io/badge/PHP-5.6-blue.svg)]()
 
-A easy to use, lightweight query builder.
+SQL query builder focused on:
+ + object-oriented inheritance behavior in database's tables
+ + possibility of doing everything that can be done in native syntax
+ + being lightweight and fast (also in development)
+ + easily to extend and modify
 
 ```sh
 php composer.phar require phuria/sql-builder
@@ -15,22 +19,21 @@ php composer.phar require phuria/sql-builder
 
 ## Quick start
 
-If you want, you can only use native SQL.
+There are different query builders classes for each SQL query type: `SelectBuilder`, `UpdateBuilder`, `DeleteBuilder` and `InsertBuilder`.
 
 
 ```php
-$qb = new QueryBuilder();
+$qb = new SelectBuilder();
 
 $qb->addSelect('u.name, c.phone_number');
 $qb->from('user')->alias('u');
-$qb->leftJoin('contact')->on('u.id = c.user_id');
+$qb->leftJoin('contact')->aliac('c')->on('u.id = c.user_id');
 
 echo $qb->buildSQL();
 ```
 
 ```sql
-SELECT u.name, c.phone_number FROM user AS u
-LEFT JOIN contact AS c ON u.id = c.user_id;
+SELECT u.name, c.phone_number FROM user AS u LEFT JOIN contact AS c ON u.id = c.user_id;
 ```
 
 
@@ -67,50 +70,3 @@ $qb->buildSQL();
 SELECT * FROM account WHERE acount.active
 ```
 
-### ASC / DESC Expression
-
-```php
-$qb = new QueryBuilder();
-
-$ordersTable = $qb->from('orders');
-$qb->addSelect('*');
-$qb->addOrderBy($ordersTable->column('created_at')->desc());
-
-$sql = $qb->buildSQL();
-```
-
-```sql
-SELECT * FROM orders ORDER BY orders.created_at DESC
-```
-
-```php
-$qb = new QueryBuilder();
-
-$orderTable = $qb->from('orders');
-$year = $orderTable->column('created_at')->year();
-$qb->addSelect($orderTable->column('price')->sum());
-$qb->addSelect($year);
-$qb->addGroupBy($year->desc());
-
-$sql = $qb->buildSQL();
-```
-
-```sql
-SELECT SUM(orders.price), YEAR(orders.created_at) FROM orders
-GROUP BY YEAR(ordsers.created_at) DESC
-```
-
-### Aggregate functions
-
-```php
-$qb = new QueryBuilder();
-
-$priceListTable = $qb->from('pirce_list');
-$qb->addSelect($qb->column('price')->sumNullable()->alias('price'));
-
-$sql = $qb->getSQL();
-```
-
-```sql
-SELECT SUM(IFNULL(price_list.price, 0)) AS price FROM price_list
-```

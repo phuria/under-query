@@ -357,4 +357,17 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
         $expectedSQL = 'SELECT SUM(example.price) FROM example GROUP BY example.symbol, example.year WITH ROLLUP';
         static::assertSame($expectedSQL, $qb->buildSQL());
     }
+
+    /**
+     * @test
+     */
+    public function selectFromWithAlias()
+    {
+        $qb = new SelectBuilder();
+
+        $table = $qb->from('example', 'e');
+        $qb->addSelect($table->column('name'));
+
+        static::assertSame('SELECT e.name FROM example AS e', $qb->buildSQL());
+    }
 }

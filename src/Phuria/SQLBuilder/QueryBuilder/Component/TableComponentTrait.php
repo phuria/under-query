@@ -36,13 +36,18 @@ trait TableComponentTrait
     abstract public function getQueryBuilder();
 
     /**
-     * @param mixed $table
+     * @param mixed  $table
+     * @param string $alias
      *
      * @return AbstractTable
      */
-    protected function addRootTable($table)
+    protected function addRootTable($table, $alias = null)
     {
         $this->rootTables[] = $table = $this->getTableFactory()->createNewTable($table, $this->getQueryBuilder());
+
+        if ($alias) {
+            $table->setAlias($alias);
+        }
 
         return $table;
     }

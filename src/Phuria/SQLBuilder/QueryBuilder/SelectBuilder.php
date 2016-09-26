@@ -39,22 +39,24 @@ class SelectBuilder extends AbstractBuilder implements
     use Component\TableComponentTrait;
 
     /**
-     * @param mixed $table
+     * @param mixed  $table
+     * @param string $alias
      *
      * @return AbstractTable
      */
-    public function from($table)
+    public function from($table, $alias = null)
     {
-        return $this->addFrom($table);
+        return $this->addFrom($table, $alias);
     }
 
     /**
-     * @param mixed $table
+     * @param mixed  $table
+     * @param string $alias
      *
      * @return AbstractTable
      */
-    public function addFrom($table)
+    public function addFrom($table, $alias = null)
     {
-        return $this->addRootTable($table);
+        return $this->addRootTable($table, $alias);
     }
 }

@@ -13,10 +13,6 @@ abstract class AbstractTable
     const LEFT_JOIN = 'LEFT JOIN';
     const INNER_JOIN = 'INNER JOIN';
 
-    const ROOT_FROM = 1;
-    const ROOT_UPDATE = 2;
-    const ROOT_INSERT = 3;
-
     /**
      * @var AbstractBuilder $qb
      */
@@ -31,11 +27,6 @@ abstract class AbstractTable
      * @var string $joinType
      */
     private $joinType;
-
-    /**
-     * @var int $root
-     */
-    private $rootType;
 
     /**
      * @var string $joinOn
@@ -123,34 +114,6 @@ abstract class AbstractTable
         $this->join = true;
 
         return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isRoot()
-    {
-        return null !== $this->rootType;
-    }
-
-    /**
-     * @param int $rootType
-     *
-     * @return $this
-     */
-    public function setRootType($rootType)
-    {
-        $this->rootType = $rootType;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getRootType()
-    {
-        return $this->rootType;
     }
 
     /**
