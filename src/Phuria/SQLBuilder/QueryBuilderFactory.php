@@ -11,13 +11,13 @@
 
 namespace Phuria\SQLBuilder;
 
-use Interop\Container\ContainerInterface;
 use Phuria\SQLBuilder\DependencyInjection\InternalContainer;
 use Phuria\SQLBuilder\QueryBuilder\DeleteBuilder;
 use Phuria\SQLBuilder\QueryBuilder\InsertBuilder;
 use Phuria\SQLBuilder\QueryBuilder\InsertSelectBuilder;
 use Phuria\SQLBuilder\QueryBuilder\SelectBuilder;
 use Phuria\SQLBuilder\QueryBuilder\UpdateBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
