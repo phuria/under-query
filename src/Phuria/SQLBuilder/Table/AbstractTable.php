@@ -2,19 +2,19 @@
 
 namespace Phuria\SQLBuilder\Table;
 
-use Phuria\SQLBuilder\QueryBuilder\AbstractBuilder;
+use Phuria\SQLBuilder\QueryBuilder\BuilderInterface;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-abstract class AbstractTable
+abstract class AbstractTable implements TableInterface
 {
     const CROSS_JOIN = 'CROSS JOIN';
     const LEFT_JOIN = 'LEFT JOIN';
     const INNER_JOIN = 'INNER JOIN';
 
     /**
-     * @var AbstractBuilder $qb
+     * @var BuilderInterface $qb
      */
     private $qb;
 
@@ -39,9 +39,9 @@ abstract class AbstractTable
     private $join = false;
 
     /**
-     * @param AbstractBuilder $qb
+     * @param BuilderInterface $qb
      */
-    public function __construct(AbstractBuilder $qb)
+    public function __construct(BuilderInterface $qb)
     {
         $this->qb = $qb;
     }
@@ -51,16 +51,19 @@ abstract class AbstractTable
      */
     public function __toString()
     {
-        return $this->qb->getReferenceManager()->register($this);
+        return $this->getQueryBuilder()->objectToString($this);
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
-    abstract public function getTableName();
+    public function getAliasOrName()
+    {
+        return $this->getAlias() ?: $this->getTableName();
+    }
 
     /**
-     * @return AbstractBuilder
+     * @return BuilderInterface
      */
     public function getQueryBuilder()
     {
@@ -114,14 +117,6 @@ abstract class AbstractTable
         $this->join = true;
 
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAliasOrName()
-    {
-        return $this->getAlias() ?: $this->getTableName();
     }
 
     /**

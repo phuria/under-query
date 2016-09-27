@@ -17,16 +17,16 @@ namespace Phuria\SQLBuilder\QueryBuilder;
 class InsertSelectBuilder extends AbstractInsertBuilder
 {
     /**
-     * @var AbstractBuilder
+     * @var BuilderInterface
      */
     private $selectInsert;
 
     /**
-     * @param AbstractBuilder $sourceQb
+     * @param BuilderInterface $sourceQb
      *
      * @return $this
      */
-    public function selectInsert(AbstractBuilder $sourceQb)
+    public function selectInsert(BuilderInterface $sourceQb)
     {
         $this->selectInsert = $sourceQb;
 
@@ -34,7 +34,7 @@ class InsertSelectBuilder extends AbstractInsertBuilder
     }
 
     /**
-     * @return AbstractBuilder
+     * @return BuilderInterface
      */
     public function getSelectInsert()
     {

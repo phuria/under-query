@@ -21,7 +21,6 @@ abstract class AbstractInsertBuilder extends AbstractBuilder implements
     Component\TableComponentInterface
 {
     use Clause\InsertColumnsClauseTrait;
-    use Component\QueryComponentTrait;
     use Component\TableComponentTrait;
 
     /**

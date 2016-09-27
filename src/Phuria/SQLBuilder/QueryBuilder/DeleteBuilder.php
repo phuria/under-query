@@ -20,14 +20,12 @@ class DeleteBuilder extends AbstractBuilder implements
     Clause\DeleteClauseInterface,
     Clause\WhereClauseInterface,
     Component\JoinComponentInterface,
-    Component\QueryComponentInterface,
     Component\TableComponentInterface
 {
     use Clause\DeleteClauseTrait;
     use Clause\WhereClauseTrait;
     use Component\JoinComponentTrait;
     use Component\ParameterComponentTrait;
-    use Component\QueryComponentTrait;
     use Component\TableComponentTrait;
 
     /**

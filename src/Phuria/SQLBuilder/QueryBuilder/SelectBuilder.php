@@ -24,7 +24,6 @@ class SelectBuilder extends AbstractBuilder implements
     Clause\SelectClauseInterface,
     Clause\WhereClauseInterface,
     Component\JoinComponentInterface,
-    Component\QueryComponentInterface,
     Component\TableComponentInterface
 {
     use Clause\GroupByClauseTrait;
@@ -35,7 +34,6 @@ class SelectBuilder extends AbstractBuilder implements
     use Clause\WhereClauseTrait;
     use Component\JoinComponentTrait;
     use Component\ParameterComponentTrait;
-    use Component\QueryComponentTrait;
     use Component\TableComponentTrait;
 
     /**

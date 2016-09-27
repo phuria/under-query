@@ -11,8 +11,10 @@
 
 namespace Phuria\SQLBuilder\QueryBuilder;
 
+use Phuria\SQLBuilder\Connection\ConnectionInterface;
 use Phuria\SQLBuilder\Parameter\ParameterManager;
 use Phuria\SQLBuilder\Parameter\ParameterManagerInterface;
+use Phuria\SQLBuilder\Query;
 use Phuria\SQLBuilder\QueryCompiler\QueryCompiler;
 use Phuria\SQLBuilder\QueryCompiler\QueryCompilerInterface;
 use Phuria\SQLBuilder\ReferenceManager;
@@ -22,10 +24,8 @@ use Phuria\SQLBuilder\TableFactory\TableFactoryInterface;
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-abstract class AbstractBuilder implements Component\QueryComponentInterface
+abstract class AbstractBuilder implements BuilderInterface
 {
-    use Component\QueryComponentTrait;
-
     /**
      * @var TableFactoryInterface
      */
@@ -55,7 +55,7 @@ abstract class AbstractBuilder implements Component\QueryComponentInterface
     }
 
     /**
-     * @return AbstractBuilder
+     * @return BuilderInterface
      */
     public function getQueryBuilder()
     {
@@ -92,5 +92,35 @@ abstract class AbstractBuilder implements Component\QueryComponentInterface
     public function getReferenceManager()
     {
         return $this->referenceManager;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function buildSQL()
+    {
+        return $this->getQueryCompiler()->compile($this->getQueryBuilder());
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function objectToString($object)
+    {
+        return $this->getReferenceManager()->register($object);
+    }
+
+    /**
+     * @param ConnectionInterface $connection
+     *
+     * @return Query
+     */
+    public function buildQuery(ConnectionInterface $connection = null)
+    {
+        return new Query(
+            $this->buildSQL(),
+            $this->getParameterManager(),
+            $connection
+        );
     }
 }

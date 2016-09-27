@@ -9,15 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace Phuria\SQLBuilder\QueryBuilder\Component;
+namespace Phuria\SQLBuilder\Table;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-interface QueryComponentInterface
+interface TableInterface
 {
     /**
      * @return string
      */
-    public function buildSQL();
+    public function getTableName();
+
+    /**
+     * @return string
+     */
+    public function getAliasOrName();
 }

@@ -2,7 +2,7 @@
 
 namespace Phuria\SQLBuilder\QueryCompiler;
 
-use Phuria\SQLBuilder\QueryBuilder\AbstractBuilder;
+use Phuria\SQLBuilder\QueryBuilder\BuilderInterface;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -10,9 +10,9 @@ use Phuria\SQLBuilder\QueryBuilder\AbstractBuilder;
 interface QueryCompilerInterface
 {
     /**
-     * @param AbstractBuilder $qb
+     * @param BuilderInterface $qb
      *
      * @return string
      */
-    public function compile(AbstractBuilder $qb);
+    public function compile(BuilderInterface $qb);
 }

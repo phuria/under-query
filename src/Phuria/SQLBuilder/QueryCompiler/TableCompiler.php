@@ -11,7 +11,7 @@
 
 namespace Phuria\SQLBuilder\QueryCompiler;
 
-use Phuria\SQLBuilder\QueryBuilder\AbstractBuilder;
+use Phuria\SQLBuilder\QueryBuilder\BuilderInterface;
 use Phuria\SQLBuilder\QueryBuilder\Component;
 use Phuria\SQLBuilder\QueryBuilder\DeleteBuilder;
 use Phuria\SQLBuilder\QueryBuilder\SelectBuilder;
@@ -49,11 +49,11 @@ class TableCompiler
     }
 
     /**
-     * @param AbstractBuilder $qb
+     * @param BuilderInterface $qb
      *
      * @return string
      */
-    public function compileRootTables(AbstractBuilder $qb)
+    public function compileRootTables(BuilderInterface $qb)
     {
         $rootTables = '';
 
@@ -71,11 +71,11 @@ class TableCompiler
     }
 
     /**
-     * @param AbstractBuilder $qb
+     * @param BuilderInterface $qb
      *
      * @return string
      */
-    public function compileJoinTables(AbstractBuilder $qb)
+    public function compileJoinTables(BuilderInterface $qb)
     {
         if ($qb instanceof Component\JoinComponentInterface) {
             return implode(' ', array_map([$this, 'compileTableDeclaration'], $qb->getJoinTables()));

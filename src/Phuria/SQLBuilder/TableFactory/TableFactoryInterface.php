@@ -11,7 +11,7 @@
 
 namespace Phuria\SQLBuilder\TableFactory;
 
-use Phuria\SQLBuilder\QueryBuilder\AbstractBuilder;
+use Phuria\SQLBuilder\QueryBuilder\BuilderInterface;
 use Phuria\SQLBuilder\Table\AbstractTable;
 
 /**
@@ -20,10 +20,10 @@ use Phuria\SQLBuilder\Table\AbstractTable;
 interface TableFactoryInterface
 {
     /**
-     * @param mixed           $table
-     * @param AbstractBuilder $qb
+     * @param mixed            $table
+     * @param BuilderInterface $qb
      *
      * @return AbstractTable
      */
-    public function createNewTable($table, AbstractBuilder $qb);
+    public function createNewTable($table, BuilderInterface $qb);
 }

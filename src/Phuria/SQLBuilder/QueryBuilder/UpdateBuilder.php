@@ -27,7 +27,6 @@ class UpdateBuilder extends AbstractBuilder implements
     use Clause\WhereClauseTrait;
     use Clause\OrderByClauseTrait;
     use Clause\LimitClauseTrait;
-    use Component\QueryComponentTrait;
     use Component\TableComponentTrait;
 
     /**

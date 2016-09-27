@@ -11,7 +11,7 @@
 
 namespace Phuria\SQLBuilder\Parser;
 
-use Phuria\SQLBuilder\QueryBuilder\Component\QueryComponentInterface;
+use Phuria\SQLBuilder\QueryBuilder\BuilderInterface;
 use Phuria\SQLBuilder\ReferenceManager;
 use Phuria\SQLBuilder\Table\AbstractTable;
 
@@ -65,7 +65,7 @@ class ReferenceParser
             return "\"" . $reference ."\"";
         } elseif ($reference instanceof AbstractTable) {
             return $reference->getAliasOrName();
-        } elseif ($reference instanceof QueryComponentInterface) {
+        } elseif ($reference instanceof BuilderInterface) {
             return $reference->buildSQL();
         }
 

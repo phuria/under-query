@@ -2,7 +2,7 @@
 
 namespace Phuria\SQLBuilder\Table;
 
-use Phuria\SQLBuilder\QueryBuilder\AbstractBuilder;
+use Phuria\SQLBuilder\QueryBuilder\BuilderInterface;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -10,15 +10,15 @@ use Phuria\SQLBuilder\QueryBuilder\AbstractBuilder;
 class SubQueryTable extends AbstractTable
 {
     /**
-     * @var AbstractBuilder
+     * @var BuilderInterface
      */
     private $subQb;
 
     /**
-     * @param AbstractBuilder $subQb
-     * @param AbstractBuilder $qb
+     * @param BuilderInterface $subQb
+     * @param BuilderInterface $qb
      */
-    public function __construct(AbstractBuilder $subQb, AbstractBuilder $qb)
+    public function __construct(BuilderInterface $subQb, BuilderInterface $qb)
     {
         $this->subQb = $subQb;
         parent::__construct($qb);
@@ -29,7 +29,7 @@ class SubQueryTable extends AbstractTable
      */
     public function getTableName()
     {
-        $ref = $this->getQueryBuilder()->getReferenceManager()->register($this->subQb);
+        $ref = $this->getQueryBuilder()->objectToString($this->subQb);
 
         return '(' . $ref . ')';
     }

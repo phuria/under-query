@@ -12,8 +12,8 @@
 namespace Phuria\SQLBuilder\QueryCompiler;
 
 use Phuria\SQLBuilder\Parser\ReferenceParser;
-use Phuria\SQLBuilder\QueryBuilder\AbstractBuilder;
 use Phuria\SQLBuilder\QueryBuilder\AbstractInsertBuilder;
+use Phuria\SQLBuilder\QueryBuilder\BuilderInterface;
 use Phuria\SQLBuilder\QueryBuilder\Clause;
 use Phuria\SQLBuilder\QueryBuilder\Component;
 use Phuria\SQLBuilder\QueryBuilder\InsertSelectBuilder;
@@ -37,17 +37,17 @@ class QueryCompiler implements QueryCompilerInterface
     /**
      * @inheritdoc
      */
-    public function compile(AbstractBuilder $qb)
+    public function compile(BuilderInterface $qb)
     {
         return $this->compileReferences($this->compileRaw($qb), $qb);
     }
 
     /**
-     * @param AbstractBuilder $qb
+     * @param BuilderInterface $qb
      *
      * @return string
      */
-    private function compileRaw(AbstractBuilder $qb)
+    private function compileRaw(BuilderInterface $qb)
     {
         return implode(' ', array_filter([
             $this->compileDelete($qb),
@@ -70,21 +70,21 @@ class QueryCompiler implements QueryCompilerInterface
 
     /**
      * @param string          $rawSQL
-     * @param AbstractBuilder $qb
+     * @param BuilderInterface $qb
      *
      * @return string
      */
-    private function compileReferences($rawSQL, AbstractBuilder $qb)
+    private function compileReferences($rawSQL, BuilderInterface $qb)
     {
         return (new ReferenceParser($rawSQL, $qb->getReferenceManager()))->parseSQL();
     }
 
     /**
-     * @param AbstractBuilder $qb
+     * @param BuilderInterface $qb
      *
      * @return string
      */
-    private function compileDelete(AbstractBuilder $qb)
+    private function compileDelete(BuilderInterface $qb)
     {
         if ($qb instanceof Clause\DeleteClauseInterface) {
             return $qb->getDeleteClauses() ? 'DELETE ' . implode(', ', $qb->getDeleteClauses()) : 'DELETE';
@@ -94,11 +94,11 @@ class QueryCompiler implements QueryCompilerInterface
     }
 
     /**
-     * @param AbstractBuilder $qb
+     * @param BuilderInterface $qb
      *
      * @return string
      */
-    private function compileInsert(AbstractBuilder $qb)
+    private function compileInsert(BuilderInterface $qb)
     {
         if ($qb instanceof AbstractInsertBuilder) {
             return 'INSERT INTO';
@@ -108,11 +108,11 @@ class QueryCompiler implements QueryCompilerInterface
     }
 
     /**
-     * @param AbstractBuilder $qb
+     * @param BuilderInterface $qb
      *
      * @return string
      */
-    private function compileUpdate(AbstractBuilder $qb)
+    private function compileUpdate(BuilderInterface $qb)
     {
         if ($qb instanceof UpdateBuilder) {
             return $qb->isIgnore() ? 'UPDATE IGNORE' : 'UPDATE';
@@ -122,11 +122,11 @@ class QueryCompiler implements QueryCompilerInterface
     }
 
     /**
-     * @param AbstractBuilder $qb
+     * @param BuilderInterface $qb
      *
      * @return string
      */
-    private function compileSelect(AbstractBuilder $qb)
+    private function compileSelect(BuilderInterface $qb)
     {
         if ($qb instanceof Clause\SelectClauseInterface) {
             return 'SELECT ' . implode(', ', $qb->getSelectClauses());
@@ -136,11 +136,11 @@ class QueryCompiler implements QueryCompilerInterface
     }
 
     /**
-     * @param AbstractBuilder $qb
+     * @param BuilderInterface $qb
      *
      * @return string
      */
-    private function compileSet(AbstractBuilder $qb)
+    private function compileSet(BuilderInterface $qb)
     {
         if ($qb instanceof Clause\SetClauseInterface && $qb->getSetClauses()) {
             return 'SET ' . implode(', ', $qb->getSetClauses());
@@ -150,11 +150,11 @@ class QueryCompiler implements QueryCompilerInterface
     }
 
     /**
-     * @param AbstractBuilder $qb
+     * @param BuilderInterface $qb
      *
      * @return string
      */
-    private function compileWhere(AbstractBuilder $qb)
+    private function compileWhere(BuilderInterface $qb)
     {
         if ($qb instanceof Clause\WhereClauseInterface && $qb->getWhereClauses()) {
             return 'WHERE ' . implode(' AND ', $qb->getWhereClauses());
@@ -164,11 +164,11 @@ class QueryCompiler implements QueryCompilerInterface
     }
 
     /**
-     * @param AbstractBuilder $qb
+     * @param BuilderInterface $qb
      *
      * @return string
      */
-    private function compileGroupBy(AbstractBuilder $qb)
+    private function compileGroupBy(BuilderInterface $qb)
     {
         if ($qb instanceof Clause\GroupByClauseInterface && $qb->getGroupByClauses()) {
             $clause = 'GROUP BY ' . implode(', ', $qb->getGroupByClauses());
@@ -180,11 +180,11 @@ class QueryCompiler implements QueryCompilerInterface
     }
 
     /**
-     * @param AbstractBuilder $qb
+     * @param BuilderInterface $qb
      *
      * @return string
      */
-    private function compileHaving(AbstractBuilder $qb)
+    private function compileHaving(BuilderInterface $qb)
     {
         if ($qb instanceof Clause\HavingClauseInterface && $qb->getHavingClauses()) {
             return 'HAVING ' . implode(' AND ', $qb->getHavingClauses());
@@ -194,11 +194,11 @@ class QueryCompiler implements QueryCompilerInterface
     }
 
     /**
-     * @param AbstractBuilder $qb
+     * @param BuilderInterface $qb
      *
      * @return string
      */
-    private function compileOrderBy(AbstractBuilder $qb)
+    private function compileOrderBy(BuilderInterface $qb)
     {
         if ($qb instanceof Clause\OrderByClauseInterface && $qb->getOrderByClauses()) {
             return 'ORDER BY ' . implode(', ', $qb->getOrderByClauses());
@@ -208,11 +208,11 @@ class QueryCompiler implements QueryCompilerInterface
     }
 
     /**
-     * @param AbstractBuilder $qb
+     * @param BuilderInterface $qb
      *
      * @return string
      */
-    private function compileLimit(AbstractBuilder $qb)
+    private function compileLimit(BuilderInterface $qb)
     {
         if ($qb instanceof Clause\LimitClauseInterface && $qb->getLimitClause()) {
             return 'LIMIT ' . $qb->getLimitClause();
@@ -222,11 +222,11 @@ class QueryCompiler implements QueryCompilerInterface
     }
 
     /**
-     * @param AbstractBuilder $qb
+     * @param BuilderInterface $qb
      *
      * @return string
      */
-    private function compileInsertValues(AbstractBuilder $qb)
+    private function compileInsertValues(BuilderInterface $qb)
     {
         if ($qb instanceof Component\InsertValuesComponentInterface) {
             return 'VALUES ' . implode(', ', array_map(function (array $values) {
@@ -238,11 +238,11 @@ class QueryCompiler implements QueryCompilerInterface
     }
 
     /**
-     * @param AbstractBuilder $qb
+     * @param BuilderInterface $qb
      *
      * @return string
      */
-    private function compileInsertSelect(AbstractBuilder $qb)
+    private function compileInsertSelect(BuilderInterface $qb)
     {
         if ($qb instanceof InsertSelectBuilder) {
             return $qb->getSelectInsert()->buildSQL();
@@ -252,11 +252,11 @@ class QueryCompiler implements QueryCompilerInterface
     }
 
     /**
-     * @param AbstractBuilder $qb
+     * @param BuilderInterface $qb
      *
      * @return string
      */
-    private function compileInsertColumns(AbstractBuilder $qb)
+    private function compileInsertColumns(BuilderInterface $qb)
     {
         if ($qb instanceof Clause\InsertColumnsClauseInterface) {
             return '(' . implode(', ', $qb->getColumns()) . ')';

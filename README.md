@@ -21,6 +21,8 @@ php composer.phar require phuria/sql-builder
 
 There are different query builders classes for each SQL query type: `SelectBuilder`, `UpdateBuilder`, `DeleteBuilder` and `InsertBuilder`.
 
+Below are some simple examples of use.
+
 #### Simple SELECT
 ```php
 $qb = new SelectBuilder();
@@ -99,7 +101,18 @@ echo $targetQb->buildSQL();
 INSERT INTO user_summary (user_id, total_price) SELECT t.user_id, SUM(t.amount) FROM transactions AS t GROUP BY t.user_id
 ```
 
+#### Simple UPDATE
+```php
+$qb = new UpdateBuilder();
 
+$rootTable = $qb->update('user', 'u');
+$qb->addSet("u.updated_at = NOW()");
+$qb->andWhere("u.id = 1");
+```
+
+```sql
+UPDATE user AS u SET u.updated_at = NOW() WHERE u.id = 1
+```
 ## Create your own custom table
 
 ```php

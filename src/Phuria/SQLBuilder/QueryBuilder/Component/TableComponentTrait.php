@@ -11,7 +11,7 @@
 
 namespace Phuria\SQLBuilder\QueryBuilder\Component;
 
-use Phuria\SQLBuilder\QueryBuilder\AbstractBuilder;
+use Phuria\SQLBuilder\QueryBuilder\BuilderInterface;
 use Phuria\SQLBuilder\Table\AbstractTable;
 use Phuria\SQLBuilder\TableFactory\TableFactoryInterface;
 
@@ -31,7 +31,7 @@ trait TableComponentTrait
     abstract protected function getTableFactory();
 
     /**
-     * @return AbstractBuilder
+     * @return BuilderInterface
      */
     abstract public function getQueryBuilder();
 
