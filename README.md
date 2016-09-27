@@ -115,7 +115,7 @@ UPDATE user AS u SET u.updated_at = NOW() WHERE u.id = 1
 ```
 
 
-## Table references
+## Table reference
 
 Each method adds to QueryBuilder new table (eg. `leftJoin`, `from`, `into`) returns `TableInterface` instance.
 Use an instance of such a table as string will convert object to reference.
@@ -143,6 +143,25 @@ SELECT user.* FROM user;
 
 # With alias
 SELECT u.* FROM user AS u;
+```
+
+
+## Column reference
+
+Table reference is the most commonly used in table's column context. 
+Therefore, here is helper method that which returns reference directly to column.
+
+```php
+$qb = new SelectBuilder();
+
+$userTable = $qb->from('user', 'u');
+$qb->addSelect($userTable->column('username'), $userTable->column('password'));
+
+echo $qb->buildSQL();
+```
+
+```sql
+SELECT u.username, u.password FROM user u
 ```
 
 
