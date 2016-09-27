@@ -302,7 +302,7 @@ $subQb->addGroupBy('pricelist.owner_id');
 
 $qb = new SelectBuilder();
 $subTable = $qb->from($subQb, 'src');
-$qb->addSelect("AVG($subTable->column('price'))");
+$qb->addSelect("AVG({$subTable->column('price')})");
 
 echo $qb->buildSQL();
 ```
