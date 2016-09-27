@@ -11,14 +11,13 @@
 
 namespace Phuria\SQLBuilder\QueryBuilder;
 
+use Interop\Container\ContainerInterface;
 use Phuria\SQLBuilder\Connection\ConnectionInterface;
-use Phuria\SQLBuilder\Parameter\ParameterManager;
+use Phuria\SQLBuilder\DependencyInjection\InternalContainer;
 use Phuria\SQLBuilder\Parameter\ParameterManagerInterface;
 use Phuria\SQLBuilder\Query;
-use Phuria\SQLBuilder\QueryCompiler\QueryCompiler;
 use Phuria\SQLBuilder\QueryCompiler\QueryCompilerInterface;
 use Phuria\SQLBuilder\ReferenceManager;
-use Phuria\SQLBuilder\TableFactory\TableFactory;
 use Phuria\SQLBuilder\TableFactory\TableFactoryInterface;
 
 /**
@@ -46,12 +45,21 @@ abstract class AbstractBuilder implements BuilderInterface
      */
     private $referenceManager;
 
-    public function __construct()
+    /**
+     * @param ContainerInterface|null $container
+     */
+    public function __construct(ContainerInterface $container = null)
     {
-        $this->tableFactory = new TableFactory();
-        $this->queryCompiler = new QueryCompiler();
-        $this->parameterManager = new ParameterManager();
-        $this->referenceManager = new ReferenceManager();
+        $container = $container ?: new InternalContainer();
+
+        $this->tableFactory = $container->get('phuria.sql_builder.table_factory');
+        $this->queryCompiler = $container->get('phuria.sql_builder.query_compiler');
+
+        $parameterClass = $container->getParameter('phuria.sql_builder.parameter_manager.class');
+        $this->parameterManager = new $parameterClass;
+
+        $referenceClass = $container->getParameter('phuria.sql_builder.reference_manager.class');
+        $this->referenceManager = new $referenceClass;
     }
 
     /**
