@@ -22,62 +22,66 @@ use Phuria\SQLBuilder\QueryBuilder\UpdateBuilder;
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-class QB
+class QueryBuilderFactory
 {
     /**
      * @var ContainerInterface $container
      */
-    private static $container;
+    private $container;
+
+    /**
+     * @param ContainerInterface $container
+     */
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container ?: new InternalContainer();
+    }
 
     /**
      * @return ContainerInterface
      */
-    public static function getContainer()
+    public function getContainer()
     {
-        if (null === static::$container) {
-            static::$container = new InternalContainer();
-        }
-
-        return static::$container;
+        return $this->container;
     }
 
     /**
      * @return SelectBuilder
      */
-    public static function select()
+    public function select()
     {
-        return new SelectBuilder(static::getContainer());
+        return new SelectBuilder($this->container);
     }
 
     /**
      * @return UpdateBuilder
      */
-    public static function update()
+    public function update()
     {
-        return new UpdateBuilder(static::getContainer());
+        return new UpdateBuilder($this->container);
     }
 
     /**
      * @return DeleteBuilder
      */
-    public static function delete()
+    public function delete()
     {
-        return new DeleteBuilder(static::getContainer());
+        return new DeleteBuilder($this->container);
     }
 
     /**
      * @return InsertBuilder
      */
-    public static function insert()
+    public function insert()
     {
-        return new InsertBuilder(static::getContainer());
+        return new InsertBuilder($this->container);
     }
 
     /**
      * @return InsertSelectBuilder
      */
-    public static function insertSelect()
+    public function insertSelect()
     {
-        return new InsertSelectBuilder(static::getContainer());
+        return new InsertSelectBuilder($this->container);
     }
 }
