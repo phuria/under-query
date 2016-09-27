@@ -167,7 +167,9 @@ SELECT u.username, u.password FROM user u
 
 ## Create your own custom table
 
-There is example of usage own table objects.
+The default implementation of `TableInterface` is `UnknownTable`. For mapping table name to class name is responsible `TableRegistry`. 
+
+First you need to crete implementation of `TableInterface`. We highly recommend inheriting from `AbstractTable`.
 
 ```php
 use Phuria\SQLBuilder\Table\AbstractTable;
@@ -206,6 +208,9 @@ class AccountTable extends AbstractTable
 }
 ```
 
+Then you need to add the table to configuration (see configuration section). 
+Now when you are referring to this table, you get instance of implemented class.
+
 ```php
 $qb = new QueryBuilder();
 $qb->addSelect('*');
@@ -220,3 +225,107 @@ $qb->buildSQL();
 SELECT * FROM account WHERE acount.active
 ```
 
+You are not in any way obligated to use this functionality.
+But think how much it can facilitate you to build complex queries.
+
+
+
+## Configuration
+
+#### Static QB
+
+The __easiest__ and __not recommended__ way to configure this library is use `\Phuria\SQLBuilder\QB` class.
+Here you get access to `InternalContainer` and you can make the necessary changes.
+Reconfigured container instance will be delivered to every new query builder (you must use static factory methods).
+
+Example how to register table:
+
+```php
+use Phuria\SQLBuilder\QB;
+
+$tableRegistry = QB::getContainer()->get('phuria.sql_builder.table_registry');
+$tableRegistry->registerTable('example_table', ExampleTable::class);
+
+$qb = QB::select();
+
+echo get_class($qb->from('example_table')); // output: ExampleTable::class
+```
+
+
+#### Use InternalContainer in your own DependencyInjection
+
+Another way is add an `InternalContainer` as service to your own DI. 
+You will probably need to implement query builder factory.
+
+```php
+use Phuria\SQLBuilder\DependencyInjection\InternalContainer;
+use Phuria\SQLBuilder\QueryBuilder\SelectBuilder;
+
+class MyQueryBuilderFactory
+{
+    private $internalContainer;
+    
+    public function __construct()
+    {
+        $this->internalContainer = new InternalContainer();
+    }
+    
+    public function addTableToRegistry($tableName, $tableClass)
+    {
+        $this->internalContainer->get('phuria.sql_builder.table_registry')
+            ->tableRegister($tableName, $tableClass);
+    }
+    
+    public function createSelectBuilder()
+    {
+        return new SelectBuilder($this->internalContainer);
+    }
+}
+```
+
+#### Use directly your own DependencyInjection
+
+We recommend spending some time and add all services and parameters to your `Container`. 
+All necessary dependency data can be found in `InternalContainer`'s constructor.
+
+
+## Sub Query
+
+To use a sub query like table, pass it as argument (instead of the name of the table).
+You will get in return an instance of `SubQueryTable` that you can use like normal table (eg. you can set alias).
+ 
+```php
+$subQb = new SelectBuilder();
+$subQb->addSelect('MAX(pricelist.price) AS price');
+$subQb->from('pricelist');
+$subQb->addGroupBy('pricelist.owner_id');
+
+$qb = new SelectBuilder();
+$subTable = $qb->from($subQb, 'src');
+$qb->addSelect("AVG($subTable->column('price'))");
+
+echo $qb->buildSQL();
+```
+
+```sql
+SELECT AVG(src.price) FROM (SELECT MAX(pricelist.price) AS price FROM pricelist GROUP BY pricelist.owner_id) AS src
+```
+
+If you want to use sub query in a different context then you must use object to string reference converter.
+
+```php
+$subQb = new SelectBuilder();
+$subQb->addSelect('DISTINCT user.affiliate_id');
+$subQb->form('user');
+
+$qb = new SelectBuilder();
+$qb->addSelect("10 = ({$qb->objectToString($subQb)})");
+
+echo $qb->buildSQL();
+```
+
+```sql
+SELECT 10 IN (SELECT DISTINCT user.affiliate_id FROM user)
+```
+
+At the time of building query `RefereneParser` will be known what to do with it.
