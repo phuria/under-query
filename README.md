@@ -113,7 +113,42 @@ $qb->andWhere("u.id = 1");
 ```sql
 UPDATE user AS u SET u.updated_at = NOW() WHERE u.id = 1
 ```
+
+
+## Table references
+
+Each method adds to QueryBuilder new table (eg. `leftJoin`, `from`, `into`) returns `TableInterface` instance.
+Use an instance of such a table as string will convert object to reference.
+When is time to build SQL, all references will be converted to table name (or alias).
+This allows you to easily change aliases.
+
+```php
+$qb = new SelectBuilder();
+
+$userTable = $qb->from('user');
+$qb->select("{$userTable}.*");
+
+// Without alias
+echo $qb->buildSQL();
+
+$userTable->setAlias('u');
+
+// With alias
+echo $qb->buildSQL();
+```
+
+```sql
+# Without alias
+SELECT user.* FROM user;
+
+# With alias
+SELECT u.* FROM user AS u;
+```
+
+
 ## Create your own custom table
+
+There is example of usage own table objects.
 
 ```php
 use Phuria\SQLBuilder\Table\AbstractTable;
@@ -127,7 +162,27 @@ class AccountTable extends AbstractTable
     
     public function onlyActive()
     {
-        $this->andWhere($this->column('active'));
+        $this->getQueryBuilder()->andWhere($this->column('active'));
+    }
+    
+    public function joinToContact()
+    {
+        $qb = $this->getQueryBuilder();
+        $userTable = $qb->innerJoin('user', 'u');
+        $userTable->joinOn("{$userTable}.id = {$this}.user_id");
+        $contactTable = $qb->innerJoin('contact', 'c');
+        $contactTable->joinOn("{$contactTable}.user_id = {$userTable}.id");
+        
+        return $contactTable;
+    }
+    
+    public function selectOnlyActiveEmails()
+    {
+        $this->onlyActive();
+        $contactTable = $this->joinToContact();
+        $this->getQueryBuilder()->addSelect($contactTable->column('email'));
+        
+        return $this; 
     }
 }
 ```
