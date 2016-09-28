@@ -332,13 +332,12 @@ $qb->join($anotherQb);
 
 Arguments `$alias` and `$joinOn` are optional.
 You can set them later directly on the object table.
-
 ```php
 $qb = $qbFatry->select();
 $qb->from('user', 'u');
 $qb->join('account', 'a', 'u.id = a.user_id');
 ```
-OR
+And equivalent code:
 ```php
 $qb = $qbFatry->select();
 $userTable = $qb->from('user', 'u');
