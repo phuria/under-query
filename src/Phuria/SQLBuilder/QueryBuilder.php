@@ -17,6 +17,7 @@ use Phuria\SQLBuilder\QueryBuilder\InsertBuilder;
 use Phuria\SQLBuilder\QueryBuilder\InsertSelectBuilder;
 use Phuria\SQLBuilder\QueryBuilder\SelectBuilder;
 use Phuria\SQLBuilder\QueryBuilder\UpdateBuilder;
+use Phuria\SQLBuilder\QueryCompiler\QueryCompilerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -48,7 +49,7 @@ class QueryBuilder
     /**
      * @param string $class
      *
-     * @return array
+     * @return QueryCompilerInterface
      */
     private function createQueryBuilder($class)
     {
