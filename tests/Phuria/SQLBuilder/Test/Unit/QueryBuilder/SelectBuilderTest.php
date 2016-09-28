@@ -42,7 +42,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
 
         $rootTable = $qb->from('test');
         $rootTable->setAlias('SRC');
-        $rootTable->addSelect('MIN(SRC.id)');
+        $qb->addSelect('MIN(SRC.id)');
 
         static::assertSame('SELECT MIN(SRC.id) FROM test AS SRC', $qb->buildQuery()->getSQL());
     }
@@ -54,9 +54,9 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $qb = static::queryBuilder()->select();
 
-        $rootTable = $qb->from('test');
-        $rootTable->addSelect('test.id');
-        $rootTable->addSelect('test.name');
+        $qb->from('test');
+        $qb->addSelect('test.id');
+        $qb->addSelect('test.name');
 
         static::assertSame('SELECT test.id, test.name FROM test', $qb->buildQuery()->getSQL());
     }
@@ -69,8 +69,8 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
         $qb = static::queryBuilder()->select();
 
         $rootTable = $qb->from('example');
-        $rootTable->addSelect($rootTable->column('id'));
-        $rootTable->addSelect($rootTable->column('name'));
+        $qb->addSelect($rootTable->column('id'));
+        $qb->addSelect($rootTable->column('name'));
 
         static::assertSame('SELECT example.id, example.name FROM example', $qb->buildQuery()->getSQL());
 
@@ -122,8 +122,8 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
         $qb = static::queryBuilder()->select();
 
         $rootTable = $qb->from('example');
-        $rootTable->addSelect('example.id');
-        $rootTable->addSelect('example.name');
+        $qb->addSelect('example.id');
+        $qb->addSelect('example.name');
         $qb->andWhere("{$rootTable->column('id')} BETWEEN 1 AND 10");
 
         $expectedSQL = 'SELECT example.id, example.name FROM example WHERE example.id BETWEEN 1 AND 10';

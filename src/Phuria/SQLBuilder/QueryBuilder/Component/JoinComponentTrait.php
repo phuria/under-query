@@ -11,6 +11,7 @@
 
 namespace Phuria\SQLBuilder\QueryBuilder\Component;
 
+use Phuria\SQLBuilder\JoinType;
 use Phuria\SQLBuilder\QueryBuilder\BuilderInterface;
 use Phuria\SQLBuilder\Table\AbstractTable;
 use Phuria\SQLBuilder\TableFactory\TableFactoryInterface;
@@ -35,14 +36,14 @@ trait JoinComponentTrait
     abstract public function getQueryBuilder();
 
     /**
-     * @param string $joinType
-     * @param mixed  $table
-     * @param string $alias
-     * @param string $joinOn
+     * @param string      $joinType
+     * @param mixed       $table
+     * @param string|null $alias
+     * @param string|null $joinOn
      *
      * @return AbstractTable
      */
-    private function join($joinType, $table, $alias = null, $joinOn = null)
+    private function doJoin($joinType, $table, $alias = null, $joinOn = null)
     {
         $this->joinTables[] = $table = $this->getTableFactory()->createNewTable($table, $this->getQueryBuilder());
         $table->setJoinType($joinType);
@@ -59,39 +60,75 @@ trait JoinComponentTrait
     }
 
     /**
-     * @param mixed  $table
-     * @param string $alias
-     * @param string $joinOn
+     * @param mixed       $table
+     * @param string|null $alias
+     * @param string|null $joinOn
+     *
+     * @return AbstractTable
+     */
+    public function join($table, $alias = null, $joinOn = null)
+    {
+        return $this->doJoin(JoinType::JOIN, $table, $alias, $joinOn);
+    }
+
+    /**
+     * @param mixed       $table
+     * @param string|null $alias
+     * @param string|null $joinOn
+     *
+     * @return AbstractTable
+     */
+    public function straightJoin($table, $alias = null, $joinOn = null)
+    {
+        return $this->doJoin(JoinType::STRAIGHT_JOIN, $table, $alias, $joinOn);
+    }
+
+    /**
+     * @param mixed       $table
+     * @param string|null $alias
+     * @param string|null $joinOn
      *
      * @return AbstractTable
      */
     public function crossJoin($table, $alias = null, $joinOn = null)
     {
-        return $this->join(AbstractTable::CROSS_JOIN, $table, $alias, $joinOn);
+        return $this->doJoin(JoinType::CROSS_JOIN, $table, $alias, $joinOn);
     }
 
     /**
-     * @param mixed  $table
-     * @param string $alias
-     * @param string $joinOn
+     * @param mixed       $table
+     * @param string|null $alias
+     * @param string|null $joinOn
      *
      * @return AbstractTable
      */
     public function leftJoin($table, $alias = null, $joinOn = null)
     {
-        return $this->join(AbstractTable::LEFT_JOIN, $table, $alias, $joinOn);
+        return $this->doJoin(JoinType::LEFT_JOIN, $table, $alias, $joinOn);
     }
 
     /**
-     * @param mixed  $table
-     * @param string $alias
-     * @param string $joinOn
+     * @param mixed       $table
+     * @param string|null $alias
+     * @param string|null $joinOn
+     *
+     * @return AbstractTable
+     */
+    public function rightJoin($table, $alias = null, $joinOn = null)
+    {
+        return $this->doJoin(JoinType::RIGHT_JOIN, $table, $alias, $joinOn);
+    }
+
+    /**
+     * @param mixed       $table
+     * @param string|null $alias
+     * @param string|null $joinOn
      *
      * @return AbstractTable
      */
     public function innerJoin($table, $alias = null, $joinOn = null)
     {
-        return $this->join(AbstractTable::INNER_JOIN, $table, $alias, $joinOn);
+        return $this->doJoin(JoinType::INNER_JOIN, $table, $alias, $joinOn);
     }
 
     /**

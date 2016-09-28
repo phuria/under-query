@@ -11,6 +11,7 @@
 
 namespace Phuria\SQLBuilder\QueryCompiler;
 
+use Phuria\SQLBuilder\JoinType;
 use Phuria\SQLBuilder\QueryBuilder\BuilderInterface;
 use Phuria\SQLBuilder\QueryBuilder\Component;
 use Phuria\SQLBuilder\QueryBuilder\DeleteBuilder;
@@ -23,16 +24,35 @@ use Phuria\SQLBuilder\Table\AbstractTable;
 class TableCompiler
 {
     /**
+     * @var array
+     */
+    private $joinPrefixes;
+
+    /**
+     * TableCompiler constructor.
+     */
+    public function __construct()
+    {
+        $this->joinPrefixes = [
+            JoinType::CROSS_JOIN    => 'CROSS',
+            JoinType::LEFT_JOIN     => 'LEFT',
+            JoinType::RIGHT_JOIN    => 'RIGHT',
+            JoinType::INNER_JOIN    => 'INNER',
+            JoinType::STRAIGHT_JOIN => 'STRAIGHT_JOIN'
+        ];
+    }
+
+    /**
      * @param AbstractTable $table
      *
      * @return string
      */
-    private function compileTableDeclaration(AbstractTable $table)
+    public function compileTableDeclaration(AbstractTable $table)
     {
         $declaration = '';
 
         if ($table->isJoin()) {
-            $declaration .= $table->getJoinType() . ' ';
+            $declaration .= $this->compileJoinName($table) . ' ';
         }
 
         $declaration .= $table->getTableName();
@@ -46,6 +66,45 @@ class TableCompiler
         }
 
         return $declaration;
+    }
+
+    /**
+     * @param AbstractTable $table
+     *
+     * @return string
+     */
+    private function compileJoinName(AbstractTable $table)
+    {
+        return implode(' ', array_filter([
+            $table->isNaturalJoin() ? 'NATURAL' : '',
+            $this->compileJoinPrefix($table->getJoinType()),
+            $table->isOuterJoin() ? 'OUTER' : '',
+            $this->compileJoinSuffix($table->getJoinType())
+        ]));
+    }
+
+    /**
+     * @param int $joinType
+     *
+     * @return string
+     */
+    private function compileJoinPrefix($joinType)
+    {
+        if (array_key_exists($joinType, $this->joinPrefixes)) {
+            return $this->joinPrefixes[$joinType];
+        }
+
+        return null;
+    }
+
+    /**
+     * @param int $joinType
+     *
+     * @return string
+     */
+    private function compileJoinSuffix($joinType)
+    {
+        return $joinType === JoinType::STRAIGHT_JOIN ? '' : 'JOIN';
     }
 
     /**

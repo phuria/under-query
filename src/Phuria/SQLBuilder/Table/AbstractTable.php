@@ -9,34 +9,35 @@ use Phuria\SQLBuilder\QueryBuilder\BuilderInterface;
  */
 abstract class AbstractTable implements TableInterface
 {
-    const CROSS_JOIN = 'CROSS JOIN';
-    const LEFT_JOIN = 'LEFT JOIN';
-    const INNER_JOIN = 'INNER JOIN';
-
     /**
-     * @var BuilderInterface $qb
+     * @var BuilderInterface
      */
     private $qb;
 
     /**
-     * @var string $tableAlias
+     * @var string
      */
     private $tableAlias;
 
     /**
-     * @var string $joinType
+     * @var int
      */
     private $joinType;
 
     /**
-     * @var string $joinOn
+     * @var string
      */
     private $joinOn;
 
     /**
-     * @var bool $join
+     * @var bool
      */
-    private $join = false;
+    private $outerJoin = false;
+
+    /**
+     * @var bool
+     */
+    private $naturalJoin = false;
 
     /**
      * @param BuilderInterface $qb
@@ -95,11 +96,11 @@ abstract class AbstractTable implements TableInterface
      */
     public function isJoin()
     {
-        return $this->join;
+        return (bool) $this->joinType;
     }
 
     /**
-     * @return string
+     * @return int
      */
     public function getJoinType()
     {
@@ -107,26 +108,13 @@ abstract class AbstractTable implements TableInterface
     }
 
     /**
-     * @param string $joinType
+     * @param int $joinType
      *
      * @return $this
      */
     public function setJoinType($joinType)
     {
         $this->joinType = $joinType;
-        $this->join = true;
-
-        return $this;
-    }
-
-    /**
-     * @param string $clause
-     *
-     * @return $this
-     */
-    public function addSelect($clause)
-    {
-        $this->qb->addSelect($clause);
 
         return $this;
     }
@@ -149,6 +137,38 @@ abstract class AbstractTable implements TableInterface
     public function getJoinOn()
     {
         return $this->joinOn;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isOuterJoin()
+    {
+        return $this->outerJoin;
+    }
+
+    /**
+     * @param boolean $outerJoin
+     */
+    public function setOuterJoin($outerJoin)
+    {
+        $this->outerJoin = $outerJoin;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isNaturalJoin()
+    {
+        return $this->naturalJoin;
+    }
+
+    /**
+     * @param boolean $naturalJoin
+     */
+    public function setNaturalJoin($naturalJoin)
+    {
+        $this->naturalJoin = $naturalJoin;
     }
 
     /**

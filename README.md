@@ -26,8 +26,9 @@ php composer.phar require phuria/sql-builder
 - [Create your own custom table](#create-your-own-custom-table)
 - [Configuration](#configuration)
 - [Joins](#joins)
+  - [OUTER and NATURAL JOIN](#outer-and-natural-join)
+- [Index hint](#index-hint)
 - [Sub Query](#sub-query)
-  - [OUTER and NATURAL join](#outer-and-natural-join)
 
 
 
@@ -366,15 +367,15 @@ $accountTable->setAlias('a');
 $accountTable->joinOn("{$userTable->column('id')} = {$accountTable->column('user_id')}");
 ```
 
-#### OUTER and NATURAL join
+#### OUTER and NATURAL JOIN
 
 To determine join as `OUTER` or `NATURAL` use methods: 
-`AbstractTable::setNatural()` or `AbstractTable::setOuter()`
+`AbstractTable::setNaturalJoin()` or `AbstractTable::setOuterJoin()`
 
 ```php
 $userTable = $qb->leftJoin('user', 'u');
-$userTable->setNatural(true);
-$userTable->setOuter(true);
+$userTable->setNaturalJoin(true);
+$userTable->setOuterJoin(true);
 ```
 
 
