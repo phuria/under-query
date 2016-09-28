@@ -307,28 +307,21 @@ join($table, string $alias = null, string $joinOn = null) : TableInterface
 
 Argument `$table` can be one of following types:
  - table name
+   ```php
+   $qb->join('account');
+   ```
  - class name
+   ```php
+   $qb->join(AccountTable::class);
+   ```
  - closure
+   ```php
+   $qb->join(function (AccountTable $accountTable) {});
+   ```
  - object implementing `QueryBuilderInterface`
-
-```php
-$qb = $qbFactory->select();
-
-// Table name:
-$qb->join('account');
-
-// Class name:
-$qb->join(AccountTable::class);
-
-// Closure:
-$qb->join(function (AccountTable $accountTable) { 
-    
-});
-
-// Another QueryBuilder:
-$anotherQb = $qbFactory->select();
-$qb->join($anotherQb);
-```
+   ```php
+   $qb->join($anotherQb);
+   ```
 
 Arguments `$alias` and `$joinOn` are optional.
 You can set them later directly on the object table.
