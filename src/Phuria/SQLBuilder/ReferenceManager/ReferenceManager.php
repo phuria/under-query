@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Phuria\SQLBuilder;
+namespace Phuria\SQLBuilder\ReferenceManager;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-class ReferenceManager
+class ReferenceManager implements ReferenceManagerInterface
 {
     /**
      * @var array $references

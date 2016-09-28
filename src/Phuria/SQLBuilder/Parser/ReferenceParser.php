@@ -12,7 +12,7 @@
 namespace Phuria\SQLBuilder\Parser;
 
 use Phuria\SQLBuilder\QueryBuilder\BuilderInterface;
-use Phuria\SQLBuilder\ReferenceManager;
+use Phuria\SQLBuilder\ReferenceManager\ReferenceManagerInterface;
 use Phuria\SQLBuilder\Table\AbstractTable;
 
 /**
@@ -26,15 +26,15 @@ class ReferenceParser
     private $rawSQL;
 
     /**
-     * @var ReferenceManager $manager
+     * @var ReferenceManagerInterface $manager
      */
     private $manager;
 
     /**
-     * @param                  $rawSQL
-     * @param ReferenceManager $manager
+     * @param                           $rawSQL
+     * @param ReferenceManagerInterface $manager
      */
-    public function __construct($rawSQL, ReferenceManager $manager)
+    public function __construct($rawSQL, ReferenceManagerInterface $manager)
     {
         $this->rawSQL = $rawSQL;
         $this->manager = $manager;

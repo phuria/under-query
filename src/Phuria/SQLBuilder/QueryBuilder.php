@@ -22,7 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-class QueryBuilderFactory
+class QueryBuilder
 {
     /**
      * @var ContainerInterface $container
@@ -30,9 +30,9 @@ class QueryBuilderFactory
     private $container;
 
     /**
-     * @param ContainerInterface $container
+     * @param ContainerInterface|null $container
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container = null)
     {
         $this->container = $container ?: new InternalContainer();
     }
@@ -46,11 +46,29 @@ class QueryBuilderFactory
     }
 
     /**
+     * @param string $class
+     *
+     * @return array
+     */
+    private function createQueryBuilder($class)
+    {
+        $parameterClass = $this->container->getParameter('phuria.sql_builder.parameter_manager.class');
+        $referenceClass = $this->container->getParameter('phuria.sql_builder.reference_manager.class');
+
+        return new $class(
+            $this->container->get('phuria.sql_builder.table_factory'),
+            $this->container->get('phuria.sql_builder.query_compiler'),
+            new $parameterClass,
+            new $referenceClass
+        );
+    }
+
+    /**
      * @return SelectBuilder
      */
     public function select()
     {
-        return new SelectBuilder($this->container);
+        return $this->createQueryBuilder(SelectBuilder::class);
     }
 
     /**
@@ -58,7 +76,7 @@ class QueryBuilderFactory
      */
     public function update()
     {
-        return new UpdateBuilder($this->container);
+        return $this->createQueryBuilder(UpdateBuilder::class);
     }
 
     /**
@@ -66,7 +84,7 @@ class QueryBuilderFactory
      */
     public function delete()
     {
-        return new DeleteBuilder($this->container);
+        return $this->createQueryBuilder(DeleteBuilder::class);
     }
 
     /**
@@ -74,7 +92,7 @@ class QueryBuilderFactory
      */
     public function insert()
     {
-        return new InsertBuilder($this->container);
+        return $this->createQueryBuilder(InsertBuilder::class);
     }
 
     /**
@@ -82,6 +100,6 @@ class QueryBuilderFactory
      */
     public function insertSelect()
     {
-        return new InsertSelectBuilder($this->container);
+        return $this->createQueryBuilder(InsertSelectBuilder::class);
     }
 }

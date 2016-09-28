@@ -11,7 +11,7 @@
 
 namespace Phuria\SQLBuilder\Test\Unit;
 
-use Phuria\SQLBuilder\ReferenceManager;
+use Phuria\SQLBuilder\ReferenceManager\ReferenceManager;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>

@@ -11,6 +11,7 @@
 
 namespace Phuria\SQLBuilder\Test\Unit\QueryBuilder;
 
+use Phuria\SQLBuilder\QueryBuilder;
 use Phuria\SQLBuilder\QueryBuilder\InsertBuilder;
 
 /**
@@ -19,11 +20,19 @@ use Phuria\SQLBuilder\QueryBuilder\InsertBuilder;
 class InsertBuilderTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @return InsertBuilder
+     */
+    private function createInsertBuilder()
+    {
+        return (new QueryBuilder())->insert();
+    }
+
+    /**
      * @test
      */
     public function simpleInsert()
     {
-        $qb = new InsertBuilder();
+        $qb = $this->createInsertBuilder();
 
         $qb->into('example');
         $qb->setColumns(['id', 'name']);
@@ -38,7 +47,7 @@ class InsertBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function insertMultipleArguments()
     {
-        $qb = new InsertBuilder();
+        $qb = $this->createInsertBuilder();
 
         $qb->into('user', ['username', 'email']);
         $qb->addValues(['foo', 'bar']);

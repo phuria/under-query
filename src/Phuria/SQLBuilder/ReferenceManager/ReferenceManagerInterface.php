@@ -9,14 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Phuria\SQLBuilder\Test\Helper;
-
-use Phuria\SQLBuilder\QueryBuilder\AbstractBuilder;
+namespace Phuria\SQLBuilder\ReferenceManager;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-class NullQueryBuilder extends AbstractBuilder
+interface ReferenceManagerInterface
 {
-    public function __construct() {}
 }

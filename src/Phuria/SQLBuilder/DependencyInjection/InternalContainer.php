@@ -13,7 +13,7 @@ namespace Phuria\SQLBuilder\DependencyInjection;
 
 use Phuria\SQLBuilder\Parameter\ParameterManager;
 use Phuria\SQLBuilder\QueryCompiler\QueryCompiler;
-use Phuria\SQLBuilder\ReferenceManager;
+use Phuria\SQLBuilder\ReferenceManager\ReferenceManager;
 use Phuria\SQLBuilder\TableFactory\TableFactory;
 use Phuria\SQLBuilder\TableRegistry;
 use Symfony\Component\DependencyInjection\ContainerInterface;

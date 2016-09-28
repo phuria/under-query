@@ -11,6 +11,7 @@
 
 namespace Phuria\SQLBuilder\Test\Unit\QueryBuilder;
 
+use Phuria\SQLBuilder\QueryBuilder;
 use Phuria\SQLBuilder\QueryBuilder\InsertSelectBuilder;
 use Phuria\SQLBuilder\QueryBuilder\SelectBuilder;
 
@@ -20,17 +21,33 @@ use Phuria\SQLBuilder\QueryBuilder\SelectBuilder;
 class InsertSelectBuilderTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @return SelectBuilder
+     */
+    private function createSelectBuilder()
+    {
+        return (new QueryBuilder())->select();
+    }
+
+    /**
+     * @return InsertSelectBuilder
+     */
+    private function createInsertSelectBuilder()
+    {
+        return (new QueryBuilder())->insertSelect();
+    }
+
+    /**
      * @test
      */
     public function insertSelect()
     {
-        $sourceQb = new SelectBuilder();
+        $sourceQb = $this->createSelectBuilder();
 
         $sourceQb->from('transactions', 't');
         $sourceQb->addSelect('t.user_id', 'SUM(t.amount)');
         $sourceQb->addGroupBy('t.user_id');
 
-        $targetQb = new InsertSelectBuilder();
+        $targetQb = $this->createInsertSelectBuilder();
         $targetQb->into('user_summary', ['user_id', 'total_price']);
         $targetQb->selectInsert($sourceQb);
 

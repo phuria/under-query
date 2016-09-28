@@ -11,13 +11,11 @@
 
 namespace Phuria\SQLBuilder\QueryBuilder;
 
-use Interop\Container\ContainerInterface;
 use Phuria\SQLBuilder\Connection\ConnectionInterface;
-use Phuria\SQLBuilder\DependencyInjection\InternalContainer;
 use Phuria\SQLBuilder\Parameter\ParameterManagerInterface;
 use Phuria\SQLBuilder\Query;
 use Phuria\SQLBuilder\QueryCompiler\QueryCompilerInterface;
-use Phuria\SQLBuilder\ReferenceManager;
+use Phuria\SQLBuilder\ReferenceManager\ReferenceManagerInterface;
 use Phuria\SQLBuilder\TableFactory\TableFactoryInterface;
 
 /**
@@ -41,25 +39,26 @@ abstract class AbstractBuilder implements BuilderInterface
     private $parameterManager;
 
     /**
-     * @var ReferenceManager
+     * @var ReferenceManagerInterface
      */
     private $referenceManager;
 
     /**
-     * @param ContainerInterface|null $container
+     * @param TableFactoryInterface     $tableFactory
+     * @param QueryCompilerInterface    $queryCompiler
+     * @param ParameterManagerInterface $parameterManager
+     * @param ReferenceManagerInterface $referenceManager
      */
-    public function __construct(ContainerInterface $container = null)
-    {
-        $container = $container ?: new InternalContainer();
-
-        $this->tableFactory = $container->get('phuria.sql_builder.table_factory');
-        $this->queryCompiler = $container->get('phuria.sql_builder.query_compiler');
-
-        $parameterClass = $container->getParameter('phuria.sql_builder.parameter_manager.class');
-        $this->parameterManager = new $parameterClass;
-
-        $referenceClass = $container->getParameter('phuria.sql_builder.reference_manager.class');
-        $this->referenceManager = new $referenceClass;
+    public function __construct(
+        TableFactoryInterface $tableFactory,
+        QueryCompilerInterface $queryCompiler,
+        ParameterManagerInterface $parameterManager,
+        ReferenceManagerInterface $referenceManager
+    ) {
+        $this->tableFactory = $tableFactory;
+        $this->queryCompiler = $queryCompiler;
+        $this->parameterManager = $parameterManager;
+        $this->referenceManager = $referenceManager;
     }
 
     /**
@@ -95,7 +94,7 @@ abstract class AbstractBuilder implements BuilderInterface
     }
 
     /**
-     * @return ReferenceManager
+     * @return ReferenceManagerInterface
      */
     public function getReferenceManager()
     {
