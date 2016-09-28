@@ -19,7 +19,7 @@ php composer.phar require phuria/sql-builder
 <a name="content"></a>
 ## Content
 
-- [Quick start](#quickStart) 
+- [Quick start](#quick-start) 
 - [Table reference](#tableReference)
 - [Column reference](#columnReference)
 - [Create your own custom table](#createYourOwnCustomTable)
@@ -27,7 +27,6 @@ php composer.phar require phuria/sql-builder
 - [Joins](#joins)
 
 
-<a name="quickStart"></a>
 ## Quick start [:arrow_up:](#content)
 
 There are different query builder classes for each SQL query type: 
