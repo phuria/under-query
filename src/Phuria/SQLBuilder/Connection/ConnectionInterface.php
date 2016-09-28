@@ -19,7 +19,7 @@ use Phuria\SQLBuilder\Statement\StatementInterface;
 interface ConnectionInterface
 {
     /**
-     * @param string                    $SQL
+     * @param string $SQL
      *
      * @return StatementInterface
      */

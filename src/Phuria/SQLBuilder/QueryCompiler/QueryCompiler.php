@@ -11,7 +11,7 @@
 
 namespace Phuria\SQLBuilder\QueryCompiler;
 
-use Phuria\SQLBuilder\Parser\ReferenceParser;
+use Phuria\SQLBuilder\QueryBuilder\AbstractBuilder;
 use Phuria\SQLBuilder\QueryBuilder\AbstractInsertBuilder;
 use Phuria\SQLBuilder\QueryBuilder\BuilderInterface;
 use Phuria\SQLBuilder\QueryBuilder\Clause;
@@ -29,9 +29,15 @@ class QueryCompiler implements QueryCompilerInterface
      */
     private $tableCompiler;
 
+    /**
+     * @var ReferenceCompiler
+     */
+    private $referenceCompiler;
+
     public function __construct()
     {
         $this->tableCompiler = new TableCompiler();
+        $this->referenceCompiler = new ReferenceCompiler();
     }
 
     /**
@@ -39,7 +45,14 @@ class QueryCompiler implements QueryCompilerInterface
      */
     public function compile(BuilderInterface $qb)
     {
-        return $this->compileReferences($this->compileRaw($qb), $qb);
+        $compiledSQL = $this->compileNativeSQL($qb);
+
+        if ($qb instanceof AbstractBuilder) {
+            $references = $qb->getParameterManager()->getReferences();
+            $compiledSQL = $this->referenceCompiler->compile($compiledSQL, $references);
+        }
+
+        return $compiledSQL;
     }
 
     /**
@@ -47,7 +60,7 @@ class QueryCompiler implements QueryCompilerInterface
      *
      * @return string
      */
-    private function compileRaw(BuilderInterface $qb)
+    private function compileNativeSQL(BuilderInterface $qb)
     {
         return implode(' ', array_filter([
             $this->compileDelete($qb),
@@ -66,17 +79,6 @@ class QueryCompiler implements QueryCompilerInterface
             $this->compileOrderBy($qb),
             $this->compileLimit($qb)
         ]));
-    }
-
-    /**
-     * @param string          $rawSQL
-     * @param BuilderInterface $qb
-     *
-     * @return string
-     */
-    private function compileReferences($rawSQL, BuilderInterface $qb)
-    {
-        return (new ReferenceParser($rawSQL, $qb->getReferenceManager()))->parseSQL();
     }
 
     /**

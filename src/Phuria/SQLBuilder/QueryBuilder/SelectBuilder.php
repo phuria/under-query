@@ -37,8 +37,8 @@ class SelectBuilder extends AbstractBuilder implements
     use Component\TableComponentTrait;
 
     /**
-     * @param mixed  $table
-     * @param string $alias
+     * @param mixed       $table
+     * @param string|null $alias
      *
      * @return AbstractTable
      */
@@ -48,8 +48,8 @@ class SelectBuilder extends AbstractBuilder implements
     }
 
     /**
-     * @param mixed  $table
-     * @param string $alias
+     * @param mixed       $table
+     * @param string|null $alias
      *
      * @return AbstractTable
      */

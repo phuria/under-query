@@ -19,20 +19,30 @@ use Phuria\SQLBuilder\Statement\StatementInterface;
 class ParameterManager implements ParameterManagerInterface
 {
     /**
-     * @var QueryParameter[] $params
+     * @var QueryParameter[]
      */
-    private $params = [];
+    private $parameters = [];
+
+    /**
+     * @var array
+     */
+    private $references = [];
+
+    /**
+     * @var int
+     */
+    private $referenceCounter = 0;
 
     /**
      * @inheritdoc
      */
     public function createOrGetParameter($name)
     {
-        if (false === array_key_exists($name, $this->params)) {
-            $this->params[$name] = new QueryParameter($name);
+        if (false === array_key_exists($name, $this->parameters)) {
+            $this->parameters[$name] = new QueryParameter($name);
         }
 
-        return $this->params[$name];
+        return $this->parameters[$name];
     }
 
     /**
@@ -40,8 +50,37 @@ class ParameterManager implements ParameterManagerInterface
      */
     public function bindStatement(StatementInterface $stmt)
     {
-        foreach ($this->params as $param) {
+        foreach ($this->parameters as $param) {
             $stmt->bindValue($param->getName(), $param->getValue());
         }
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return string
+     */
+    public function createReference($value)
+    {
+        $ref = $this->generateNextReference();
+        $this->references[$ref] = $value;
+
+        return $ref;
+    }
+
+    /**
+     * @return array
+     */
+    public function getReferences()
+    {
+        return $this->references;
+    }
+
+    /**
+     * @return string
+     */
+    private function generateNextReference()
+    {
+        return sprintf('@[%d]', $this->referenceCounter++);
     }
 }

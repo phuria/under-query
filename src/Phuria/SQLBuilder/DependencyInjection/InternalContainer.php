@@ -13,7 +13,6 @@ namespace Phuria\SQLBuilder\DependencyInjection;
 
 use Phuria\SQLBuilder\Parameter\ParameterManager;
 use Phuria\SQLBuilder\QueryCompiler\QueryCompiler;
-use Phuria\SQLBuilder\ReferenceManager\ReferenceManager;
 use Phuria\SQLBuilder\TableFactory\TableFactory;
 use Phuria\SQLBuilder\TableRegistry;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -37,7 +36,6 @@ class InternalContainer implements ContainerInterface
     public function __construct()
     {
         $this->parameters['phuria.sql_builder.parameter_manager.class'] = ParameterManager::class;
-        $this->parameters['phuria.sql_builder.reference_manager.class'] = ReferenceManager::class;
 
         $this->services['phuria.sql_builder.table_registry'] = new TableRegistry();
         $this->services['phuria.sql_builder.table_factory'] = new TableFactory();

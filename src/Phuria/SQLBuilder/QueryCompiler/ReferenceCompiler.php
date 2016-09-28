@@ -9,49 +9,29 @@
  * file that was distributed with this source code.
  */
 
-namespace Phuria\SQLBuilder\Parser;
+namespace Phuria\SQLBuilder\QueryCompiler;
 
 use Phuria\SQLBuilder\QueryBuilder\BuilderInterface;
-use Phuria\SQLBuilder\ReferenceManager\ReferenceManagerInterface;
 use Phuria\SQLBuilder\Table\AbstractTable;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-class ReferenceParser
+class ReferenceCompiler
 {
     /**
-     * @var string $rawSQL
-     */
-    private $rawSQL;
-
-    /**
-     * @var ReferenceManagerInterface $manager
-     */
-    private $manager;
-
-    /**
-     * @param                           $rawSQL
-     * @param ReferenceManagerInterface $manager
-     */
-    public function __construct($rawSQL, ReferenceManagerInterface $manager)
-    {
-        $this->rawSQL = $rawSQL;
-        $this->manager = $manager;
-    }
-
-    /**
+     * @param string $rawSQL
+     * @param array  $references
+     *
      * @return string
      */
-    public function parseSQL()
+    public function compile($rawSQL, array $references)
     {
-        $references = $this->manager->all();
-
         foreach ($references as &$value) {
             $value = $this->convertReferenceToValue($value);
         }
 
-        return str_replace(array_keys($references), array_values($references), $this->rawSQL);
+        return str_replace(array_keys($references), array_values($references), $rawSQL);
     }
 
     /**

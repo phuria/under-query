@@ -31,4 +31,16 @@ interface ParameterManagerInterface
      * @return QueryParameter
      */
     public function createOrGetParameter($name);
+
+    /**
+     * @param mixed $value
+     *
+     * @return string
+     */
+    public function createReference($value);
+
+    /**
+     * @return array
+     */
+    public function getReferences();
 }
