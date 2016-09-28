@@ -19,13 +19,18 @@ php composer.phar require phuria/sql-builder
 
 ## Quick start
 
-There are different query builders classes for each SQL query type: `SelectBuilder`, `UpdateBuilder`, `DeleteBuilder` and `InsertBuilder`.
+There are different query builder classes for each SQL query type: 
+`SelectBuilder`, `UpdateBuilder`, `DeleteBuilder` and `InsertBuilder`.
+To create them we will use our factory:
 
-Below are some simple examples of use.
+```php
+$qbFactory = new Phuria\SQLBuilder\QueryBuilder();
+```
+
 
 #### Simple SELECT
 ```php
-$qb = new SelectBuilder();
+$qb = $qbFactory->select();
 
 $qb->addSelect('u.name', 'c.phone_number');
 $qb->from('user', 'u');
@@ -40,7 +45,7 @@ SELECT u.name, c.phone_number FROM user AS u LEFT JOIN contact AS c ON u.id = c.
 
 #### Single Table DELETE
 ```php
-$qb = new DeleteBuilder();
+$qb = $qbFactory->delete();
 
 $qb->from('user');
 $qb->andWhere('id = 1');
@@ -54,7 +59,7 @@ DELETE FROM user WHERE id = 1;
 
 #### Multiple Table DELETE
 ```php
-$qb = new DeleteBuilder();
+$qb = $qbFactory->delete();
 
 $qb->from('user', 'u');
 $qb->innerJoin('contact', 'c', 'u.id = c.user_id')
@@ -70,7 +75,7 @@ DELETE u, c FROM user u LEFT JOIN contact c ON u.id = c.user_id WHERE u.id = 1
 
 #### Simple INSERT
 ```php
-$qb = new InsertBuilder();
+$qb = $qbFactory->insert();
 
 $qb->into('user', 'u', ['username', 'email']);
 $qb->addValues(['phuria', 'spam@simko.it']);
@@ -84,13 +89,13 @@ INSERT INTO user (username, email) VALUES ("phuria", "spam@simko.it")
 
 #### INSERT ... SELECT
 ```php
-$sourceQb = new SelectBuilder();
+$sourceQb = $qbFactory->insert();
 
 $sourceQb->from('transactions', 't');
 $sourceQb->addSelect('t.user_id', 'SUM(t.amount)');
 $sourceQb->addGroupBy('t.user_id');
 
-$targetQb = new InsertSelectBuilder();
+$targetQb = $qbFactory->insertSelect();
 $targetQb->into('user_summary', ['user_id', 'total_price']);
 $targetQb->selectInsert($sourceQb);
 
@@ -103,7 +108,7 @@ INSERT INTO user_summary (user_id, total_price) SELECT t.user_id, SUM(t.amount) 
 
 #### Simple UPDATE
 ```php
-$qb = new UpdateBuilder();
+$qb = $qbFactory->update();
 
 $rootTable = $qb->update('user', 'u');
 $qb->addSet("u.updated_at = NOW()");
@@ -117,13 +122,13 @@ UPDATE user AS u SET u.updated_at = NOW() WHERE u.id = 1
 
 ## Table reference
 
-Each method adds to QueryBuilder new table (eg. `leftJoin`, `from`, `into`) returns `TableInterface` instance.
-Use an instance of such a table as string will convert object to reference.
-When is time to build SQL, all references will be converted to table name (or alias).
-This allows you to easily change aliases.
+Methods adding tables (such as `leftJoin`, `from`, `into`) 
+return `TableInterface` \ `AbstractTable` instance. Use `AbstractTable` like string will convert 
+this object to reference. All references will be converted to table name (or alias).
+It allows you to easily change aliases.
 
 ```php
-$qb = new SelectBuilder();
+$qb = $qbFactory->select();
 
 $userTable = $qb->from('user');
 $qb->select("{$userTable}.*");
@@ -152,7 +157,7 @@ Table reference is the most commonly used in table's column context.
 Therefore, here is helper method that which returns reference directly to column.
 
 ```php
-$qb = new SelectBuilder();
+$qb = $qbFactory->select();
 
 $userTable = $qb->from('user', 'u');
 $qb->addSelect($userTable->column('username'), $userTable->column('password'));
@@ -212,7 +217,8 @@ Then you need to add the table to configuration (see configuration section).
 Now when you are referring to this table, you get instance of implemented class.
 
 ```php
-$qb = new QueryBuilder();
+$qb = $qbFactory->select();
+
 $qb->addSelect('*');
 
 $accountTable = $qb->from('account');
@@ -295,12 +301,12 @@ To use a sub query like table, pass it as argument (instead of the name of the t
 You will get in return an instance of `SubQueryTable` that you can use like normal table (eg. you can set alias).
  
 ```php
-$subQb = new SelectBuilder();
+$qb = $qbFactory->select();
 $subQb->addSelect('MAX(pricelist.price) AS price');
 $subQb->from('pricelist');
 $subQb->addGroupBy('pricelist.owner_id');
 
-$qb = new SelectBuilder();
+$qb = $qbFactory->select();
 $subTable = $qb->from($subQb, 'src');
 $qb->addSelect("AVG({$subTable->column('price')})");
 
@@ -314,11 +320,11 @@ SELECT AVG(src.price) FROM (SELECT MAX(pricelist.price) AS price FROM pricelist 
 If you want to use sub query in a different context then you must use object to string reference converter.
 
 ```php
-$subQb = new SelectBuilder();
+$qb = $qbFactory->select();
 $subQb->addSelect('DISTINCT user.affiliate_id');
 $subQb->form('user');
 
-$qb = new SelectBuilder();
+$qb = $qbFactory->select();
 $qb->addSelect("10 = ({$qb->objectToString($subQb)})");
 
 echo $qb->buildSQL();
