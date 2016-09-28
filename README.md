@@ -295,6 +295,58 @@ We recommend spending some time and add all services and parameters to your `Con
 All necessary dependency data can be found in `InternalContainer`'s constructor.
 
 
+## Joins
+
+To create join, use one of the following methods: 
+`join`, `innerJoin`, `leftJoin`, `rightJoin`, `straightJoin` or `crossJoin`.
+
+Join method signature looks like this:
+```php
+join($table, string $alias = null, string $joinOn = null) : TableInterface
+```
+
+Argument `$table` can be one of following types:
+ - table name
+ - class name
+ - closure
+ - object implementing `QueryBuilderInterface`
+
+```php
+$qb = $qbFactory->select();
+
+// Table name:
+$qb->join('account');
+
+// Class name:
+$qb->join(AccountTable::class);
+
+// Closure:
+$qb->join(function (AccountTable $accountTable) { 
+    
+});
+
+// Another QueryBuilder:
+$anotherQb = $qbFactory->select();
+$qb->join($anotherQb);
+```
+
+Arguments `$alias` and `$joinOn` are optional.
+You can set them later directly on the object table.
+
+```php
+$qb = $qbFatry->select();
+$qb->from('user', 'u');
+$qb->join('account', 'a', 'u.id = a.user_id');
+```
+OR
+```php
+$qb = $qbFatry->select();
+$userTable = $qb->from('user', 'u');
+$accountTable = $qb->join('account');
+$accountTable->setAlias('a');
+$accountTable->joinOn("{$userTable->column('id')} = {$accountTable->column('user_id')}");
+```
+
 ## Sub Query
 
 To use a sub query like table, pass it as argument (instead of the name of the table).
