@@ -16,14 +16,19 @@ SQL query builder focused on:
 php composer.phar require phuria/sql-builder
 ```
 
+
+
 ## Content
 
 - [Quick start](#quick-start) 
-- [Table reference](#table-reerence)
+- [Table reference](#table-reference)
 - [Column reference](#column-reference)
 - [Create your own custom table](#create-your-own-custom-table)
 - [Configuration](#configuration)
 - [Joins](#joins)
+- [Sub Query](#sub-query)
+
+
 
 
 ## Quick start
@@ -35,6 +40,8 @@ To create them we will use our factory:
 ```php
 $qbFactory = new Phuria\SQLBuilder\QueryBuilder();
 ```
+
+
 
 
 #### Simple SELECT
@@ -128,7 +135,8 @@ $qb->andWhere("u.id = 1");
 UPDATE user AS u SET u.updated_at = NOW() WHERE u.id = 1
 ```
 
-<a name="tableReference"></a>
+
+
 ## Table reference
 
 Methods adding tables (such as `leftJoin`, `from`, `into`) 
@@ -160,6 +168,8 @@ SELECT u.* FROM user AS u;
 ```
 
 
+
+
 ## Column reference
 
 Table reference is the most commonly used in table's column context. 
@@ -177,6 +187,8 @@ echo $qb->buildSQL();
 ```sql
 SELECT u.username, u.password FROM user u
 ```
+
+
 
 
 ## Create your own custom table
@@ -245,6 +257,7 @@ But think how much it can facilitate you to build complex queries.
 
 
 
+
 ## Configuration
 
 #### Static QB
@@ -304,6 +317,8 @@ We recommend spending some time and add all services and parameters to your `Con
 All necessary dependency data can be found in `InternalContainer`'s constructor.
 
 
+
+
 ## Joins
 
 To create join, use one of the following methods: 
@@ -321,8 +336,6 @@ Argument `$table` can be one of following types:
  - object implementing `QueryBuilderInterface`
 
 ```php
-$qb = $qbFactory->select();
-
 // Table name:
 $qb->join('account');
 
@@ -335,30 +348,44 @@ $qb->join(function (AccountTable $accountTable) {
 });
 
 // Another QueryBuilder:
-$anotherQb = $qbFactory->select();
 $qb->join($anotherQb);
 ```
 
 Arguments `$alias` and `$joinOn` are optional.
 You can set them later directly on the object table.
 ```php
-$qb = $qbFatry->select();
 $qb->from('user', 'u');
 $qb->join('account', 'a', 'u.id = a.user_id');
 ```
 And equivalent code:
 ```php
-$qb = $qbFatry->select();
 $userTable = $qb->from('user', 'u');
 $accountTable = $qb->join('account');
 $accountTable->setAlias('a');
 $accountTable->joinOn("{$userTable->column('id')} = {$accountTable->column('user_id')}");
 ```
 
+#### OUTER and NATURAL join
+
+To determine join as `OUTER` or `NATURAL` use methods: 
+`AbstractTable::setNatural()` or `AbstractTable::setOuter()`
+
+```php
+$userTable = $qb->leftJoin('user', 'u');
+$userTable->setNatural(true);
+$userTable->setOuter(true);
+
+echo $qb->buildSQL();
+```
+
+
+
+
 ## Sub Query
 
 To use a sub query like table, pass it as argument (instead of the name of the table).
-You will get in return an instance of `SubQueryTable` that you can use like normal table (eg. you can set alias).
+You will get in return an instance of `SubQueryTable` 
+that you can use like normal table (eg. you can set alias).
  
 ```php
 $qb = $qbFactory->select();
@@ -377,7 +404,8 @@ echo $qb->buildSQL();
 SELECT AVG(src.price) FROM (SELECT MAX(pricelist.price) AS price FROM pricelist GROUP BY pricelist.owner_id) AS src
 ```
 
-If you want to use sub query in a different context then you must use object to string reference converter.
+If you want to use sub query in a different context 
+then you must use object to string reference converter.
 
 ```php
 $qb = $qbFactory->select();
