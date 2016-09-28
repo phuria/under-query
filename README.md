@@ -27,6 +27,7 @@ php composer.phar require phuria/sql-builder
 - [Configuration](#configuration)
 - [Joins](#joins)
 - [Sub Query](#sub-query)
+  - [OUTER and NATURAL join](#outer-and-natural-join)
 
 
 
@@ -374,8 +375,6 @@ To determine join as `OUTER` or `NATURAL` use methods:
 $userTable = $qb->leftJoin('user', 'u');
 $userTable->setNatural(true);
 $userTable->setOuter(true);
-
-echo $qb->buildSQL();
 ```
 
 
