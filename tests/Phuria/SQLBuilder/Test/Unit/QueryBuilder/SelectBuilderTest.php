@@ -11,28 +11,21 @@
 
 namespace Phuria\SQLBuilder\Test\Unit\QueryBuilder;
 
-use Phuria\SQLBuilder\QueryBuilder;
-use Phuria\SQLBuilder\QueryBuilder\SelectBuilder;
+use Phuria\SQLBuilder\Test\TestCase\QueryBuilderTrait;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
 class SelectBuilderTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @return SelectBuilder
-     */
-    private function createSelectBuilder()
-    {
-        return (new QueryBuilder())->select();
-    }
+    use QueryBuilderTrait;
 
     /**
      * @test
      */
     public function selectMinFromTest()
     {
-        $qb = $this->createSelectBuilder();
+        $qb = static::queryBuilder()->select();
 
         $qb->from('test');
         $qb->addSelect('MIN(test.id)');
@@ -45,7 +38,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectTableWithAlias()
     {
-        $qb = $this->createSelectBuilder();
+        $qb = static::queryBuilder()->select();
 
         $rootTable = $qb->from('test');
         $rootTable->setAlias('SRC');
@@ -59,7 +52,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectTwoColumns()
     {
-        $qb = $this->createSelectBuilder();
+        $qb = static::queryBuilder()->select();
 
         $rootTable = $qb->from('test');
         $rootTable->addSelect('test.id');
@@ -73,7 +66,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectColumnReferences()
     {
-        $qb = $this->createSelectBuilder();
+        $qb = static::queryBuilder()->select();
 
         $rootTable = $qb->from('example');
         $rootTable->addSelect($rootTable->column('id'));
@@ -91,7 +84,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectMaxColumnReference()
     {
-        $qb = $this->createSelectBuilder();
+        $qb = static::queryBuilder()->select();
 
         $rootTable = $qb->from('example');
         $qb->addSelect("MAX({$rootTable->column('points')})");
@@ -108,7 +101,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectWithWhereClause()
     {
-        $qb = $this->createSelectBuilder();
+        $qb = static::queryBuilder()->select();
 
         $rootTable = $qb->from('example');
         $qb->addSelect($rootTable->column('*'));
@@ -126,7 +119,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectWithWhereColumnReference()
     {
-        $qb = $this->createSelectBuilder();
+        $qb = static::queryBuilder()->select();
 
         $rootTable = $qb->from('example');
         $rootTable->addSelect('example.id');
@@ -142,7 +135,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectWithConnectedWhereClause()
     {
-        $qb = $this->createSelectBuilder();
+        $qb = static::queryBuilder()->select();
 
         $rootTable = $qb->from('example');
         $qb->addSelect('*');
@@ -163,7 +156,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectWithCrossJoinClause()
     {
-        $qb = $this->createSelectBuilder();
+        $qb = static::queryBuilder()->select();
 
         $qb->from('example');
         $qb->addSelect('*');
@@ -177,7 +170,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectWithMultipleFromTables()
     {
-        $qb = $this->createSelectBuilder();
+        $qb = static::queryBuilder()->select();
 
         $exampleTable = $qb->from('example');
         $testTable = $qb->addFrom('test');
@@ -196,7 +189,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectWithLeftJoinClause()
     {
-        $qb = $this->createSelectBuilder();
+        $qb = static::queryBuilder()->select();
 
         $exampleTable = $qb->from('example');
         $qb->addSelect('*');
@@ -211,7 +204,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectWithDifferentJoins()
     {
-        $qb = $this->createSelectBuilder();
+        $qb = static::queryBuilder()->select();
 
         $userTable = $qb->from('users');
         $userTable->setAlias('u');
@@ -231,7 +224,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
 
         static::assertSame($expectedSQL, $qb->buildSQL());
 
-        $qb = $this->createSelectBuilder();
+        $qb = static::queryBuilder()->select();
 
         $qb->from('users', 'u');
         $qb->addSelect('*');
@@ -246,7 +239,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectWithLimitClause()
     {
-        $qb = $this->createSelectBuilder();
+        $qb = static::queryBuilder()->select();
 
         $qb->from('example');
         $qb->addSelect('*');
@@ -264,7 +257,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectWithGroupByClause()
     {
-        $qb = $this->createSelectBuilder();
+        $qb = static::queryBuilder()->select();
 
         $exampleTable = $qb->from('price_list');
         $exampleTable->setAlias('p');
@@ -280,12 +273,12 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectFromSubQuery()
     {
-        $maxQb = $this->createSelectBuilder();
+        $maxQb = static::queryBuilder()->select();
 
         $exampleTable = $maxQb->from('example');
         $maxQb->addSelect("MAX({$exampleTable->column('value')}) AS max_value");
 
-        $qb = $this->createSelectBuilder();
+        $qb = static::queryBuilder()->select();
         $subQuery = $qb->from($maxQb);
         $subQuery->setAlias('SRC');
         $qb->addSelect($subQuery->column('max_value'));
@@ -304,7 +297,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectWithOrderByClause()
     {
-        $qb = $this->createSelectBuilder();
+        $qb = static::queryBuilder()->select();
 
         $exampleTable = $qb->from('example');
         $qb->addSelect('*');
@@ -324,7 +317,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectOnly()
     {
-        $qb = $this->createSelectBuilder();
+        $qb = static::queryBuilder()->select();
         $qb->addSelect('1 + 1');
 
         static::assertSame('SELECT 1 + 1', $qb->buildSQL());
@@ -335,7 +328,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectWithOrderedGroupBy()
     {
-        $qb = $this->createSelectBuilder();
+        $qb = static::queryBuilder()->select();
 
         $exampleTable = $qb->from('example');
         $qb->addSelect('*');
@@ -349,7 +342,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectWithHavingClause()
     {
-        $qb = $this->createSelectBuilder();
+        $qb = static::queryBuilder()->select();
 
         $exampleTable = $qb->from('example');
         $qb->addSelect("SUM({$exampleTable->column('price')}) AS price");
@@ -364,7 +357,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectWithGroupByRollUp()
     {
-        $qb = $this->createSelectBuilder();
+        $qb = static::queryBuilder()->select();
 
         $table = $qb->from('example');
         $qb->addSelect("SUM(".$table->column('price').")");
@@ -381,7 +374,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectFromWithAlias()
     {
-        $qb = $this->createSelectBuilder();
+        $qb = static::queryBuilder()->select();
 
         $table = $qb->from('example', 'e');
         $qb->addSelect($table->column('name'));
@@ -394,7 +387,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectMultipleArguments()
     {
-        $qb = $this->createSelectBuilder();
+        $qb = static::queryBuilder()->select();
 
         $qb->addSelect('1+1', '2+2');
 

@@ -11,28 +11,21 @@
 
 namespace Phuria\SQLBuilder\Test\Unit\QueryBuilder;
 
-use Phuria\SQLBuilder\QueryBuilder;
-use Phuria\SQLBuilder\QueryBuilder\UpdateBuilder;
+use Phuria\SQLBuilder\Test\TestCase\QueryBuilderTrait;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
 class UpdateBuilderTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @return UpdateBuilder
-     */
-    private function createUpdateBuilder()
-    {
-        return (new QueryBuilder())->update();
-    }
+    use QueryBuilderTrait;
 
     /**
      * @test
      */
     public function updateWithSetClause()
     {
-        $qb = $this->createUpdateBuilder();
+        $qb = static::queryBuilder()->update();
 
         $exampleTable = $qb->update('example');
         $qb->addSet("{$exampleTable->column('name')} = NULL");
@@ -51,7 +44,7 @@ class UpdateBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function updateWithWhereClause()
     {
-        $qb = $this->createUpdateBuilder();
+        $qb = static::queryBuilder()->update();
 
         $rootTable = $qb->update('example');
         $qb->addSet("{$rootTable->column('name')} = NULL");
@@ -65,7 +58,7 @@ class UpdateBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function updateWithOrderByAndLimit()
     {
-        $qb = $this->createUpdateBuilder();
+        $qb = static::queryBuilder()->update();
 
         $rootTable = $qb->update('example');
         $qb->addSet("{$rootTable->column('salary')} = 100");
@@ -80,7 +73,7 @@ class UpdateBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function updateIgnore()
     {
-        $qb = $this->createUpdateBuilder();
+        $qb = static::queryBuilder()->update();
 
         $qb->setIgnore(true);
         $qb->update('example');
