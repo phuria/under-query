@@ -16,7 +16,10 @@ SQL query builder focused on:
 php composer.phar require phuria/sql-builder
 ```
 
+- [Quick start](#quickStart) 
+- [Table reference](#tableReference)
 
+<a name="quickStart"></a>
 ## Quick start
 
 There are different query builder classes for each SQL query type: 
@@ -119,7 +122,7 @@ $qb->andWhere("u.id = 1");
 UPDATE user AS u SET u.updated_at = NOW() WHERE u.id = 1
 ```
 
-
+<a name="tableReference"></a>
 ## Table reference
 
 Methods adding tables (such as `leftJoin`, `from`, `into`) 
