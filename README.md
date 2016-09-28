@@ -27,7 +27,6 @@ php composer.phar require phuria/sql-builder
 - [Configuration](#configuration)
 - [Joins](#joins)
   - [OUTER and NATURAL JOIN](#outer-and-natural-join)
-- [Index hint](#index-hint)
 - [Sub Query](#sub-query)
 
 

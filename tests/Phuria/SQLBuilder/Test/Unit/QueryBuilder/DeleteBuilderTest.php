@@ -58,4 +58,18 @@ class DeleteBuilderTest extends \PHPUnit_Framework_TestCase
 
         static::assertSame($expectedSQL, $qb->buildSQL());
     }
+
+    /**
+     * @test
+     */
+    public function deleteWithOrderByAndLimit()
+    {
+        $qb = static::queryBuilder()->delete();
+
+        $qb->from('example');
+        $qb->addOrderBy('name DESC');
+        $qb->setLimit(10);
+
+        static::assertSame('DELETE FROM example ORDER BY name DESC LIMIT 10', $qb->buildSQL());
+    }
 }

@@ -17,16 +17,51 @@ use Phuria\SQLBuilder\Table\AbstractTable;
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
 class DeleteBuilder extends AbstractBuilder implements
-    Clause\DeleteClauseInterface,
+    Clause\LimitClauseInterface,
+    Clause\OrderByClauseInterface,
     Clause\WhereClauseInterface,
     Component\JoinComponentInterface,
     Component\TableComponentInterface
 {
-    use Clause\DeleteClauseTrait;
+    use Clause\LimitClauseTrait;
+    use Clause\OrderByClauseTrait;
     use Clause\WhereClauseTrait;
     use Component\JoinComponentTrait;
     use Component\ParameterComponentTrait;
     use Component\TableComponentTrait;
+
+    /**
+     * @var array $deleteClauses
+     */
+    private $deleteClauses = [];
+
+    /**
+     * @return $this
+     */
+    public function addDelete()
+    {
+        foreach (func_get_args() as $clause) {
+            $this->doAddDelete($clause);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param mixed $clause
+     */
+    private function doAddDelete($clause)
+    {
+        $this->deleteClauses[] = $clause;
+    }
+
+    /**
+     * @return array
+     */
+    public function getDeleteClauses()
+    {
+        return $this->deleteClauses;
+    }
 
     /**
      * @param mixed  $table
