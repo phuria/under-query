@@ -16,11 +16,19 @@ SQL query builder focused on:
 php composer.phar require phuria/sql-builder
 ```
 
+<a name="content"></a>
+## Content
+
 - [Quick start](#quickStart) 
 - [Table reference](#tableReference)
+- [Column reference](#columnReference)
+- [Create your own custom table](#createYourOwnCustomTable)
+- [Configuration](#configuration)
+- [Joins](#joins)
+
 
 <a name="quickStart"></a>
-## Quick start
+## Quick start [:arrow_up:](#content)
 
 There are different query builder classes for each SQL query type: 
 `SelectBuilder`, `UpdateBuilder`, `DeleteBuilder` and `InsertBuilder`.
