@@ -1,10 +1,10 @@
 # Phuria SQL Builder 
-[![Build Status](https://img.shields.io/scrutinizer/build/g/phuria/sql-builder.svg?maxAge=2592000)](https://scrutinizer-ci.com/g/phuria/sql-builder/build-status/master)
-[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/phuria/sql-builder.svg?maxAge=2592000)](https://scrutinizer-ci.com/g/phuria/sql-builder/?branch=master)
-[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/phuria/sql-builder.svg?maxAge=2592000)](https://scrutinizer-ci.com/g/phuria/sql-builder/?branch=master)
-[![Packagist](https://img.shields.io/packagist/v/phuria/sql-builder.svg?maxAge=2592000)](https://packagist.org/packages/phuria/sql-builder)
+[![Build Status](https://img.shields.io/scrutinizer/build/g/phuria/sql-builder.svg?maxAge=3600)](https://scrutinizer-ci.com/g/phuria/sql-builder/build-status/master)
+[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/phuria/sql-builder.svg?maxAge=3600)](https://scrutinizer-ci.com/g/phuria/sql-builder/?branch=master)
+[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/phuria/sql-builder.svg?maxAge=3600)](https://scrutinizer-ci.com/g/phuria/sql-builder/?branch=master)
+[![Packagist](https://img.shields.io/packagist/v/phuria/sql-builder.svg?maxAge=3600)](https://packagist.org/packages/phuria/sql-builder)
 [![license](https://img.shields.io/github/license/phuria/sql-builder.svg?maxAge=2592000?style=flat-square)]()
-[![php](https://img.shields.io/badge/PHP-5.6-blue.svg)]()
+[![php](https://img.shields.io/badge/PHP-5.6-blue.svg?maxAge=2592000)]()
 
 SQL query builder focused on:
  + object-oriented inheritance behavior in database's tables
@@ -23,12 +23,14 @@ composer require phuria/sql-builder
 - [Quick start](#quick-start) 
 - [Table reference](#table-reference)
 - [Column reference](#column-reference)
-- [Create your own custom table](#create-your-own-custom-table)
+- [Creating custom table class](#creating-custom-table-class)
 - [Configuration](#configuration)
   - [Registering custom table class](#registering-custom-table-class)
 - [Joins](#joins)
   - [OUTER and NATURAL JOIN](#outer-and-natural-join)
 - [Sub Query](#sub-query)
+- [WHERE Clause](#where-clause)
+- [GROUP BY Clause](#group-by-clause)
 
 
 
@@ -193,7 +195,7 @@ SELECT u.username, u.password FROM user u
 
 
 
-## Create your own custom table
+## Creating custom table class
 
 The default implementation of `TableInterface` is `UnknownTable`. For mapping table name to class name is responsible `TableRegistry`. 
 
@@ -398,3 +400,39 @@ SELECT 10 IN (SELECT DISTINCT user.affiliate_id FROM user)
 ```
 
 At the time of building query `RefereneParser` will be known what to do with it.
+
+
+
+
+## WHERE Clause
+
+```php
+$qb = $qbFactory->select();
+$qb->addSelect('*');
+$qb->from('user', 'u');
+$qb->andWhere('u.active = 1');
+
+echo $qb->buildSQL();
+```
+
+```sql
+SELECT * FROM user AS u WHERE u.active = 1
+```
+
+
+
+
+## GROUP BY Clause
+
+```php
+$qb = $qbFactory->select();
+$qb->addSelect('AVG(u.age)');
+$qb->from('user', 'u');
+$qb->addGroupBy('u.country_id');
+
+echo $qb->buildSQL();
+```
+
+```sql
+SELECT AVG(u.age) FROM user AS u GROUP BY u.country_id
+```
