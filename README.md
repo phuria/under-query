@@ -32,6 +32,7 @@ composer require phuria/sql-builder
 - [WHERE Clause](#where-clause)
 - [GROUP BY Clause](#group-by-clause)
   - [GROUP BY ... WITH ROLLUP](#group-by--with-rollup)
+- [HAVING Clause](#having-clause)
 - [ORDER BY Clause](#order-by-clause)
 
 
@@ -409,16 +410,12 @@ $userTable->setOuterJoin(true);
 ## WHERE Clause
 
 ```php
-$qb = $qbFactory->select();
-$qb->addSelect('*');
-$qb->from('user', 'u');
 $qb->andWhere('u.active = 1');
-
-echo $qb->buildSQL();
+$qb->andWhere('u.email IS NOT NULL');
 ```
 
 ```sql
-SELECT * FROM user AS u WHERE u.active = 1
+WHERE u.active = 1 AND u.email IS NOT NULL
 ```
 
 
@@ -427,17 +424,12 @@ SELECT * FROM user AS u WHERE u.active = 1
 ## GROUP BY Clause
 
 ```php
-$qb = $qbFactory->select();
-$qb->addSelect('AVG(u.age)');
-$qb->from('user', 'u');
-$qb->addGroupBy('u.country_id');
-$qb->addGroupBy('u.male');
-
-echo $qb->buildSQL();
+$qb->addGroupBy('YEAR(u.creaded_at) ASC');
+$qb->addGroupBy('u.affiliate_id');
 ```
 
 ```sql
-SELECT AVG(u.age) FROM user AS u GROUP BY u.country_id, u.male
+GROUP BY YEAR(u.country_id) ASC, u.affiliate_id
 ```
 
 #### GROUP BY ... WITH ROLLUP
@@ -451,7 +443,24 @@ $qb->setGroupByWithRollUp(true);
 ```
 
 ```sql
-GROUP BY u.country_id, u.male WITH ROLL UP
+GROUP BY u.country_id, u.male WITH ROLLUP
+```
+
+
+
+
+## HAVING Clause
+
+```php
+$qb->addSelect('SUM(i.gross) AS gross');
+$qb->addSelect('i.transactor_id');
+$qb->from('invoice', 'i');
+$qb->addGroupBy('i.transactor_id'):
+$qb->andHaving('gross > 1000');
+```
+
+```sql
+SELECT SUM(i.gross) AS gross, i.transactor_id FROM invoice AS i GROUP BY i.transactor_id HAVING gross > 1000
 ```
 
 
