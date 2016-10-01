@@ -34,6 +34,7 @@ composer require phuria/sql-builder
   - [GROUP BY ... WITH ROLLUP](#group-by--with-rollup)
 - [HAVING Clause](#having-clause)
 - [ORDER BY Clause](#order-by-clause)
+- [LIMIT Clause](#limit-clause)
 
 
 
@@ -469,15 +470,27 @@ SELECT SUM(i.gross) AS gross, i.transactor_id FROM invoice AS i GROUP BY i.trans
 ## ORDER BY Clause
 
 ```php
-$qb = $qbFactory->select();
-$qb->addSelect('u.id', 'CONCAT(u.last_name, " ", u.first_name)');
-$qb->from('user', 'u');
 $qb->addOrderBy('u.last_name ASC');
 $qb->addOrderBy('u.first_name ASC');
-
-echo $qb->buildSQL();
 ```
 
 ```sql
-SELECT u.id, CONCAT(u.last_name, " ", u.first_name) FROM user ORDER BY u.last_name ASC, u.first_name ASC
+ORDER BY u.last_name ASC, u.first_name ASC
+```
+
+
+
+
+## LIMIT Clause
+
+```php
+$qb->setLimit(10);
+$qb->setLimit('10, 20');
+$qb->setLimit('10 OFFSET 20');
+```
+
+```sql
+LIMIT 10
+LIMIT 10, 20
+LIMIT 10 OFFSET 20
 ```
