@@ -10,9 +10,9 @@ use Phuria\SQLBuilder\QueryBuilder\BuilderInterface;
 interface QueryCompilerInterface
 {
     /**
-     * @param BuilderInterface $qb
+     * @param BuilderInterface $builder
      *
      * @return string
      */
-    public function compile(BuilderInterface $qb);
+    public function compile(BuilderInterface $builder);
 }

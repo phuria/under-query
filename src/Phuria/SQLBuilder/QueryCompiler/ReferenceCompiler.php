@@ -11,6 +11,7 @@
 
 namespace Phuria\SQLBuilder\QueryCompiler;
 
+use Phuria\SQLBuilder\QueryBuilder\AbstractBuilder;
 use Phuria\SQLBuilder\QueryBuilder\BuilderInterface;
 use Phuria\SQLBuilder\Table\AbstractTable;
 
@@ -19,6 +20,25 @@ use Phuria\SQLBuilder\Table\AbstractTable;
  */
 class ReferenceCompiler
 {
+    /**
+     * @param CompilerPayload $payload
+     *
+     * @return CompilerPayload
+     */
+    public function compileReference(CompilerPayload $payload)
+    {
+        $builder = $payload->getBuilder();
+        $references = [];
+
+        if ($builder instanceof AbstractBuilder) {
+            $references = $builder->getParameterManager()->getReferences();
+        }
+
+        $actualSQL = $this->compile($payload->getActualSQL(), $references);
+
+        return $payload->updateSQL($actualSQL);
+    }
+
     /**
      * @param string $rawSQL
      * @param array  $references

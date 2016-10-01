@@ -21,7 +21,6 @@ class SelectBuilder extends AbstractBuilder implements
     Clause\HavingClauseInterface,
     Clause\LimitClauseInterface,
     Clause\OrderByClauseInterface,
-    Clause\SelectClauseInterface,
     Clause\WhereClauseInterface,
     Component\JoinComponentInterface,
     Component\TableComponentInterface
@@ -30,11 +29,43 @@ class SelectBuilder extends AbstractBuilder implements
     use Clause\HavingClauseTrait;
     use Clause\LimitClauseTrait;
     use Clause\OrderByClauseTrait;
-    use Clause\SelectClauseTrait;
     use Clause\WhereClauseTrait;
     use Component\JoinComponentTrait;
     use Component\ParameterComponentTrait;
     use Component\TableComponentTrait;
+
+    /**
+     * @var array $selectClauses
+     */
+    private $selectClauses = [];
+
+    /**
+     * @return $this
+     */
+    public function addSelect()
+    {
+        foreach (func_get_args() as $clause) {
+            $this->doAddSelect($clause);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param string $clause
+     */
+    private function doAddSelect($clause)
+    {
+        $this->selectClauses[] = $clause;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSelectClauses()
+    {
+        return $this->selectClauses;
+    }
 
     /**
      * @param mixed       $table

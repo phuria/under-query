@@ -12,6 +12,10 @@
 namespace Phuria\SQLBuilder\DependencyInjection;
 
 use Phuria\SQLBuilder\Parameter\ParameterManager;
+use Phuria\SQLBuilder\QueryCompiler\ConcreteCompiler\DeleteCompiler;
+use Phuria\SQLBuilder\QueryCompiler\ConcreteCompiler\InsertCompiler;
+use Phuria\SQLBuilder\QueryCompiler\ConcreteCompiler\SelectCompiler;
+use Phuria\SQLBuilder\QueryCompiler\ConcreteCompiler\UpdateCompiler;
 use Phuria\SQLBuilder\QueryCompiler\QueryCompiler;
 use Phuria\SQLBuilder\TableFactory\TableFactory;
 use Phuria\SQLBuilder\TableRegistry;
@@ -39,7 +43,13 @@ class InternalContainer implements ContainerInterface
 
         $this->services['phuria.sql_builder.table_registry'] = new TableRegistry();
         $this->services['phuria.sql_builder.table_factory'] = new TableFactory();
-        $this->services['phuria.sql_builder.query_compiler'] = new QueryCompiler();
+
+        $queryCompiler = new QueryCompiler();
+        $queryCompiler->addConcreteCompiler(new SelectCompiler());
+        $queryCompiler->addConcreteCompiler(new InsertCompiler());
+        $queryCompiler->addConcreteCompiler(new DeleteCompiler());
+        $queryCompiler->addConcreteCompiler(new UpdateCompiler());
+        $this->services['phuria.sql_builder.query_compiler'] = $queryCompiler;
     }
 
     /**

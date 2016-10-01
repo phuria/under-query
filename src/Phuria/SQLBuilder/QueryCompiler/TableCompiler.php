@@ -12,7 +12,6 @@
 namespace Phuria\SQLBuilder\QueryCompiler;
 
 use Phuria\SQLBuilder\JoinType;
-use Phuria\SQLBuilder\QueryBuilder\BuilderInterface;
 use Phuria\SQLBuilder\QueryBuilder\Component;
 use Phuria\SQLBuilder\QueryBuilder\DeleteBuilder;
 use Phuria\SQLBuilder\QueryBuilder\SelectBuilder;
@@ -108,38 +107,40 @@ class TableCompiler
     }
 
     /**
-     * @param BuilderInterface $qb
+     * @param CompilerPayload $payload
      *
-     * @return string
+     * @return CompilerPayload
      */
-    public function compileRootTables(BuilderInterface $qb)
+    public function compileRootTables(CompilerPayload $payload)
     {
-        $rootTables = '';
+        $builder = $payload->getBuilder();
+        $newSQL = '';
 
-        if ($qb instanceof SelectBuilder || $qb instanceof DeleteBuilder) {
-            $rootTables .= 'FROM ';
+        if ($builder instanceof Component\TableComponentInterface && $builder->getRootTables()) {
+            $newSQL = implode(', ', array_map([$this, 'compileTableDeclaration'], $builder->getRootTables()));
         }
 
-        if ($qb instanceof Component\TableComponentInterface && $qb->getRootTables()) {
-            $rootTables .= implode(', ', array_map([$this, 'compileTableDeclaration'], $qb->getRootTables()));
-        } else {
-            return '';
+        if ($builder instanceof SelectBuilder || $builder instanceof DeleteBuilder) {
+            $newSQL = $newSQL ? 'FROM ' . $newSQL : '';
         }
 
-        return $rootTables;
+        return $payload->appendSQL($newSQL);
     }
 
     /**
-     * @param BuilderInterface $qb
+     * @param CompilerPayload $payload
      *
-     * @return string
+     * @return CompilerPayload
      */
-    public function compileJoinTables(BuilderInterface $qb)
+    public function compileJoinTables(CompilerPayload $payload)
     {
-        if ($qb instanceof Component\JoinComponentInterface) {
-            return implode(' ', array_map([$this, 'compileTableDeclaration'], $qb->getJoinTables()));
+        $builder = $payload->getBuilder();
+
+        if ($builder instanceof Component\JoinComponentInterface) {
+            $newSQL = implode(' ', array_map([$this, 'compileTableDeclaration'], $builder->getJoinTables()));
+            return $payload->appendSQL($newSQL);
         }
 
-        return '';
+        return $payload;
     }
 }
