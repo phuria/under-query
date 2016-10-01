@@ -41,8 +41,11 @@ class InternalContainer implements ContainerInterface
     {
         $this->parameters['phuria.sql_builder.parameter_manager.class'] = ParameterManager::class;
 
-        $this->services['phuria.sql_builder.table_registry'] = new TableRegistry();
-        $this->services['phuria.sql_builder.table_factory'] = new TableFactory();
+        $tableRegistry = new TableRegistry();
+        $this->services['phuria.sql_builder.table_registry'] = $tableRegistry;
+
+        $tableFactory = new TableFactory($tableRegistry);
+        $this->services['phuria.sql_builder.table_factory'] = $tableFactory;
 
         $queryCompiler = new QueryCompiler();
         $queryCompiler->addConcreteCompiler(new SelectCompiler());

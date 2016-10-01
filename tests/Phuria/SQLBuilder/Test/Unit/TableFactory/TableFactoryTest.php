@@ -27,7 +27,7 @@ class TableFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function itCreateUnknownTable()
     {
-        $factory = new TableFactory();
+        $factory = new TableFactory(new TableRegistry());
         $table = $factory->createNewTable('unknown_table', new NullQueryBuilder());
 
         static::assertInstanceOf(UnknownTable::class, $table);

@@ -35,9 +35,9 @@ class TableFactory implements TableFactoryInterface
     /**
      * @param TableRegistry $registry
      */
-    public function __construct(TableRegistry $registry = null)
+    public function __construct(TableRegistry $registry)
     {
-        $this->registry = $registry ?: new TableRegistry();
+        $this->registry = $registry;
         $this->tableRecognizer = new TableRecognizer();
     }
 
