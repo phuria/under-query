@@ -33,13 +33,13 @@ class DeleteCompiler extends AbstractConcreteCompiler
         $clauseCompiler = new ClausesCompiler();
 
         parent::__construct([
-            [$this,              'compileDelete'],
-            [$tableCompiler,     'compileRootTables'],
-            [$tableCompiler,     'compileJoinTables'],
-            [$clauseCompiler,    'compileWhere'],
-            [$clauseCompiler,    'compileOrderBy'],
-            [$clauseCompiler,    'compileLimit'],
-            [$referenceCompiler, 'compileReference']
+            [$this, 'compileDelete'],
+            [$tableCompiler, 'compileRootTables'],
+            [$tableCompiler, 'compileJoinTables'],
+            [$clauseCompiler, 'compileWhere'],
+            [$clauseCompiler, 'compileOrderBy'],
+            [$clauseCompiler, 'compileLimit'],
+            [$referenceCompiler, 'compileReference'],
         ]);
     }
 

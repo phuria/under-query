@@ -30,7 +30,7 @@ class CompilerPayload
 
     /**
      * @param BuilderInterface $builder
-     * @param string           $actualSQL
+     * @param string|null      $actualSQL
      */
     public function __construct(BuilderInterface $builder, $actualSQL = null)
     {
@@ -65,7 +65,7 @@ class CompilerPayload
     }
 
     /**
-     * @param $newSQL
+     * @param string $newSQL
      *
      * @return CompilerPayload
      */

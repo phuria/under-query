@@ -34,13 +34,13 @@ class InsertCompiler extends AbstractConcreteCompiler
         $referenceCompiler = new ReferenceCompiler();
 
         parent::__construct([
-            [$this,              'compileInsert'],
-            [$tableCompiler,     'compileRootTables'],
-            [$tableCompiler,     'compileJoinTables'],
-            [$this,              'compileInsertColumns'],
-            [$this,              'compileSelectForInsert'],
-            [$this,              'compileInsertValues'],
-            [$referenceCompiler, 'compileReference']
+            [$this, 'compileInsert'],
+            [$tableCompiler, 'compileRootTables'],
+            [$tableCompiler, 'compileJoinTables'],
+            [$this, 'compileInsertColumns'],
+            [$this, 'compileSelectForInsert'],
+            [$this, 'compileInsertValues'],
+            [$referenceCompiler, 'compileReference'],
         ]);
     }
 

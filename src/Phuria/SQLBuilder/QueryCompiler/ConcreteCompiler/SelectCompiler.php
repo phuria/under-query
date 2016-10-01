@@ -33,15 +33,15 @@ class SelectCompiler extends AbstractConcreteCompiler
         $clauseCompiler = new ClausesCompiler();
 
         parent::__construct([
-            [$this,              'compileSelect'],
-            [$tableCompiler,     'compileRootTables'],
-            [$tableCompiler,     'compileJoinTables'],
-            [$clauseCompiler,    'compileWhere'],
-            [$clauseCompiler,    'compileGroupBy'],
-            [$clauseCompiler,    'compileHaving'],
-            [$clauseCompiler,    'compileOrderBy'],
-            [$clauseCompiler,    'compileLimit'],
-            [$referenceCompiler, 'compileReference']
+            [$this, 'compileSelect'],
+            [$tableCompiler, 'compileRootTables'],
+            [$tableCompiler, 'compileJoinTables'],
+            [$clauseCompiler, 'compileWhere'],
+            [$clauseCompiler, 'compileGroupBy'],
+            [$clauseCompiler, 'compileHaving'],
+            [$clauseCompiler, 'compileOrderBy'],
+            [$clauseCompiler, 'compileLimit'],
+            [$referenceCompiler, 'compileReference'],
         ]);
     }
 

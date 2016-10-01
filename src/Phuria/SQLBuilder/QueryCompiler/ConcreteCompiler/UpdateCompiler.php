@@ -33,14 +33,14 @@ class UpdateCompiler extends AbstractConcreteCompiler
         $clauseCompiler = new ClausesCompiler();
 
         parent::__construct([
-            [$this,              'compileUpdate'],
-            [$tableCompiler,     'compileRootTables'],
-            [$tableCompiler,     'compileJoinTables'],
-            [$clauseCompiler,    'compileSet'],
-            [$clauseCompiler,    'compileWhere'],
-            [$clauseCompiler,    'compileOrderBy'],
-            [$clauseCompiler,    'compileLimit'],
-            [$referenceCompiler, 'compileReference']
+            [$this, 'compileUpdate'],
+            [$tableCompiler, 'compileRootTables'],
+            [$tableCompiler, 'compileJoinTables'],
+            [$clauseCompiler, 'compileSet'],
+            [$clauseCompiler, 'compileWhere'],
+            [$clauseCompiler, 'compileOrderBy'],
+            [$clauseCompiler, 'compileLimit'],
+            [$referenceCompiler, 'compileReference'],
         ]);
     }
 
