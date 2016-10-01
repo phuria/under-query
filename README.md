@@ -32,7 +32,7 @@ composer require phuria/sql-builder
 - [WHERE Clause](#where-clause)
 - [GROUP BY Clause](#group-by-clause)
   - [GROUP BY ... WITH ROLLUP](#group-by--with-rollup)
-
+- [ORDER BY Clause](#order-by-clause)
 
 
 
