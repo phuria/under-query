@@ -445,6 +445,46 @@ LIMIT 10 OFFSET 20
 
 ## 7. Advanced Query examples
 
+### 7.1 UPDATE Query
+
+```php
+$sourceQb = $queryFactory->select();
+$sourceQb->addSelect('i.transactor_id');
+$sourceQb->addSelect('SUM(i.gross) AS gross');
+$sourceQb->addSelect('SUM(i.net) AS net');
+$sourceQb->from('invoice', 'i');
+$sourceQb->addGroupBy('i.transactor_id');
+
+$qb = $queryFactory->update();
+
+$qb->update('transactor_summary', 'summary');
+$qb->innerJoin($sourceQb, 'source', 'summary.transactor_id = source.transactor_id');
+$qb->addSet('summary.invoiced_gross = source.gross');
+$qb->addSet('summary.invoiced_net = source.net');
+
+echo $qb->buildSQL();
+```
+
+```sql
+UPDATE transactor_summary AS summary INNER JOIN (...) AS source
+SET summary.invoiced_gross = source.gross, summary.invoiced_net = source.net
+```
+
+```php
+$qb = $queryFactory->update();
+
+$qb->update('players', 'p');
+$qb->addSet('p.qualified = 1');
+$qb->andWhere('p.league = 20');
+$qb->addOrderBy('p.major_points DESC, p.minior_points DESC');
+$qb->addLimit(20);
+
+echo $qb->buildSQL();
+```
+
+```sql
+UPDATE players AS p SET p.qualified = 1 WHERE p.league = 20 ORDER BY p.major_points DESC, p.minior_points DESC LIMIT 20
+```
 
 
 ## 8. Sub Query

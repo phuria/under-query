@@ -51,22 +51,24 @@ class UpdateBuilder extends AbstractBuilder implements
     }
 
     /**
-     * @param mixed $table
+     * @param mixed       $table
+     * @param string|null $alias
      *
      * @return AbstractTable
      */
-    public function update($table)
+    public function update($table, $alias = null)
     {
-        return $this->addUpdate($table);
+        return $this->addUpdate($table, $alias);
     }
 
     /**
-     * @param mixed $table
+     * @param mixed       $table
+     * @param string|null $alias
      *
      * @return AbstractTable
      */
-    public function addUpdate($table)
+    public function addUpdate($table, $alias = null)
     {
-        return $this->addRootTable($table);
+        return $this->addRootTable($table, $alias);
     }
 }
