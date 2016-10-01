@@ -12,8 +12,8 @@ SQL query builder focused on:
  + being lightweight and fast (also in development)
  + easily to extend
 
-```sh
-php composer.phar require phuria/sql-builder
+```
+composer require phuria/sql-builder
 ```
 
 
