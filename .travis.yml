@@ -3,6 +3,7 @@ php:
   - '5.6'
   - '7.0'
   - 'nightly'
+  - 'hhvm'
 install:
   - 'composer install'
   - 'sudo mysql -e "CREATE DATABASE phuria_test"'
