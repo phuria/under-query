@@ -26,11 +26,12 @@ composer require phuria/sql-builder
 - [Creating custom table class](#creating-custom-table-class)
 - [Configuration](#configuration)
   - [Registering custom table class](#registering-custom-table-class)
-- [Joins](#joins)
-  - [OUTER and NATURAL JOIN](#outer-and-natural-join)
 - [Sub Query](#sub-query)
+- [JOIN Clause](#join-clause)
+  - [OUTER and NATURAL JOIN](#outer-and-natural-join)
 - [WHERE Clause](#where-clause)
 - [GROUP BY Clause](#group-by-clause)
+  - [GROUP BY ... WITH ROLLUP](#group-by--with-rollup)
 
 
 
@@ -298,7 +299,54 @@ Argument `$tableClass` must be fully-qualified class name,
 
 
 
-## Joins
+## Sub Query
+
+To use a sub query like table, pass it as argument (instead of the name of the table).
+You will get in return an instance of `SubQueryTable` 
+that you can use like normal table (eg. you can set alias).
+ 
+```php
+$qb = $qbFactory->select();
+$subQb->addSelect('MAX(pricelist.price) AS price');
+$subQb->from('pricelist');
+$subQb->addGroupBy('pricelist.owner_id');
+
+$qb = $qbFactory->select();
+$subTable = $qb->from($subQb, 'src');
+$qb->addSelect("AVG({$subTable->column('price')})");
+
+echo $qb->buildSQL();
+```
+
+```sql
+SELECT AVG(src.price) FROM (SELECT MAX(pricelist.price) AS price FROM pricelist GROUP BY pricelist.owner_id) AS src
+```
+
+If you want to use sub query in a different context 
+then you must use object to string reference converter.
+
+```php
+$qb = $qbFactory->select();
+$subQb->addSelect('DISTINCT user.affiliate_id');
+$subQb->form('user');
+
+$qb = $qbFactory->select();
+$qb->addSelect("10 = ({$qb->objectToString($subQb)})");
+
+echo $qb->buildSQL();
+```
+
+```sql
+SELECT 10 IN (SELECT DISTINCT user.affiliate_id FROM user)
+```
+
+At the time of building query `RefereneParser` will be known what to do with it.
+
+
+
+
+
+## JOIN Clause
 
 To create join, use one of the following methods: 
 `join`, `innerJoin`, `leftJoin`, `rightJoin`, `straightJoin` or `crossJoin`.
@@ -358,52 +406,6 @@ $userTable->setOuterJoin(true);
 
 
 
-## Sub Query
-
-To use a sub query like table, pass it as argument (instead of the name of the table).
-You will get in return an instance of `SubQueryTable` 
-that you can use like normal table (eg. you can set alias).
- 
-```php
-$qb = $qbFactory->select();
-$subQb->addSelect('MAX(pricelist.price) AS price');
-$subQb->from('pricelist');
-$subQb->addGroupBy('pricelist.owner_id');
-
-$qb = $qbFactory->select();
-$subTable = $qb->from($subQb, 'src');
-$qb->addSelect("AVG({$subTable->column('price')})");
-
-echo $qb->buildSQL();
-```
-
-```sql
-SELECT AVG(src.price) FROM (SELECT MAX(pricelist.price) AS price FROM pricelist GROUP BY pricelist.owner_id) AS src
-```
-
-If you want to use sub query in a different context 
-then you must use object to string reference converter.
-
-```php
-$qb = $qbFactory->select();
-$subQb->addSelect('DISTINCT user.affiliate_id');
-$subQb->form('user');
-
-$qb = $qbFactory->select();
-$qb->addSelect("10 = ({$qb->objectToString($subQb)})");
-
-echo $qb->buildSQL();
-```
-
-```sql
-SELECT 10 IN (SELECT DISTINCT user.affiliate_id FROM user)
-```
-
-At the time of building query `RefereneParser` will be known what to do with it.
-
-
-
-
 ## WHERE Clause
 
 ```php
@@ -429,10 +431,44 @@ $qb = $qbFactory->select();
 $qb->addSelect('AVG(u.age)');
 $qb->from('user', 'u');
 $qb->addGroupBy('u.country_id');
+$qb->addGroupBy('u.male');
 
 echo $qb->buildSQL();
 ```
 
 ```sql
-SELECT AVG(u.age) FROM user AS u GROUP BY u.country_id
+SELECT AVG(u.age) FROM user AS u GROUP BY u.country_id, u.male
+```
+
+#### GROUP BY ... WITH ROLLUP
+
+For use the `WITH ROLLUP` clause, use `setGroupByWithRollUp(true)`:
+
+```php
+$qb->addGroupBy('u.country_id');
+$qb->addGroupBy('u.male');
+$qb->setGroupByWithRollUp(true);
+```
+
+```sql
+GROUP BY u.country_id, u.male WITH ROLL UP
+```
+
+
+
+
+## ORDER BY Clause
+
+```php
+$qb = $qbFactory->select();
+$qb->addSelect('u.id', 'CONCAT(u.last_name, " ", u.first_name)');
+$qb->from('user', 'u');
+$qb->addOrderBy('u.last_name ASC');
+$qb->addOrderBy('u.first_name ASC');
+
+echo $qb->buildSQL();
+```
+
+```sql
+SELECT u.id, CONCAT(u.last_name, " ", u.first_name) FROM user ORDER BY u.last_name ASC, u.first_name ASC
 ```
