@@ -11,14 +11,14 @@
 
 namespace Phuria\SQLBuilder;
 
-use Phuria\SQLBuilder\DependencyInjection\InternalContainer;
+use Phuria\SQLBuilder\DependencyInjection\ContainerFactory;
 use Phuria\SQLBuilder\QueryBuilder\DeleteBuilder;
 use Phuria\SQLBuilder\QueryBuilder\InsertBuilder;
 use Phuria\SQLBuilder\QueryBuilder\InsertSelectBuilder;
 use Phuria\SQLBuilder\QueryBuilder\SelectBuilder;
 use Phuria\SQLBuilder\QueryBuilder\UpdateBuilder;
 use Phuria\SQLBuilder\QueryCompiler\QueryCompilerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Pimple\Container;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -26,20 +26,20 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class QueryBuilder
 {
     /**
-     * @var ContainerInterface $container
+     * @var Container $container
      */
     private $container;
 
     /**
-     * @param ContainerInterface|null $container
+     * @param Container|null $container
      */
-    public function __construct(ContainerInterface $container = null)
+    public function __construct(Container $container = null)
     {
-        $this->container = $container ?: new InternalContainer();
+        $this->container = $container ?: (new ContainerFactory())->create();
     }
 
     /**
-     * @return ContainerInterface
+     * @return Container
      */
     public function getContainer()
     {
@@ -53,11 +53,11 @@ class QueryBuilder
      */
     private function createQueryBuilder($class)
     {
-        $parameterClass = $this->container->getParameter('phuria.sql_builder.parameter_manager.class');
+        $parameterClass = $this->container['phuria.sql_builder.parameter_manager.class'];
 
         return new $class(
-            $this->container->get('phuria.sql_builder.table_factory'),
-            $this->container->get('phuria.sql_builder.query_compiler'),
+            $this->container['phuria.sql_builder.table_factory'],
+            $this->container['phuria.sql_builder.query_compiler'],
             new $parameterClass
         );
     }

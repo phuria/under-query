@@ -25,6 +25,7 @@ composer require phuria/sql-builder
 - [Column reference](#column-reference)
 - [Create your own custom table](#create-your-own-custom-table)
 - [Configuration](#configuration)
+  - [Registering custom table class](#registering-custom-table-class)
 - [Joins](#joins)
   - [OUTER and NATURAL JOIN](#outer-and-natural-join)
 - [Sub Query](#sub-query)
@@ -39,7 +40,7 @@ There are different query builder classes for each SQL query type:
 To create them we will use our factory:
 
 ```php
-$qbFactory = new Phuria\SQLBuilder\QueryBuilder();
+$qbFactory = new \Phuria\SQLBuilder\QueryBuilder();
 ```
 
 
@@ -261,61 +262,36 @@ But think how much it can facilitate you to build complex queries.
 
 ## Configuration
 
-#### Static QB
+To resolve dependency in this library 
+has been used `Container` from `pimple/pimple` package.
 
-The __easiest__ and __not recommended__ way to configure this library is use `\Phuria\SQLBuilder\QB` class.
-Here you get access to `InternalContainer` and you can make the necessary changes.
-Reconfigured container instance will be delivered to every new query builder (you must use static factory methods).
-
-Example how to register table:
+To create `Container` with default configuration, use `ContainerFactory`:
 
 ```php
-use Phuria\SQLBuilder\QB;
+use Phuria\SQLBuilder\DependencyInjection\ContainerFactory;
 
-$tableRegistry = QB::getContainer()->get('phuria.sql_builder.table_registry');
-$tableRegistry->registerTable('example_table', ExampleTable::class);
-
-$qb = QB::select();
-
-echo get_class($qb->from('example_table')); // output: ExampleTable::class
+$containerFactory = ContinerFactory();
+$container = $containerFactory->create();
 ```
 
-
-#### Use InternalContainer in your own DependencyInjection
-
-Another way is add an `InternalContainer` as service to your own DI. 
-You will probably need to implement query builder factory.
+Now you can make changes. At the end do not forget to pass the `Container` instance 
+to `QueryBuilder`:
 
 ```php
-use Phuria\SQLBuilder\DependencyInjection\InternalContainer;
-use Phuria\SQLBuilder\QueryBuilder\SelectBuilder;
+use Phuria\SQLBuilder\QueryBuilder;
 
-class MyQueryBuilderFactory
-{
-    private $internalContainer;
-    
-    public function __construct()
-    {
-        $this->internalContainer = new InternalContainer();
-    }
-    
-    public function addTableToRegistry($tableName, $tableClass)
-    {
-        $this->internalContainer->get('phuria.sql_builder.table_registry')
-            ->tableRegister($tableName, $tableClass);
-    }
-    
-    public function createSelectBuilder()
-    {
-        return new SelectBuilder($this->internalContainer);
-    }
-}
+$queryBuilderFactory = new QueryBuilder($container);
 ```
 
-#### Use directly your own DependencyInjection
+#### Registering custom table class
 
-We recommend spending some time and add all services and parameters to your `Container`. 
-All necessary dependency data can be found in `InternalContainer`'s constructor.
+```php
+$registry = $container['phuria.sql_builder.table_registry'];
+$registry->registerTable($tableClass, $tableName)
+```
+
+Argument `$tableClass` must be fully-qualified class name,
+`$tableName` must be full name of database table.
 
 
 
