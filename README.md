@@ -17,28 +17,41 @@ composer require phuria/sql-builder
 ```
 
 
-
 ## Content
 
-- [Quick start](#quick-start) 
-- [Table reference](#table-reference)
-- [Column reference](#column-reference)
-- [Creating custom table class](#creating-custom-table-class)
-- [Configuration](#configuration)
-  - [Registering custom table class](#registering-custom-table-class)
-- [Sub Query](#sub-query)
-- [JOIN Clause](#join-clause)
-  - [OUTER and NATURAL JOIN](#outer-and-natural-join)
-- [WHERE Clause](#where-clause)
-- [GROUP BY Clause](#group-by-clause)
-  - [GROUP BY ... WITH ROLLUP](#group-by--with-rollup)
-- [HAVING Clause](#having-clause)
-- [ORDER BY Clause](#order-by-clause)
-- [LIMIT Clause](#limit-clause)
+- [1. Quick Start](#1-quick-start) 
+  - [1.1 Simple SELECT](#11-simple-select)
+  - [1.2 Single Table DELETE](#12-single-table-delete)
+  - [1.3 Multiple Table DELETE](#13-multiple-table-delete)
+  - [1.4 Simple INSERT](#14-simple-insert)
+  - [1.5 INSERT ... SELECT](#15-insert--select)
+  - [1.6 Simple UPDATE](#16-simple-update)
+- [2. Table Reference](#2-table-reference)
+- [3. Column Reference](#3-column-reference)
+- [4. Creating custom table class](#4-creating-custom-table-class)
+- [5. Configuration](#5-configuration)
+  - [5.1 Registering custom table class](#51-registering-custom-table-class)
+- [6. SQL Clauses](#6-sql-clauses)
+  - [6.1 JOIN Clause](#join-clause)
+    - [6.1.1 OUTER and NATURAL JOIN](#outer-and-natural-join)
+  - [6.2 WHERE Clause](#where-clause)
+  - [6.3 GROUP BY Clause](#group-by-clause)
+    - [6.3.1 GROUP BY ... WITH ROLLUP](#group-by--with-rollup)
+  - [6.4 HAVING Clause](#having-clause)
+  - [6.5 ORDER BY Clause](#order-by-clause)
+  - [6.6 LIMIT Clause](#limit-clause)
+- [7. Advanced query examples](#select-query)
+  - [7.1 UPDATE Query](#update-query)
+  - [7.2 INSERT Query](#insert-query)
+  - [7.3 INSERT ... SELECT Query](#insert--select-query)
+  - [7.4 DELETE Query](#delete-query)
+  - [7.5 SELECT Query](#65-select-query)
+- [8. Sub Query](#sub-query)
 
 
 
-## Quick start
+
+## 1. Quick start
 
 There are different query builder classes for each SQL query type: 
 `SelectBuilder`, `UpdateBuilder`, `DeleteBuilder` and `InsertBuilder`.
@@ -48,10 +61,7 @@ To create them we will use our factory:
 $qbFactory = new \Phuria\SQLBuilder\QueryBuilder();
 ```
 
-
-
-
-#### Simple SELECT
+### 1.1 Simple SELECT
 ```php
 $qb = $qbFactory->select();
 
@@ -66,7 +76,7 @@ echo $qb->buildSQL();
 SELECT u.name, c.phone_number FROM user AS u LEFT JOIN contact AS c ON u.id = c.user_id;
 ```
 
-#### Single Table DELETE
+### 1.2 Single Table DELETE
 ```php
 $qb = $qbFactory->delete();
 
@@ -80,7 +90,7 @@ echo $qb->buildSQL();
 DELETE FROM user WHERE id = 1;
 ```
 
-#### Multiple Table DELETE
+### 1.3 Multiple Table DELETE
 ```php
 $qb = $qbFactory->delete();
 
@@ -96,7 +106,7 @@ echo $qb->builidSQL();
 DELETE u, c FROM user u LEFT JOIN contact c ON u.id = c.user_id WHERE u.id = 1 
 ```
 
-#### Simple INSERT
+### 1.4 Simple INSERT
 ```php
 $qb = $qbFactory->insert();
 
@@ -110,7 +120,7 @@ echo $qb->buildSQL();
 INSERT INTO user (username, email) VALUES ("phuria", "spam@simko.it")
 ```
 
-#### INSERT ... SELECT
+### 1.5 INSERT ... SELECT
 ```php
 $sourceQb = $qbFactory->insert();
 
@@ -129,7 +139,7 @@ echo $targetQb->buildSQL();
 INSERT INTO user_summary (user_id, total_price) SELECT t.user_id, SUM(t.amount) FROM transactions AS t GROUP BY t.user_id
 ```
 
-#### Simple UPDATE
+### 1.6 Simple UPDATE
 ```php
 $qb = $qbFactory->update();
 
@@ -144,7 +154,7 @@ UPDATE user AS u SET u.updated_at = NOW() WHERE u.id = 1
 
 
 
-## Table reference
+## 2. Table Reference
 
 Methods adding tables (such as `leftJoin`, `from`, `into`) 
 return `TableInterface` \ `AbstractTable` instance. Use `AbstractTable` like string will convert 
@@ -176,8 +186,7 @@ SELECT u.* FROM user AS u;
 
 
 
-
-## Column reference
+## 3. Column Reference
 
 Table reference is the most commonly used in table's column context. 
 Therefore, here is helper method that which returns reference directly to column.
@@ -197,8 +206,7 @@ SELECT u.username, u.password FROM user u
 
 
 
-
-## Creating custom table class
+## 4. Creating custom table class
 
 The default implementation of `TableInterface` is `UnknownTable`. For mapping table name to class name is responsible `TableRegistry`. 
 
@@ -264,8 +272,7 @@ But think how much it can facilitate you to build complex queries.
 
 
 
-
-## Configuration
+## 5. Configuration
 
 To resolve dependency in this library 
 has been used `Container` from `pimple/pimple` package.
@@ -288,7 +295,7 @@ use Phuria\SQLBuilder\QueryBuilder;
 $queryBuilderFactory = new QueryBuilder($container);
 ```
 
-#### Registering custom table class
+### 5.1 Registering custom table class
 
 ```php
 $registry = $container['phuria.sql_builder.table_registry'];
@@ -300,55 +307,9 @@ Argument `$tableClass` must be fully-qualified class name,
 
 
 
+## 6. SQL Clauses
 
-## Sub Query
-
-To use a sub query like table, pass it as argument (instead of the name of the table).
-You will get in return an instance of `SubQueryTable` 
-that you can use like normal table (eg. you can set alias).
- 
-```php
-$qb = $qbFactory->select();
-$subQb->addSelect('MAX(pricelist.price) AS price');
-$subQb->from('pricelist');
-$subQb->addGroupBy('pricelist.owner_id');
-
-$qb = $qbFactory->select();
-$subTable = $qb->from($subQb, 'src');
-$qb->addSelect("AVG({$subTable->column('price')})");
-
-echo $qb->buildSQL();
-```
-
-```sql
-SELECT AVG(src.price) FROM (SELECT MAX(pricelist.price) AS price FROM pricelist GROUP BY pricelist.owner_id) AS src
-```
-
-If you want to use sub query in a different context 
-then you must use object to string reference converter.
-
-```php
-$qb = $qbFactory->select();
-$subQb->addSelect('DISTINCT user.affiliate_id');
-$subQb->form('user');
-
-$qb = $qbFactory->select();
-$qb->addSelect("10 = ({$qb->objectToString($subQb)})");
-
-echo $qb->buildSQL();
-```
-
-```sql
-SELECT 10 IN (SELECT DISTINCT user.affiliate_id FROM user)
-```
-
-At the time of building query `RefereneParser` will be known what to do with it.
-
-
-
-
-
-## JOIN Clause
+### 6.1 JOIN Clause
 
 To create join, use one of the following methods: 
 `join`, `innerJoin`, `leftJoin`, `rightJoin`, `straightJoin` or `crossJoin`.
@@ -394,7 +355,7 @@ $accountTable->setAlias('a');
 $accountTable->joinOn("{$userTable->column('id')} = {$accountTable->column('user_id')}");
 ```
 
-#### OUTER and NATURAL JOIN
+#### 6.1.1 OUTER and NATURAL JOIN
 
 To determine join as `OUTER` or `NATURAL` use methods: 
 `AbstractTable::setNaturalJoin()` or `AbstractTable::setOuterJoin()`
@@ -405,10 +366,7 @@ $userTable->setNaturalJoin(true);
 $userTable->setOuterJoin(true);
 ```
 
-
-
-
-## WHERE Clause
+### 6.2 WHERE Clause
 
 ```php
 $qb->andWhere('u.active = 1');
@@ -419,10 +377,7 @@ $qb->andWhere('u.email IS NOT NULL');
 WHERE u.active = 1 AND u.email IS NOT NULL
 ```
 
-
-
-
-## GROUP BY Clause
+### 6.3 GROUP BY Clause
 
 ```php
 $qb->addGroupBy('YEAR(u.creaded_at) ASC');
@@ -433,7 +388,7 @@ $qb->addGroupBy('u.affiliate_id');
 GROUP BY YEAR(u.country_id) ASC, u.affiliate_id
 ```
 
-#### GROUP BY ... WITH ROLLUP
+#### 6.3.1 GROUP BY ... WITH ROLLUP
 
 For use the `WITH ROLLUP` clause, use `setGroupByWithRollUp(true)`:
 
@@ -447,10 +402,7 @@ $qb->setGroupByWithRollUp(true);
 GROUP BY u.country_id, u.male WITH ROLLUP
 ```
 
-
-
-
-## HAVING Clause
+### 6.4 HAVING Clause
 
 ```php
 $qb->addSelect('SUM(i.gross) AS gross');
@@ -464,10 +416,7 @@ $qb->andHaving('gross > 1000');
 SELECT SUM(i.gross) AS gross, i.transactor_id FROM invoice AS i GROUP BY i.transactor_id HAVING gross > 1000
 ```
 
-
-
-
-## ORDER BY Clause
+### 6.5 ORDER BY Clause
 
 ```php
 $qb->addOrderBy('u.last_name ASC');
@@ -478,10 +427,7 @@ $qb->addOrderBy('u.first_name ASC');
 ORDER BY u.last_name ASC, u.first_name ASC
 ```
 
-
-
-
-## LIMIT Clause
+### 6.6 LIMIT Clause
 
 ```php
 $qb->setLimit(10);
@@ -494,3 +440,52 @@ LIMIT 10
 LIMIT 10, 20
 LIMIT 10 OFFSET 20
 ```
+
+
+
+## 7. Advanced Query examples
+
+
+
+## 8. Sub Query
+
+To use a sub query like table, pass it as argument (instead of the name of the table).
+You will get in return an instance of `SubQueryTable` 
+that you can use like normal table (eg. you can set alias).
+ 
+```php
+$qb = $qbFactory->select();
+$subQb->addSelect('MAX(pricelist.price) AS price');
+$subQb->from('pricelist');
+$subQb->addGroupBy('pricelist.owner_id');
+
+$qb = $qbFactory->select();
+$subTable = $qb->from($subQb, 'src');
+$qb->addSelect("AVG({$subTable->column('price')})");
+
+echo $qb->buildSQL();
+```
+
+```sql
+SELECT AVG(src.price) FROM (SELECT MAX(pricelist.price) AS price FROM pricelist GROUP BY pricelist.owner_id) AS src
+```
+
+If you want to use sub query in a different context 
+then you must use object to string reference converter.
+
+```php
+$qb = $qbFactory->select();
+$subQb->addSelect('DISTINCT user.affiliate_id');
+$subQb->form('user');
+
+$qb = $qbFactory->select();
+$qb->addSelect("10 = ({$qb->objectToString($subQb)})");
+
+echo $qb->buildSQL();
+```
+
+```sql
+SELECT 10 IN (SELECT DISTINCT user.affiliate_id FROM user)
+```
+
+At the time of building query `RefereneParser` will be known what to do with it.
