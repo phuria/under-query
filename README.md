@@ -6,7 +6,7 @@
 [![license](https://img.shields.io/github/license/phuria/sql-builder.svg?maxAge=2592000?style=flat-square)]()
 [![php](https://img.shields.io/badge/PHP-5.6-blue.svg?maxAge=2592000)]()
 
-SQL query builder focused on:
+The Phuria SQL Query Builder is focused on:
  + object-oriented inheritance behavior in database's tables
  + possibility of doing everything that can be done in native syntax
  + being lightweight and fast (also in development)
@@ -32,22 +32,21 @@ composer require phuria/sql-builder
 - [5. Configuration](#5-configuration)
   - [5.1 Registering custom table class](#51-registering-custom-table-class)
 - [6. SQL Clauses](#6-sql-clauses)
-  - [6.1 JOIN Clause](#join-clause)
-    - [6.1.1 OUTER and NATURAL JOIN](#outer-and-natural-join)
-  - [6.2 WHERE Clause](#where-clause)
-  - [6.3 GROUP BY Clause](#group-by-clause)
-    - [6.3.1 GROUP BY ... WITH ROLLUP](#group-by--with-rollup)
-  - [6.4 HAVING Clause](#having-clause)
-  - [6.5 ORDER BY Clause](#order-by-clause)
-  - [6.6 LIMIT Clause](#limit-clause)
-- [7. Advanced query examples](#select-query)
-  - [7.1 UPDATE Query](#update-query)
-  - [7.2 INSERT Query](#insert-query)
-  - [7.3 INSERT ... SELECT Query](#insert--select-query)
-  - [7.4 DELETE Query](#delete-query)
-  - [7.5 SELECT Query](#65-select-query)
-- [8. Sub Query](#sub-query)
-
+  - [6.1 JOIN Clause](#61-join-clause)
+    - [6.1.1 OUTER and NATURAL JOIN](#611-outer-and-natural-join)
+  - [6.2 WHERE Clause](#62-where-clause)
+  - [6.3 GROUP BY Clause](#63-group-by-clause)
+    - [6.3.1 GROUP BY ... WITH ROLLUP](#631-group-by--with-rollup)
+  - [6.4 HAVING Clause](#64-having-clause)
+  - [6.5 ORDER BY Clause](#65-order-by-clause)
+  - [6.6 LIMIT Clause](#66-limit-clause)
+- [7. Advanced query examples](#7-select-query)
+  - [7.1 UPDATE Query](#71-update-query)
+  - [7.2 INSERT Query](#72-insert-query)
+  - [7.3 INSERT ... SELECT Query](#73-insert--select-query)
+  - [7.4 DELETE Query](#74-delete-query)
+  - [7.5 SELECT Query](#75-select-query)
+- [8. Sub Query](#8-sub-query)
 
 
 
@@ -485,6 +484,9 @@ echo $qb->buildSQL();
 ```sql
 UPDATE players AS p SET p.qualified = 1 WHERE p.league = 20 ORDER BY p.major_points DESC, p.minior_points DESC LIMIT 20
 ```
+
+### 7.2 INSERT Query
+
 
 
 ## 8. Sub Query
