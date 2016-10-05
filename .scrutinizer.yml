@@ -53,7 +53,7 @@ tools:
         enabled: true
         excluded_dirs: [vendor, tests]
     php_cpd:
-        enabled: true
+        enabled: false
         excluded_dirs: [vendor, tests]
-    php_sim: false
+    php_sim: true
 
