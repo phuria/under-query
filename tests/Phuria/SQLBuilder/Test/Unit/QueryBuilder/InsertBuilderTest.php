@@ -25,7 +25,7 @@ class InsertBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function simpleInsert()
     {
-        $qb = static::queryBuilder()->insert();
+        $qb = static::queryBuilder()->createInsert();
 
         $qb->into('example');
         $qb->setColumns(['id', 'name']);
@@ -40,7 +40,7 @@ class InsertBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function insertMultipleArguments()
     {
-        $qb = static::queryBuilder()->insert();
+        $qb = static::queryBuilder()->createInsert();
 
         $qb->into('user', ['username', 'email']);
         $qb->addValues(['foo', 'bar']);

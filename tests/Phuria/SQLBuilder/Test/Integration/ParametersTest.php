@@ -28,7 +28,7 @@ class ParametersTest extends DatabaseTestCase
     {
         $connection = $this->createQueryConnection();
 
-        $qb = static::queryBuilder()->select();
+        $qb = static::queryBuilder()->createSelect();
         $userTable = $qb->from('user');
         $qb->addSelect($userTable->column('username'));
         $qb->andWhere("{$userTable->column('id')} = :id");
@@ -44,7 +44,7 @@ class ParametersTest extends DatabaseTestCase
     {
         $connection = $this->createQueryConnection();
 
-        $qb = static::queryBuilder()->select();
+        $qb = static::queryBuilder()->createSelect();
         $userTable = $qb->from('user');
         $qb->addSelect($userTable->column('username'));
         $qb->andWhere("{$userTable->column('id')} = :id");
@@ -61,7 +61,7 @@ class ParametersTest extends DatabaseTestCase
     public function itWillSelectNotExistingUser()
     {
         $connection = $this->createQueryConnection();
-        $qb = static::queryBuilder()->select();
+        $qb = static::queryBuilder()->createSelect();
         $userTable = $qb->from('user');
         $qb->addSelect($userTable->column('username'));
         $qb->andWhere("{$userTable->column('id')} = :id");

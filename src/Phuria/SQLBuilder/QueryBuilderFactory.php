@@ -23,7 +23,7 @@ use Pimple\Container;
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-class QueryBuilder
+class QueryBuilderFactory
 {
     /**
      * @var Container $container
@@ -65,7 +65,7 @@ class QueryBuilder
     /**
      * @return SelectBuilder
      */
-    public function select()
+    public function createSelect()
     {
         return $this->createQueryBuilder(SelectBuilder::class);
     }
@@ -73,7 +73,7 @@ class QueryBuilder
     /**
      * @return UpdateBuilder
      */
-    public function update()
+    public function createUpdate()
     {
         return $this->createQueryBuilder(UpdateBuilder::class);
     }
@@ -81,7 +81,7 @@ class QueryBuilder
     /**
      * @return DeleteBuilder
      */
-    public function delete()
+    public function createDelete()
     {
         return $this->createQueryBuilder(DeleteBuilder::class);
     }
@@ -89,7 +89,7 @@ class QueryBuilder
     /**
      * @return InsertBuilder
      */
-    public function insert()
+    public function createInsert()
     {
         return $this->createQueryBuilder(InsertBuilder::class);
     }
@@ -97,7 +97,7 @@ class QueryBuilder
     /**
      * @return InsertSelectBuilder
      */
-    public function insertSelect()
+    public function createInsertSelect()
     {
         return $this->createQueryBuilder(InsertSelectBuilder::class);
     }

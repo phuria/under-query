@@ -25,7 +25,7 @@ class UpdateBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function updateWithSetClause()
     {
-        $qb = static::queryBuilder()->update();
+        $qb = static::queryBuilder()->createUpdate();
 
         $exampleTable = $qb->update('example');
         $qb->addSet("{$exampleTable->column('name')} = NULL");
@@ -44,7 +44,7 @@ class UpdateBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function updateWithWhereClause()
     {
-        $qb = static::queryBuilder()->update();
+        $qb = static::queryBuilder()->createUpdate();
 
         $rootTable = $qb->update('example');
         $qb->addSet("{$rootTable->column('name')} = NULL");
@@ -58,7 +58,7 @@ class UpdateBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function updateWithOrderByAndLimit()
     {
-        $qb = static::queryBuilder()->update();
+        $qb = static::queryBuilder()->createUpdate();
 
         $rootTable = $qb->update('example');
         $qb->addSet("{$rootTable->column('salary')} = 100");
@@ -73,7 +73,7 @@ class UpdateBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function updateIgnore()
     {
-        $qb = static::queryBuilder()->update();
+        $qb = static::queryBuilder()->createUpdate();
 
         $qb->setIgnore(true);
         $qb->update('example');
