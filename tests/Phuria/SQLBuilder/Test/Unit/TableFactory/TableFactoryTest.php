@@ -14,8 +14,8 @@ namespace Phuria\SQLBuilder\Test\Unit\TableFactory;
 use Phuria\SQLBuilder\Table\UnknownTable;
 use Phuria\SQLBuilder\TableFactory\TableFactory;
 use Phuria\SQLBuilder\TableRegistry;
-use Phuria\SQLBuilder\Test\Helper\ExampleTable;
-use Phuria\SQLBuilder\Test\Helper\NullQueryBuilder;
+use Phuria\SQLBuilder\Test\Fixtures\ExampleTable;
+use Phuria\SQLBuilder\Test\Fixtures\NullQueryBuilder;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>

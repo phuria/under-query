@@ -9,20 +9,28 @@
  * file that was distributed with this source code.
  */
 
-namespace Phuria\SQLBuilder\Test\Helper;
+namespace Phuria\SQLBuilder\Connection;
 
-use Phuria\SQLBuilder\Table\AbstractTable;
+use Phuria\SQLBuilder\Statement\NullStatement;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-class ExampleTable extends AbstractTable
+class NullConnection implements ConnectionInterface
 {
     /**
      * @inheritdoc
      */
-    public function getTableName()
+    public function query($SQL)
     {
-        return 'example';
+        return new NullStatement();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function prepare($SQL)
+    {
+        return new NullStatement();
     }
 }

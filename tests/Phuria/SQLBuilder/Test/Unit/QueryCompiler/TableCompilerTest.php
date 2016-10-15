@@ -13,8 +13,8 @@ namespace Phuria\SQLBuilder\Test\Unit\QueryCompiler;
 
 use Phuria\SQLBuilder\JoinType;
 use Phuria\SQLBuilder\QueryCompiler\TableCompiler;
-use Phuria\SQLBuilder\Test\Helper\ExampleTable;
-use Phuria\SQLBuilder\Test\Helper\NullQueryBuilder;
+use Phuria\SQLBuilder\Test\Fixtures\ExampleTable;
+use Phuria\SQLBuilder\Test\Fixtures\NullQueryBuilder;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Phuria\SQLBuilder\Test\Helper;
+namespace Phuria\SQLBuilder\Test\Fixtures;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>

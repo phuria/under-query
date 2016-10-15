@@ -9,14 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace Phuria\SQLBuilder\Test\Helper;
+namespace Phuria\SQLBuilder\Test\Fixtures;
 
-use Phuria\SQLBuilder\QueryBuilder\AbstractBuilder;
+use Phuria\SQLBuilder\Table\AbstractTable;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-class NullQueryBuilder extends AbstractBuilder
+class ExampleTable extends AbstractTable
 {
-    public function __construct() {}
+    /**
+     * @inheritdoc
+     */
+    public function getTableName()
+    {
+        return 'example';
+    }
 }

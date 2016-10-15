@@ -12,8 +12,8 @@
 namespace Phuria\SQLBuilder\Test\Unit;
 
 use Phuria\SQLBuilder\TableRecognizer;
-use Phuria\SQLBuilder\Test\Helper\ExampleTable;
-use Phuria\SQLBuilder\Test\Helper\NullQueryBuilder;
+use Phuria\SQLBuilder\Test\Fixtures\ExampleTable;
+use Phuria\SQLBuilder\Test\Fixtures\NullQueryBuilder;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
