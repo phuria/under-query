@@ -35,24 +35,50 @@ class ContainerFactory
 
         $container['phuria.sql_builder.parameter_manager.class'] = ParameterManager::class;
 
-        $container['phuria.sql_builder.table_registry'] = function () {
-            return new TableRegistry();
-        };
+        $container['phuria.sql_builder.table_registry'] = new InvokeCallback(
+            [$this, 'createTableRegistry']
+        );
 
-        $container['phuria.sql_builder.table_factory'] = function (Container $c) {
-            return new TableFactory($c['phuria.sql_builder.table_registry']);
-        };
+        $container['phuria.sql_builder.table_factory'] = new InvokeCallback(
+            [$this, 'createTableFactory']
+        );
 
-        $container['phuria.sql_builder.query_compiler'] = function () {
-            $queryCompiler = new QueryCompiler();
-            $queryCompiler->addConcreteCompiler(new SelectCompiler());
-            $queryCompiler->addConcreteCompiler(new InsertCompiler());
-            $queryCompiler->addConcreteCompiler(new DeleteCompiler());
-            $queryCompiler->addConcreteCompiler(new UpdateCompiler());
-
-            return $queryCompiler;
-        };
+        $container['phuria.sql_builder.query_compiler'] = new InvokeCallback(
+            [$this, 'createTableCompiler']
+        );
 
         return $container;
+    }
+
+    /**
+     * @return TableRegistry
+     */
+    public function createTableRegistry()
+    {
+        return new TableRegistry();
+    }
+
+    /**
+     * @param Container $container
+     *
+     * @return TableFactory
+     */
+    public function createTableFactory(Container $container)
+    {
+        return new TableFactory($container['phuria.sql_builder.table_registry']);
+    }
+
+    /**
+     * @return QueryCompiler
+     */
+    public function createTableCompiler()
+    {
+        $queryCompiler = new QueryCompiler();
+        $queryCompiler->addConcreteCompiler(new SelectCompiler());
+        $queryCompiler->addConcreteCompiler(new InsertCompiler());
+        $queryCompiler->addConcreteCompiler(new DeleteCompiler());
+        $queryCompiler->addConcreteCompiler(new UpdateCompiler());
+
+        return $queryCompiler;
     }
 }

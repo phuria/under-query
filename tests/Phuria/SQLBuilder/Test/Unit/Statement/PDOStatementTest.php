@@ -15,6 +15,9 @@ use Phuria\SQLBuilder\Parameter\ParameterManager;
 use Phuria\SQLBuilder\Query;
 use Phuria\SQLBuilder\Test\TestCase\DatabaseTestCase;
 
+/**
+ * @author Beniamin Jonatan Šimko <spam@simko.it>
+ */
 class PDOStatementTest extends DatabaseTestCase
 {
     /**
