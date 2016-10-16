@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 ### Added
 + Code coverage annotations in tests
+### Changed
++ Unit test looks like integration tests have been moved
++ Query::__constructor now requires a connection
 
 ## 0.2.0 [2016-10-16]
 ### Added

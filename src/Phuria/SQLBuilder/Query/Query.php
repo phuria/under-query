@@ -43,7 +43,7 @@ class Query
     public function __construct(
         $sql,
         ParameterManagerInterface $parameterManager,
-        ConnectionInterface $connection = null
+        ConnectionInterface $connection
     ) {
         $this->sql = $sql;
         $this->parameterManager = $parameterManager;
