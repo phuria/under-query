@@ -19,6 +19,8 @@ interface ConnectionManagerInterface
     /**
      * @param ConnectionInterface $connection
      * @param string              $name
+     *
+     * @return void
      */
     public function registerConnection(ConnectionInterface $connection, $name = 'default');
 
