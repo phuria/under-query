@@ -27,7 +27,7 @@ class NullStatement implements StatementInterface
     /**
      * @inheritdoc
      */
-    public function fetchScalar()
+    public function fetch($mode = \PDO::FETCH_ASSOC)
     {
         return null;
     }
