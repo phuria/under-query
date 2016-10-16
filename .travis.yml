@@ -4,8 +4,16 @@ php:
   - '7.0'
   - 'nightly'
   - 'hhvm'
+env:
+  matrix:
+    - COMPOSER_ARGS:
+      - 'install'
+      - 'update'
+      - 'update --prefer-stable'
+      - 'update --prefer-lowest'
+      - 'update --no-dev'
 install:
-  - 'composer install'
+  - 'composer $COMPOSER_ARGS'
   - 'sudo mysql -e "CREATE DATABASE phuria_test"'
   - 'sudo mysql phuria_test < tests/Phuria/SQLBuilder/Test/Resources/schema.sql'
 script:

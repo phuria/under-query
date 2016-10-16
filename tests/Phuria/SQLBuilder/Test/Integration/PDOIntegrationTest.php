@@ -18,7 +18,7 @@ use Phuria\SQLBuilder\Test\TestCase\DatabaseTestCase;
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-class PDOStatementTest extends DatabaseTestCase
+class PDOIntegrationTest extends DatabaseTestCase
 {
     /**
      * @test
