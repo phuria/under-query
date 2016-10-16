@@ -22,6 +22,7 @@ class TableRecognizerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
+     * @covers TableRecognizer
      */
     public function itWillReturnValidTypes()
     {

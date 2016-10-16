@@ -60,12 +60,12 @@ class PDOStatement implements StatementInterface
     /**
      * @inheritdoc
      */
-    public function fetchScalar()
+    public function fetch($mode = \PDO::FETCH_ASSOC)
     {
         if (0 === $this->rowCount()) {
             return null;
         }
 
-        return $this->wrappedStatement->fetch(\PDO::FETCH_COLUMN);
+        return $this->wrappedStatement->fetch($mode);
     }
 }

@@ -24,6 +24,7 @@ class TableFactoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
+     * @covers TableFactory
      */
     public function itCreateUnknownTable()
     {

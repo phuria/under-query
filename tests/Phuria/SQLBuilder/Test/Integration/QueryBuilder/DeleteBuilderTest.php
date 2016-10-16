@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Phuria\SQLBuilder\Test\Unit\QueryBuilder;
+namespace Phuria\SQLBuilder\Test\Integration\QueryBuilder;
 
 use Phuria\SQLBuilder\Test\TestCase\QueryBuilderTrait;
 
@@ -22,6 +22,7 @@ class DeleteBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @coversNothing
      */
     public function simpleDelete()
     {
@@ -35,6 +36,7 @@ class DeleteBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @coversNothing
      */
     public function multipleTableDelete()
     {
@@ -61,6 +63,7 @@ class DeleteBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @coversNothing
      */
     public function deleteWithOrderByAndLimit()
     {

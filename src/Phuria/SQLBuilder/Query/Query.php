@@ -84,8 +84,13 @@ class Query
     {
         $stmt = $this->buildStatement();
         $stmt->execute();
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-        return $stmt->fetchScalar();
+        if (null === $result) {
+            return null;
+        }
+
+        return reset($result);
     }
 
     /**

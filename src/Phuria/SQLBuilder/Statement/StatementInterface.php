@@ -25,9 +25,11 @@ interface StatementInterface
     public function bindValue($parameter, $value);
 
     /**
+     * @param int $mode
+     *
      * @return mixed
      */
-    public function fetchScalar();
+    public function fetch($mode = \PDO::FETCH_ASSOC);
 
     /**
      * @return $this

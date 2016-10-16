@@ -31,6 +31,7 @@ class TableCompilerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @covers TableCompiler
      */
     public function join()
     {
@@ -44,6 +45,7 @@ class TableCompilerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @covers TableCompiler
      */
     public function leftJoin()
     {
@@ -57,6 +59,7 @@ class TableCompilerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @covers TableCompiler
      */
     public function naturalRightJoin()
     {
@@ -71,6 +74,7 @@ class TableCompilerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @covers TableCompiler
      */
     public function naturalLeftOuterJoin()
     {
@@ -86,6 +90,7 @@ class TableCompilerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @covers TableCompiler
      */
     public function straightJoin()
     {

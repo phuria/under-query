@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Phuria\SQLBuilder\Test\Unit\QueryBuilder;
+namespace Phuria\SQLBuilder\Test\Integration\QueryBuilder;
 
 use Phuria\SQLBuilder\Test\TestCase\QueryBuilderTrait;
 
@@ -22,6 +22,7 @@ class InsertBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @coversNothing
      */
     public function simpleInsert()
     {
@@ -37,6 +38,7 @@ class InsertBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @coversNothing
      */
     public function insertMultipleArguments()
     {

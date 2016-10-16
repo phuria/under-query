@@ -11,8 +11,8 @@
 
 namespace Phuria\SQLBuilder\Test\Unit\Connection;
 
+use Phuria\SQLBuilder\Connection\ConnectionInterface;
 use Phuria\SQLBuilder\Connection\ConnectionManager;
-use Phuria\SQLBuilder\Connection\NullConnection;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -21,11 +21,13 @@ class ConnectionManagerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
+     * @covers ConnectionManager
      */
     public function itReturnDefaultConnection()
     {
+        $connection = $this->prophesize(ConnectionInterface::class)->reveal();
+
         $manager = new ConnectionManager();
-        $connection = new NullConnection();
         $manager->registerConnection($connection);
 
         static::assertSame($connection, $manager->getConnection());
@@ -33,12 +35,13 @@ class ConnectionManagerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @covers ConnectionManager
      */
     public function itReturnNamedConnection()
     {
         $manager = new ConnectionManager();
-        $defaultConnection = new NullConnection();
-        $secondaryConnection = new NullConnection();
+        $defaultConnection = $this->prophesize(ConnectionInterface::class)->reveal();
+        $secondaryConnection = $this->prophesize(ConnectionInterface::class)->reveal();
 
         $manager->registerConnection($defaultConnection, 'default');
         $manager->registerConnection($secondaryConnection, 'secondary');

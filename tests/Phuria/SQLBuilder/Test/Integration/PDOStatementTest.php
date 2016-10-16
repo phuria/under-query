@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Phuria\SQLBuilder\Test\Unit;
+namespace Phuria\SQLBuilder\Test\Integration;
 
 use Phuria\SQLBuilder\Parameter\ParameterManager;
 use Phuria\SQLBuilder\Query\Query;
@@ -22,6 +22,7 @@ class PDOStatementTest extends DatabaseTestCase
 {
     /**
      * @test
+     * @coversNothing
      */
     public function itWillReturnOneRow()
     {

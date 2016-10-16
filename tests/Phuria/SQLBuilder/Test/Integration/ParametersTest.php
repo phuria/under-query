@@ -23,8 +23,9 @@ class ParametersTest extends DatabaseTestCase
 
     /**
      * @test
+     * @coversNothing
      */
-    public function itWillSetParameterInQueryBuilder()
+    public function itShouldWorkWithParameterSetInQb()
     {
         $connection = $this->createQueryConnection();
 
@@ -39,8 +40,9 @@ class ParametersTest extends DatabaseTestCase
 
     /**
      * @test
+     * @coversNothing
      */
-    public function itWillSetParameterInQuery()
+    public function itShouldWorkWithParameterSetInQuery()
     {
         $connection = $this->createQueryConnection();
 
@@ -57,6 +59,7 @@ class ParametersTest extends DatabaseTestCase
 
     /**
      * @test
+     * @coversNothing
      */
     public function itWillSelectNotExistingUser()
     {

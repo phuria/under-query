@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Phuria\SQLBuilder\Test\Unit\QueryBuilder;
+namespace Phuria\SQLBuilder\Test\Integration\QueryBuilder;
 
 use Phuria\SQLBuilder\Test\TestCase\QueryBuilderTrait;
 
@@ -22,6 +22,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @coversNothing
      */
     public function selectMinFromTest()
     {
@@ -35,6 +36,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @coversNothing
      */
     public function selectTableWithAlias()
     {
@@ -49,6 +51,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @coversNothing
      */
     public function selectTwoColumns()
     {
@@ -63,6 +66,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @coversNothing
      */
     public function selectColumnReferences()
     {
@@ -81,6 +85,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @coversNothing
      */
     public function selectMaxColumnReference()
     {
@@ -98,6 +103,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @coversNothing
      */
     public function selectWithWhereClause()
     {
@@ -116,6 +122,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @coversNothing
      */
     public function selectWithWhereColumnReference()
     {
@@ -132,6 +139,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @coversNothing
      */
     public function selectWithConnectedWhereClause()
     {
@@ -153,6 +161,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @coversNothing
      */
     public function selectWithCrossJoinClause()
     {
@@ -167,6 +176,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @coversNothing
      */
     public function selectWithMultipleFromTables()
     {
@@ -186,6 +196,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @coversNothing
      */
     public function selectWithLeftJoinClause()
     {
@@ -201,6 +212,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @coversNothing
      */
     public function selectWithDifferentJoins()
     {
@@ -236,6 +248,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @coversNothing
      */
     public function selectWithLimitClause()
     {
@@ -254,6 +267,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @coversNothing
      */
     public function selectWithGroupByClause()
     {
@@ -270,6 +284,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @coversNothing
      */
     public function selectFromSubQuery()
     {
@@ -294,6 +309,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @coversNothing
      */
     public function selectWithOrderByClause()
     {
@@ -314,6 +330,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @coversNothing
      */
     public function selectOnly()
     {
@@ -325,6 +342,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @coversNothing
      */
     public function selectWithOrderedGroupBy()
     {
@@ -339,6 +357,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @coversNothing
      */
     public function selectWithHavingClause()
     {
@@ -354,6 +373,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @coversNothing
      */
     public function selectWithGroupByRollUp()
     {
@@ -371,6 +391,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @coversNothing
      */
     public function selectFromWithAlias()
     {
@@ -384,6 +405,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @coversNothing
      */
     public function selectMultipleArguments()
     {

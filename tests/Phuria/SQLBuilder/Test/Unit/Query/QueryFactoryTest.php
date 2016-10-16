@@ -12,8 +12,8 @@
 namespace Phuria\SQLBuilder\Test\Unit\Query;
 
 use Phuria\SQLBuilder\Connection\ConnectionInterface;
-use Phuria\SQLBuilder\Connection\ConnectionManager;
-use Phuria\SQLBuilder\Parameter\ParameterManager;
+use Phuria\SQLBuilder\Connection\ConnectionManagerInterface;
+use Phuria\SQLBuilder\Parameter\ParameterManagerInterface;
 use Phuria\SQLBuilder\Query\Query;
 use Phuria\SQLBuilder\Query\QueryFactory;
 
@@ -24,15 +24,22 @@ class QueryFactoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
+     * @covers QueryFactory
      */
-    public function itBuildQuery()
+    public function itShouldCreateQueryWithDefaultConnection()
     {
-        $connectionManager = new ConnectionManager();
+        $connectionManager = $this->prophesize(ConnectionManagerInterface::class);
+        $connection = $this->prophesize(ConnectionInterface::class)->reveal();
+        $connectionManager->getConnection(null)->willReturn($connection);
+        $connectionManager = $connectionManager->reveal();
+        $parameterManager = $this->prophesize(ParameterManagerInterface::class)->reveal();
+
         $queryFactory = new QueryFactory($connectionManager);
-        $query = $queryFactory->buildQuery('SQL', new ParameterManager());
+        $query = $queryFactory->buildQuery('SQL', $parameterManager);
 
         static::assertInstanceOf(Query::class, $query);
         static::assertSame('SQL', $query->getSQL());
         static::assertInstanceOf(ConnectionInterface::class, $query->getConnection());
+        static::assertSame($connection, $query->getConnection());
     }
 }

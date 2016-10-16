@@ -24,6 +24,7 @@ class ConnectionTest extends DatabaseTestCase
 
     /**
      * @test
+     * @coversNothing
      */
     public function itHasDefaultConnection()
     {
