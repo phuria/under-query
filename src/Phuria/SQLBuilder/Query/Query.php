@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Phuria\SQLBuilder;
+namespace Phuria\SQLBuilder\Query;
 
 use Phuria\SQLBuilder\Connection\ConnectionInterface;
 use Phuria\SQLBuilder\Parameter\ParameterManagerInterface;

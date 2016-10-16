@@ -11,9 +11,9 @@
 
 namespace Phuria\SQLBuilder\QueryBuilder;
 
-use Phuria\SQLBuilder\Connection\ConnectionManagerInterface;
 use Phuria\SQLBuilder\Parameter\ParameterManagerInterface;
-use Phuria\SQLBuilder\Query;
+use Phuria\SQLBuilder\Query\Query;
+use Phuria\SQLBuilder\Query\QueryFactoryInterface;
 use Phuria\SQLBuilder\QueryCompiler\QueryCompilerInterface;
 use Phuria\SQLBuilder\TableFactory\TableFactoryInterface;
 
@@ -38,25 +38,26 @@ abstract class AbstractBuilder implements BuilderInterface
     private $parameterManager;
 
     /**
-     * @var ConnectionManagerInterface
+     * @var QueryFactoryInterface
      */
-    private $connectionManager;
+    private $queryFactory;
 
     /**
      * @param TableFactoryInterface     $tableFactory
      * @param QueryCompilerInterface    $queryCompiler
      * @param ParameterManagerInterface $parameterManager
+     * @param QueryFactoryInterface     $queryFactory
      */
     public function __construct(
         TableFactoryInterface $tableFactory,
         QueryCompilerInterface $queryCompiler,
         ParameterManagerInterface $parameterManager,
-        ConnectionManagerInterface $connectionManager
+        QueryFactoryInterface $queryFactory
     ) {
         $this->tableFactory = $tableFactory;
         $this->queryCompiler = $queryCompiler;
         $this->parameterManager = $parameterManager;
-        $this->connectionManager = $connectionManager;
+        $this->queryFactory = $queryFactory;
     }
 
     /**
@@ -108,16 +109,12 @@ abstract class AbstractBuilder implements BuilderInterface
     }
 
     /**
-     * @param string|null $connectionName
+     * @param mixed $connectionHint
      *
      * @return Query
      */
-    public function buildQuery($connectionName = null)
+    public function buildQuery($connectionHint = null)
     {
-        return new Query(
-            $this->buildSQL(),
-            $this->getParameterManager(),
-            $this->connectionManager->getConnection($connectionName)
-        );
+        return $this->queryFactory->buildQuery($this->buildSQL(), $this->getParameterManager(), $connectionHint);
     }
 }

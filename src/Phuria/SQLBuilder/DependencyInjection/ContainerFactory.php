@@ -13,6 +13,7 @@ namespace Phuria\SQLBuilder\DependencyInjection;
 
 use Phuria\SQLBuilder\Connection\ConnectionManager;
 use Phuria\SQLBuilder\Parameter\ParameterManager;
+use Phuria\SQLBuilder\Query\QueryFactory;
 use Phuria\SQLBuilder\QueryCompiler\ConcreteCompiler\DeleteCompiler;
 use Phuria\SQLBuilder\QueryCompiler\ConcreteCompiler\InsertCompiler;
 use Phuria\SQLBuilder\QueryCompiler\ConcreteCompiler\SelectCompiler;
@@ -36,21 +37,25 @@ class ContainerFactory
 
         $container['phuria.sql_builder.parameter_manager.class'] = ParameterManager::class;
 
-        $container['phuria.sql_builder.table_registry'] = new InvokeCallback(
-            [$this, 'createTableRegistry']
-        );
+        $container['phuria.sql_builder.table_registry'] = new InvokeCallback([
+            $this, 'createTableRegistry'
+        ]);
 
-        $container['phuria.sql_builder.table_factory'] = new InvokeCallback(
-            [$this, 'createTableFactory']
-        );
+        $container['phuria.sql_builder.table_factory'] = new InvokeCallback([
+            $this, 'createTableFactory'
+        ]);
 
-        $container['phuria.sql_builder.query_compiler'] = new InvokeCallback(
-            [$this, 'createTableCompiler']
-        );
+        $container['phuria.sql_builder.query_compiler'] = new InvokeCallback([
+            $this, 'createTableCompiler'
+        ]);
 
-        $container['phuria.sql_builder.connection_manager'] = new InvokeCallback(
-            [$this, 'createConnectionManager']
-        );
+        $container['phuria.sql_builder.connection_manager'] = new InvokeCallback([
+            $this, 'createConnectionManager'
+        ]);
+
+        $container['phuria.sql_builder.query_factory'] = new InvokeCallback([
+            $this, 'createQueryFactory'
+        ]);
 
         return $container;
     }
@@ -93,5 +98,15 @@ class ContainerFactory
     public function createConnectionManager()
     {
         return new ConnectionManager();
+    }
+
+    /**
+     * @param Container $container
+     *
+     * @return QueryFactory
+     */
+    public function createQueryFactory(Container $container)
+    {
+        return new QueryFactory($container['phuria.sql_builder.connection_manager']);
     }
 }

@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 + ConnectionManager to handling more that one connection
 + NullConnection, NullStatement classes
 + QueryBuilderFactory::registerConnection()
++ QueryFactory to solve the problem with a choice of connection
 ### Changed
 + QueryBuilder class name to QueryBuilderFactory, and factory methods
 now will be prefixed 'create'

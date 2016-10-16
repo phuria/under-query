@@ -12,7 +12,7 @@
 namespace Phuria\SQLBuilder\Test\Unit;
 
 use Phuria\SQLBuilder\Parameter\ParameterManager;
-use Phuria\SQLBuilder\Query;
+use Phuria\SQLBuilder\Query\Query;
 use Phuria\SQLBuilder\Test\TestCase\DatabaseTestCase;
 
 /**
@@ -25,10 +25,10 @@ class PDOStatementTest extends DatabaseTestCase
      */
     public function itWillReturnOneRow()
     {
-        $connection= $this->createQueryConnection();
-        $sql= 'select * FROM user where id=1';
-        $query= new Query($sql, new ParameterManager(), $connection);
-        $stmt= $query->buildStatement();
+        $connection = $this->createQueryConnection();
+        $sql = 'SELECT * FROM user WHERE id=1';
+        $query = new Query($sql, new ParameterManager(), $connection);
+        $stmt = $query->buildStatement();
 
         $stmt->execute();
 

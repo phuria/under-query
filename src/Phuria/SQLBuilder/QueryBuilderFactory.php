@@ -71,7 +71,7 @@ class QueryBuilderFactory
             $this->container['phuria.sql_builder.table_factory'],
             $this->container['phuria.sql_builder.query_compiler'],
             new $parameterClass,
-            $this->container['phuria.sql_builder.connection_manager']
+            $this->container['phuria.sql_builder.query_factory']
         );
     }
 
