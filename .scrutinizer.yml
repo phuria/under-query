@@ -34,7 +34,7 @@ build:
   tests:
     override:
       -
-        command: 'phpunit --configuration travis.phpunit.xml'
+        command: '.vendor/bin/phpunit --configuration travis.phpunit.xml'
         coverage:
           file: 'coverage.clover'
           format: 'clover'
