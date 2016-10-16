@@ -11,6 +11,7 @@
 
 namespace Phuria\SQLBuilder;
 
+use Phuria\SQLBuilder\Connection\ConnectionInterface;
 use Phuria\SQLBuilder\DependencyInjection\ContainerFactory;
 use Phuria\SQLBuilder\QueryBuilder\DeleteBuilder;
 use Phuria\SQLBuilder\QueryBuilder\InsertBuilder;
@@ -47,6 +48,17 @@ class QueryBuilderFactory
     }
 
     /**
+     * @param ConnectionInterface $connection
+     * @param string              $name
+     */
+    public function registerConnection(ConnectionInterface $connection, $name = 'default')
+    {
+        $this->container['phuria.sql_builder.connection_manager']->registerConnection(
+            $connection, $name
+        );
+    }
+
+    /**
      * @param string $class
      *
      * @return QueryCompilerInterface
@@ -58,7 +70,8 @@ class QueryBuilderFactory
         return new $class(
             $this->container['phuria.sql_builder.table_factory'],
             $this->container['phuria.sql_builder.query_compiler'],
-            new $parameterClass
+            new $parameterClass,
+            $this->container['phuria.sql_builder.connection_manager']
         );
     }
 

@@ -34,6 +34,10 @@ class ConnectionManager implements ConnectionManagerInterface
      */
     public function getConnection($name = null)
     {
+        if (0 === count($this->connections)) {
+            return new NullConnection();
+        }
+
         return $name ? $this->connections[$name] : reset($this->connections);
     }
 }

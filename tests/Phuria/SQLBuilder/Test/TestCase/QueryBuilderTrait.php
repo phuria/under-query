@@ -26,12 +26,8 @@ trait QueryBuilderTrait
     /**
      * @return QueryBuilderFactory
      */
-    protected static function queryBuilder()
+    protected static function qbFactory()
     {
-        if (null === static::$qb) {
-            static::$qb = new QueryBuilderFactory();
-        }
-
-        return static::$qb;
+        return new QueryBuilderFactory();
     }
 }

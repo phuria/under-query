@@ -11,7 +11,7 @@
 
 namespace Phuria\SQLBuilder\QueryBuilder;
 
-use Phuria\SQLBuilder\Connection\ConnectionInterface;
+use Phuria\SQLBuilder\Connection\ConnectionManagerInterface;
 use Phuria\SQLBuilder\Parameter\ParameterManagerInterface;
 use Phuria\SQLBuilder\Query;
 use Phuria\SQLBuilder\QueryCompiler\QueryCompilerInterface;
@@ -38,6 +38,11 @@ abstract class AbstractBuilder implements BuilderInterface
     private $parameterManager;
 
     /**
+     * @var ConnectionManagerInterface
+     */
+    private $connectionManager;
+
+    /**
      * @param TableFactoryInterface     $tableFactory
      * @param QueryCompilerInterface    $queryCompiler
      * @param ParameterManagerInterface $parameterManager
@@ -45,11 +50,13 @@ abstract class AbstractBuilder implements BuilderInterface
     public function __construct(
         TableFactoryInterface $tableFactory,
         QueryCompilerInterface $queryCompiler,
-        ParameterManagerInterface $parameterManager
+        ParameterManagerInterface $parameterManager,
+        ConnectionManagerInterface $connectionManager
     ) {
         $this->tableFactory = $tableFactory;
         $this->queryCompiler = $queryCompiler;
         $this->parameterManager = $parameterManager;
+        $this->connectionManager = $connectionManager;
     }
 
     /**
@@ -101,16 +108,16 @@ abstract class AbstractBuilder implements BuilderInterface
     }
 
     /**
-     * @param ConnectionInterface $connection
+     * @param string|null $connectionName
      *
      * @return Query
      */
-    public function buildQuery(ConnectionInterface $connection = null)
+    public function buildQuery($connectionName = null)
     {
         return new Query(
             $this->buildSQL(),
             $this->getParameterManager(),
-            $connection
+            $this->connectionManager->getConnection($connectionName)
         );
     }
 }

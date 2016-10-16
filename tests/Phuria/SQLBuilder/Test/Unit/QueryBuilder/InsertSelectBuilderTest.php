@@ -25,13 +25,13 @@ class InsertSelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function insertSelect()
     {
-        $sourceQb = static::queryBuilder()->createSelect();
+        $sourceQb = static::qbFactory()->createSelect();
 
         $sourceQb->from('transactions', 't');
         $sourceQb->addSelect('t.user_id', 'SUM(t.amount)');
         $sourceQb->addGroupBy('t.user_id');
 
-        $targetQb = static::queryBuilder()->createInsertSelect();
+        $targetQb = static::qbFactory()->createInsertSelect();
         $targetQb->into('user_summary', ['user_id', 'total_price']);
         $targetQb->selectInsert($sourceQb);
 

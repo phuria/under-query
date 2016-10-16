@@ -59,6 +59,14 @@ class Query
     }
 
     /**
+     * @return ConnectionInterface
+     */
+    public function getConnection()
+    {
+        return $this->connection;
+    }
+
+    /**
      * @return StatementInterface
      */
     public function buildStatement()

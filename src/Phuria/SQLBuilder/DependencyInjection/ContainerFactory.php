@@ -11,6 +11,7 @@
 
 namespace Phuria\SQLBuilder\DependencyInjection;
 
+use Phuria\SQLBuilder\Connection\ConnectionManager;
 use Phuria\SQLBuilder\Parameter\ParameterManager;
 use Phuria\SQLBuilder\QueryCompiler\ConcreteCompiler\DeleteCompiler;
 use Phuria\SQLBuilder\QueryCompiler\ConcreteCompiler\InsertCompiler;
@@ -47,6 +48,10 @@ class ContainerFactory
             [$this, 'createTableCompiler']
         );
 
+        $container['phuria.sql_builder.connection_manager'] = new InvokeCallback(
+            [$this, 'createConnectionManager']
+        );
+
         return $container;
     }
 
@@ -80,5 +85,13 @@ class ContainerFactory
         $queryCompiler->addConcreteCompiler(new UpdateCompiler());
 
         return $queryCompiler;
+    }
+
+    /**
+     * @return ConnectionManager
+     */
+    public function createConnectionManager()
+    {
+        return new ConnectionManager();
     }
 }
