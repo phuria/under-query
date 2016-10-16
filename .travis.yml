@@ -6,12 +6,11 @@ php:
   - 'hhvm'
 env:
   matrix:
-    - COMPOSER_ARGS:
-      - 'install'
-      - 'update'
-      - 'update --prefer-stable'
-      - 'update --prefer-lowest'
-      - 'update --no-dev'
+    - COMPOSER_ARGS="install"
+    - COMPOSER_ARGS="update"
+    - COMPOSER_ARGS="update --prefer-stable"
+    - COMPOSER_ARGS="update --prefer-lowest"
+    - COMPOSER_ARGS="update --no-dev"
 install:
   - 'composer $COMPOSER_ARGS'
   - 'sudo mysql -e "CREATE DATABASE phuria_test"'
