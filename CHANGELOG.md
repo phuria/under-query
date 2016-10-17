@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 ### Added
 + Code coverage annotations in tests
++ Added AbstractQueryBuilder::setParameter
 ### Changed
 + Unit test looks like integration tests have been moved
 + Query::__constructor now requires a connection
