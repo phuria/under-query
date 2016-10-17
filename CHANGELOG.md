@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## 0.3.1 [2016-10-17]
+### Changed
++ Fixed UPDATE query joins
+
 ## 0.3.0 [2016-10-17]
 ### Added
 + Code coverage annotations in tests

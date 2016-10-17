@@ -21,13 +21,15 @@ class UpdateBuilder extends AbstractBuilder implements
     Clause\OrderByClauseInterface,
     Clause\SetClauseInterface,
     Clause\WhereClauseInterface,
-    Component\TableComponentInterface
+    Component\TableComponentInterface,
+    Component\JoinComponentInterface
 {
     use Clause\SetClauseTrait;
     use Clause\WhereClauseTrait;
     use Clause\OrderByClauseTrait;
     use Clause\LimitClauseTrait;
     use Component\TableComponentTrait;
+    use Component\JoinComponentTrait;
 
     /**
      * @var boolean
