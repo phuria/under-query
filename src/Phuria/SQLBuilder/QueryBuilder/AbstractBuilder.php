@@ -113,7 +113,7 @@ abstract class AbstractBuilder implements BuilderInterface
      */
     public function setParameter($name, $value)
     {
-        $parameter = $this->getParameterManager()->createOrGetParameter($name);
+        $parameter = $this->getParameterManager()->getParameter($name);
         $parameter->setValue($value);
 
         return $this;

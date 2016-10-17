@@ -34,7 +34,7 @@ class ParameterManager implements ParameterManagerInterface
     /**
      * @inheritdoc
      */
-    public function createOrGetParameter($name)
+    public function getParameter($name)
     {
         if (false === array_key_exists($name, $this->parameters)) {
             $this->parameters[$name] = new QueryParameter($name);

@@ -31,7 +31,7 @@ trait ParameterComponentTrait
      */
     public function setParameter($name, $value)
     {
-        $this->getParameterManager()->createOrGetParameter($name)->setValue($value);
+        $this->getParameterManager()->getParameter($name)->setValue($value);
 
         return $this;
     }

@@ -12,7 +12,8 @@
 namespace Phuria\SQLBuilder\Test\Unit\Query;
 
 use Phuria\SQLBuilder\Connection\ConnectionInterface;
-use Phuria\SQLBuilder\Parameter\ParameterManagerInterface;
+use Phuria\SQLBuilder\Connection\NullConnection;
+use Phuria\SQLBuilder\Parameter\ParameterManager;
 use Phuria\SQLBuilder\Query\Query;
 
 /**
@@ -26,9 +27,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
      */
     public function itShouldReturnScalarValue()
     {
-        $parameterManager = $this->prophesize(ParameterManagerInterface::class);
-        $parameterManager->toArray()->willReturn([]);
-        $parameterManager = $parameterManager->reveal();
+        $parameterManager = new ParameterManager();
         $connection = $this->prophesize(ConnectionInterface::class);
         $connection->fetchScalar('', [])->willReturn(100);
         $connection = $connection->reveal();
@@ -36,5 +35,22 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $query = new Query('', $parameterManager, $connection);
 
         static::assertSame(100, $query->fetchScalar());
+    }
+
+    /**
+     * @test
+     * @covers \Phuria\SQLBuilder\Query\Query
+     */
+    public function itShouldCallConnection()
+    {
+        $paramManager = new ParameterManager();
+        $connection = new NullConnection();
+
+        $query = new Query('', $paramManager, $connection);
+
+        static::assertSame(null, $query->fetchScalar());
+        static::assertSame([], $query->fetchAll());
+        static::assertSame(null, $query->fetchRow());
+        static::assertSame(0, $query->rowCount());
     }
 }

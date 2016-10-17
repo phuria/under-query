@@ -13,6 +13,7 @@ namespace Phuria\SQLBuilder\Connection;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
+ * @codeCoverageIgnore
  */
 class NullConnection implements ConnectionInterface
 {
@@ -29,7 +30,7 @@ class NullConnection implements ConnectionInterface
      */
     public function fetchRow($SQL, array $parameters = [])
     {
-        return [];
+        return null;
     }
 
     /**

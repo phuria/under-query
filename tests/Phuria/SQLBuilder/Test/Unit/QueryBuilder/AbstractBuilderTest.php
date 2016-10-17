@@ -29,6 +29,6 @@ class AbstractBuilderTest extends \PHPUnit_Framework_TestCase
         $qb = static::qbFactory()->createSelect();
         $qb->setParameter('test', 10);
 
-        static::assertSame(10, $qb->getParameterManager()->createOrGetParameter('test')->getValue());
+        static::assertSame(10, $qb->getParameterManager()->getParameter('test')->getValue());
     }
 }

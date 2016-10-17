@@ -20,7 +20,7 @@ interface ConnectionInterface
      * @param string $SQL
      * @param array  $parameters
      *
-     * @return mixed
+     * @return mixed|null Null when no results.
      */
     public function fetchScalar($SQL, array $parameters = []);
 
@@ -28,7 +28,7 @@ interface ConnectionInterface
      * @param string $SQL
      * @param array  $parameters
      *
-     * @return array
+     * @return mixed|null Null when no results.
      */
     public function fetchRow($SQL, array $parameters = []);
 
@@ -36,7 +36,7 @@ interface ConnectionInterface
      * @param string $SQL
      * @param array  $parameters
      *
-     * @return array
+     * @return array Empty array when no results.
      */
     public function fetchAll($SQL, array $parameters = []);
 

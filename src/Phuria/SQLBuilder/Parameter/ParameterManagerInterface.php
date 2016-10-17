@@ -21,7 +21,7 @@ interface ParameterManagerInterface
      *
      * @return QueryParameter
      */
-    public function createOrGetParameter($name);
+    public function getParameter($name);
 
     /**
      * @param mixed $value

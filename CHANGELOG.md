@@ -5,15 +5,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+
+## 0.3.0 [2016-10-17]
 ### Added
 + Code coverage annotations in tests
-+ Added AbstractQueryBuilder::setParameter
++ Added AbstractQueryBuilder::setParameter()
 ### Changed
 + Unit test looks like integration tests have been moved
-+ Query::__constructor now requires a connection
++ Query::__constructor() now requires a connection
 + Now ConnectionInterface will be responsible for fetching data
-+ ConnectionInterface methods like query, prepare have been replaced
-by fetch, fetchScalar, fetchAll
++ ConnectionInterface methods like query(), prepare() have been replaced
+by fetch(), fetchScalar(), fetchAll()
++ ParameterManagerInterface::createOrGetParameter() renamed to getParameter()
 ### Removed
 + StatementInterface
 
@@ -34,7 +37,6 @@ now will be prefixed 'create'
 + Initial Connection
 + Initial ParameterManager
 + DI using pimple/pimple
-+ Initial ParameterManager
 + QueryBuilder for INSERT, UPDATE, SELECT, DELETE and INSERT ... SELECT
 + QueryCompiler
 + Initial StatementInterface and PDOStatement decorator

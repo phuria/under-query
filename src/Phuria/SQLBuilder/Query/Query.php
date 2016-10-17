@@ -97,7 +97,7 @@ class Query
      */
     public function setParameter($name, $value)
     {
-        $this->parameterManager->createOrGetParameter($name)->setValue($value);
+        $this->parameterManager->getParameter($name)->setValue($value);
 
         return $this;
     }
