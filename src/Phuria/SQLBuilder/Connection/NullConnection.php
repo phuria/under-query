@@ -48,4 +48,12 @@ class NullConnection implements ConnectionInterface
     {
         return 0;
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function execute($SQL, array $parameters = [])
+    {
+        return 0;
+    }
 }

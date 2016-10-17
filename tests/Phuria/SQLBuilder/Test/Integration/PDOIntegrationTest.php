@@ -33,4 +33,21 @@ class PDOIntegrationTest extends DatabaseTestCase
         static::assertSame(1, $query->rowCount());
     }
 
+    /**
+     * @test
+     * @coversNothing
+     */
+    public function itUpdateUser()
+    {
+        $connection = $this->createQueryConnection();
+        $sql = 'UPDATE user SET username = "Benek" WHERE id = 1';
+        $query = new Query($sql, new ParameterManager(), $connection);
+
+        static::assertSame(1, $query->execute());
+
+        $sql = 'SELECT username FROM user WHERE id = 1';
+        $query = new Query($sql, new ParameterManager(), $connection);
+
+        static::assertSame('Benek', $query->fetchScalar());
+    }
 }

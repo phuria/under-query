@@ -90,6 +90,14 @@ class Query
     }
 
     /**
+     * @return int
+     */
+    public function execute()
+    {
+        return $this->connection->execute($this->sql, $this->parameterManager->toArray());
+    }
+
+    /**
      * @param int|string $name
      * @param mixed      $value
      *

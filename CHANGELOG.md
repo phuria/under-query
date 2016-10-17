@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## 0.4.0 [2016-10-17]
+### Added
++ Query::execute() for the proper execute INSERT, DELETE AND UPDATE queries
++ ConnectionInterface::execute() 
+
 ## 0.3.1 [2016-10-17]
 ### Changed
 + Fixed UPDATE query joins

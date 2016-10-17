@@ -63,6 +63,16 @@ class PDOConnection implements ConnectionInterface
     /**
      * @inheritdoc
      */
+    public function execute($SQL, array $parameters = [])
+    {
+        $stmt = $this->getExecutedStatement($SQL, $parameters);
+
+        return $stmt->rowCount();
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function fetchScalar($SQL, array $parameters = [])
     {
         $stmt = $this->getExecutedStatement($SQL, $parameters);

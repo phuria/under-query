@@ -47,4 +47,12 @@ interface ConnectionInterface
      * @return int
      */
     public function rowCount($SQL, array $parameters = []);
+
+    /**
+     * @param string $SQL
+     * @param array  $parameters
+     *
+     * @return int Number of rows affected.
+     */
+    public function execute($SQL, array $parameters = []);
 }
