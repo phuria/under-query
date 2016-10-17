@@ -22,6 +22,7 @@ class UpdateBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @coversNothing
      */
     public function updateWithSetClause()
     {
@@ -41,6 +42,7 @@ class UpdateBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @coversNothing
      */
     public function updateWithWhereClause()
     {
@@ -55,6 +57,7 @@ class UpdateBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @coversNothing
      */
     public function updateWithOrderByAndLimit()
     {
@@ -70,6 +73,7 @@ class UpdateBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @coversNothing
      */
     public function updateIgnore()
     {

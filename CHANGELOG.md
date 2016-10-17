@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 + Unit test looks like integration tests have been moved
 + Query::__constructor now requires a connection
++ Now ConnectionInterface will be responsible for fetching data
++ ConnectionInterface methods like query, prepare have been replaced
+by fetch, fetchScalar, fetchAll
+### Removed
++ StatementInterface
 
 ## 0.2.0 [2016-10-16]
 ### Added

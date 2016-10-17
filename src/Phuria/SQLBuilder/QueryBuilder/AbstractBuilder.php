@@ -109,6 +109,17 @@ abstract class AbstractBuilder implements BuilderInterface
     }
 
     /**
+     * @inheritdoc
+     */
+    public function setParameter($name, $value)
+    {
+        $parameter = $this->getParameterManager()->createOrGetParameter($name);
+        $parameter->setValue($value);
+
+        return $this;
+    }
+
+    /**
      * @param mixed $connectionHint
      *
      * @return Query
