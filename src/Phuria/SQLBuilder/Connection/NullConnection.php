@@ -11,8 +11,6 @@
 
 namespace Phuria\SQLBuilder\Connection;
 
-use Phuria\SQLBuilder\Statement\NullStatement;
-
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
@@ -21,16 +19,32 @@ class NullConnection implements ConnectionInterface
     /**
      * @inheritdoc
      */
-    public function query($SQL)
+    public function fetchScalar($SQL, array $parameters = [])
     {
-        return new NullStatement();
+        return null;
     }
 
     /**
      * @inheritdoc
      */
-    public function prepare($SQL)
+    public function fetchRow($SQL, array $parameters = [])
     {
-        return new NullStatement();
+        return [];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function fetchAll($SQL, array $parameters = [])
+    {
+        return [];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function rowCount($SQL, array $parameters = [])
+    {
+        return 0;
     }
 }

@@ -22,7 +22,7 @@ class TableRecognizerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     * @covers TableRecognizer
+     * @covers \Phuria\SQLBuilder\TableRecognizer
      */
     public function itWillReturnValidTypes()
     {

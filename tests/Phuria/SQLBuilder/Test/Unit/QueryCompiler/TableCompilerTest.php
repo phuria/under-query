@@ -31,7 +31,7 @@ class TableCompilerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers TableCompiler
+     * @covers \Phuria\SQLBuilder\QueryCompiler\TableCompiler
      */
     public function join()
     {
@@ -45,7 +45,7 @@ class TableCompilerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers TableCompiler
+     * @covers \Phuria\SQLBuilder\QueryCompiler\TableCompiler
      */
     public function leftJoin()
     {
@@ -59,7 +59,7 @@ class TableCompilerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers TableCompiler
+     * @covers \Phuria\SQLBuilder\QueryCompiler\TableCompiler
      */
     public function naturalRightJoin()
     {
@@ -74,7 +74,7 @@ class TableCompilerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers TableCompiler
+     * @covers \Phuria\SQLBuilder\QueryCompiler\TableCompiler
      */
     public function naturalLeftOuterJoin()
     {
@@ -90,7 +90,7 @@ class TableCompilerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers TableCompiler
+     * @covers \Phuria\SQLBuilder\QueryCompiler\TableCompiler
      */
     public function straightJoin()
     {

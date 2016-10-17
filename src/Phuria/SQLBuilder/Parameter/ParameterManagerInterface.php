@@ -11,20 +11,11 @@
 
 namespace Phuria\SQLBuilder\Parameter;
 
-use Phuria\SQLBuilder\Statement\StatementInterface;
-
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
 interface ParameterManagerInterface
 {
-    /**
-     * @param StatementInterface $stmt
-     *
-     * @return ParameterManagerInterface
-     */
-    public function bindStatement(StatementInterface $stmt);
-
     /**
      * @param string $name
      *
@@ -43,4 +34,9 @@ interface ParameterManagerInterface
      * @return array
      */
     public function getReferences();
+
+    /**
+     * @return QueryParameter[]
+     */
+    public function toArray();
 }

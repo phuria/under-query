@@ -24,7 +24,7 @@ class TableFactoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     * @covers TableFactory
+     * @covers \Phuria\SQLBuilder\TableFactory\TableFactory
      */
     public function itCreateUnknownTable()
     {
@@ -36,6 +36,7 @@ class TableFactoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @covers \Phuria\SQLBuilder\TableFactory\TableFactory
      */
     public function itCreateExampleTable()
     {

@@ -21,7 +21,7 @@ class ConnectionManagerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     * @covers ConnectionManager
+     * @covers \Phuria\SQLBuilder\Connection\ConnectionManager
      */
     public function itReturnDefaultConnection()
     {
@@ -35,7 +35,7 @@ class ConnectionManagerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers ConnectionManager
+     * @covers \Phuria\SQLBuilder\Connection\ConnectionManager
      */
     public function itReturnNamedConnection()
     {

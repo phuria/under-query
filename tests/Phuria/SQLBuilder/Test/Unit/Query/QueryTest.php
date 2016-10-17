@@ -14,7 +14,6 @@ namespace Phuria\SQLBuilder\Test\Unit\Query;
 use Phuria\SQLBuilder\Connection\ConnectionInterface;
 use Phuria\SQLBuilder\Parameter\ParameterManagerInterface;
 use Phuria\SQLBuilder\Query\Query;
-use Phuria\SQLBuilder\Statement\StatementInterface;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -23,17 +22,15 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     * @covers Query
+     * @covers \Phuria\SQLBuilder\Query\Query
      */
     public function itShouldReturnScalarValue()
     {
-        $parameterManager = $this->prophesize(ParameterManagerInterface::class)->reveal();
+        $parameterManager = $this->prophesize(ParameterManagerInterface::class);
+        $parameterManager->toArray()->willReturn([]);
+        $parameterManager = $parameterManager->reveal();
         $connection = $this->prophesize(ConnectionInterface::class);
-        $statement = $this->prophesize(StatementInterface::class);
-        $statement->execute()->willReturn(null);
-        $statement->fetch(\PDO::FETCH_ASSOC)->willReturn(['result' => 100]);
-        $statement = $statement->reveal();
-        $connection->prepare('')->willReturn($statement);
+        $connection->fetchScalar('', [])->willReturn(100);
         $connection = $connection->reveal();
 
         $query = new Query('', $parameterManager, $connection);

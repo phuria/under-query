@@ -14,7 +14,7 @@ namespace Phuria\SQLBuilder\Parameter;
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-class QueryParameter
+class QueryParameter implements QueryParameterInterface
 {
     /**
      * @var $name
@@ -47,7 +47,7 @@ class QueryParameter
     }
 
     /**
-     * @return mixed
+     * @inheritdoc
      */
     public function getName()
     {
@@ -55,7 +55,7 @@ class QueryParameter
     }
 
     /**
-     * @return mixed
+     * @inheritdoc
      */
     public function getValue()
     {

@@ -7,8 +7,6 @@ php:
 env:
   matrix:
     - COMPOSER_ARGS="install"
-    - COMPOSER_ARGS="update"
-    - COMPOSER_ARGS="update --prefer-stable"
     - COMPOSER_ARGS="update --prefer-lowest"
     - COMPOSER_ARGS="update --no-dev"
 install:

@@ -11,8 +11,6 @@
 
 namespace Phuria\SQLBuilder\Connection;
 
-use Phuria\SQLBuilder\Statement\StatementInterface;
-
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
@@ -20,16 +18,33 @@ interface ConnectionInterface
 {
     /**
      * @param string $SQL
+     * @param array  $parameters
      *
-     * @return StatementInterface
+     * @return mixed
      */
-    public function query($SQL);
-
+    public function fetchScalar($SQL, array $parameters = []);
 
     /**
      * @param string $SQL
+     * @param array  $parameters
      *
-     * @return StatementInterface
+     * @return array
      */
-    public function prepare($SQL);
+    public function fetchRow($SQL, array $parameters = []);
+
+    /**
+     * @param string $SQL
+     * @param array  $parameters
+     *
+     * @return array
+     */
+    public function fetchAll($SQL, array $parameters = []);
+
+    /**
+     * @param string $SQL
+     * @param array  $parameters
+     *
+     * @return int
+     */
+    public function rowCount($SQL, array $parameters = []);
 }

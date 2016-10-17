@@ -24,16 +24,13 @@ class PDOIntegrationTest extends DatabaseTestCase
      * @test
      * @coversNothing
      */
-    public function itWillReturnOneRow()
+    public function itShouldBuildValidStatement()
     {
         $connection = $this->createQueryConnection();
         $sql = 'SELECT * FROM user WHERE id=1';
         $query = new Query($sql, new ParameterManager(), $connection);
-        $stmt = $query->buildStatement();
 
-        $stmt->execute();
-
-        static::assertSame(1, $stmt->rowCount());
+        static::assertSame(1, $query->rowCount());
     }
 
 }

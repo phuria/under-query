@@ -13,7 +13,6 @@ namespace Phuria\SQLBuilder\Query;
 
 use Phuria\SQLBuilder\Connection\ConnectionInterface;
 use Phuria\SQLBuilder\Parameter\ParameterManagerInterface;
-use Phuria\SQLBuilder\Statement\StatementInterface;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -21,17 +20,17 @@ use Phuria\SQLBuilder\Statement\StatementInterface;
 class Query
 {
     /**
-     * @var string $sql
+     * @var string
      */
     private $sql;
 
     /**
-     * @var ParameterManagerInterface $parameterManager
+     * @var ParameterManagerInterface
      */
     private $parameterManager;
 
     /**
-     * @var ConnectionInterface $connection
+     * @var ConnectionInterface
      */
     private $connection;
 
@@ -59,38 +58,35 @@ class Query
     }
 
     /**
-     * @return ConnectionInterface
-     */
-    public function getConnection()
-    {
-        return $this->connection;
-    }
-
-    /**
-     * @return StatementInterface
-     */
-    public function buildStatement()
-    {
-        $stmt = $this->connection->prepare($this->sql);
-        $this->parameterManager->bindStatement($stmt);
-
-        return $stmt;
-    }
-
-    /**
      * @return mixed
      */
     public function fetchScalar()
     {
-        $stmt = $this->buildStatement();
-        $stmt->execute();
-        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $this->connection->fetchScalar($this->sql, $this->parameterManager->toArray());
+    }
 
-        if (null === $result) {
-            return null;
-        }
+    /**
+     * @return array
+     */
+    public function fetchRow()
+    {
+        return $this->connection->fetchRow($this->sql, $this->parameterManager->toArray());
+    }
 
-        return reset($result);
+    /**
+     * @return array
+     */
+    public function fetchAll()
+    {
+        return $this->connection->fetchAll($this->sql, $this->parameterManager->toArray());
+    }
+
+    /**
+     * @return int
+     */
+    public function rowCount()
+    {
+        return $this->connection->rowCount($this->sql, $this->parameterManager->toArray());
     }
 
     /**
@@ -104,5 +100,21 @@ class Query
         $this->parameterManager->createOrGetParameter($name)->setValue($value);
 
         return $this;
+    }
+
+    /**
+     * @return ParameterManagerInterface
+     */
+    public function getParameterManager()
+    {
+        return $this->parameterManager;
+    }
+
+    /**
+     * @return ConnectionInterface
+     */
+    public function getConnection()
+    {
+        return $this->connection;
     }
 }

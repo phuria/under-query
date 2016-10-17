@@ -11,7 +11,7 @@
 
 namespace Phuria\SQLBuilder\Test\Integration;
 
-use Phuria\SQLBuilder\Connection\NullConnection;
+use Phuria\SQLBuilder\Connection\ConnectionInterface;
 use Phuria\SQLBuilder\Test\TestCase\DatabaseTestCase;
 use Phuria\SQLBuilder\Test\TestCase\QueryBuilderTrait;
 
@@ -30,7 +30,7 @@ class ConnectionTest extends DatabaseTestCase
     {
         $qbFactory = static::qbFactory();
 
-        $connection = new NullConnection();
+        $connection = $this->prophesize(ConnectionInterface::class)->reveal();
         $qbFactory->registerConnection($connection);
 
         $qb = $qbFactory->createSelect();

@@ -11,8 +11,6 @@
 
 namespace Phuria\SQLBuilder\Parameter;
 
-use Phuria\SQLBuilder\Statement\StatementInterface;
-
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
@@ -46,13 +44,11 @@ class ParameterManager implements ParameterManagerInterface
     }
 
     /**
-     * @inheritdoc
+     * @return QueryParameter[]
      */
-    public function bindStatement(StatementInterface $stmt)
+    public function toArray()
     {
-        foreach ($this->parameters as $param) {
-            $stmt->bindValue($param->getName(), $param->getValue());
-        }
+        return $this->parameters;
     }
 
     /**
