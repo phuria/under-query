@@ -16,6 +16,7 @@ use Phuria\SQLBuilder\Connection\ConnectionManagerInterface;
 use Phuria\SQLBuilder\DependencyInjection\ContainerFactory;
 use Phuria\SQLBuilder\Query\QueryFactoryInterface;
 use Phuria\SQLBuilder\QueryCompiler\QueryCompilerInterface;
+use Phuria\SQLBuilder\TableFactory\TableFactoryInterface;
 use Phuria\SQLBuilder\TableRegistry;
 
 /**
@@ -36,5 +37,6 @@ class ContainerFactoryTest extends \PHPUnit_Framework_TestCase
         static::assertInstanceOf(QueryFactoryInterface::class, $container->get('phuria.sql_builder.query_factory'));
         static::assertInstanceOf(QueryCompilerInterface::class, $container->get('phuria.sql_builder.query_compiler'));
         static::assertInstanceOf(TableRegistry::class, $container->get('phuria.sql_builder.table_registry'));
+        static::assertInstanceOf(TableFactoryInterface::class, $container->get('phuria.sql_builder.table_factory'));
     }
 }
