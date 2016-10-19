@@ -28,7 +28,7 @@ class ConnectionTest extends DatabaseTestCase
      */
     public function itHasDefaultConnection()
     {
-        $qbFactory = static::qbFactory();
+        $qbFactory = static::phuriaSQLBuilder();
 
         $connection = $this->prophesize(ConnectionInterface::class)->reveal();
         $qbFactory->registerConnection($connection);

@@ -11,6 +11,7 @@
 
 namespace Phuria\SQLBuilder\DependencyInjection;
 
+use Interop\Container\ContainerInterface;
 use Phuria\SQLBuilder\Connection\ConnectionManager;
 use Phuria\SQLBuilder\Parameter\ParameterManager;
 use Phuria\SQLBuilder\Query\QueryFactory;
@@ -29,38 +30,26 @@ use Pimple\Container;
 class ContainerFactory
 {
     /**
-     * @return Container
+     * @return ContainerInterface
      */
     public function create()
     {
-        $container = new Container();
+        $pimple = new Container();
+        $container = new PimpleContainer($pimple);
 
-        $container['phuria.sql_builder.parameter_manager.class'] = ParameterManager::class;
+        $container->setParameter('phuria.sql_builder.parameter_manager.class', ParameterManager::class);
 
-        $container['phuria.sql_builder.table_registry'] = new InvokeCallback([
-            $this, 'createTableRegistry'
-        ]);
-
-        $container['phuria.sql_builder.table_factory'] = new InvokeCallback([
-            $this, 'createTableFactory'
-        ]);
-
-        $container['phuria.sql_builder.query_compiler'] = new InvokeCallback([
-            $this, 'createTableCompiler'
-        ]);
-
-        $container['phuria.sql_builder.connection_manager'] = new InvokeCallback([
-            $this, 'createConnectionManager'
-        ]);
-
-        $container['phuria.sql_builder.query_factory'] = new InvokeCallback([
-            $this, 'createQueryFactory'
-        ]);
+        $container->setServiceFromCallback('phuria.sql_builder.table_registry', [$this, 'createTableRegistry']);
+        $container->setServiceFromCallback('phuria.sql_builder.table_factory', [$this, 'createTableFactory']);
+        $container->setServiceFromCallback('phuria.sql_builder.query_compiler', [$this, 'createTableCompiler']);
+        $container->setServiceFromCallback('phuria.sql_builder.connection_manager', [$this, 'createConnectionManager']);
+        $container->setServiceFromCallback('phuria.sql_builder.query_factory', [$this, 'createQueryFactory']);
 
         return $container;
     }
 
     /**
+     * @internal
      * @return TableRegistry
      */
     public function createTableRegistry()
@@ -69,6 +58,7 @@ class ContainerFactory
     }
 
     /**
+     * @internal
      * @param Container $container
      *
      * @return TableFactory
@@ -79,6 +69,7 @@ class ContainerFactory
     }
 
     /**
+     * @internal
      * @return QueryCompiler
      */
     public function createTableCompiler()
@@ -93,6 +84,7 @@ class ContainerFactory
     }
 
     /**
+     * @internal
      * @return ConnectionManager
      */
     public function createConnectionManager()
@@ -101,6 +93,7 @@ class ContainerFactory
     }
 
     /**
+     * @internal
      * @param Container $container
      *
      * @return QueryFactory

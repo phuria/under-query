@@ -11,6 +11,7 @@
 
 namespace Phuria\SQLBuilder;
 
+use Interop\Container\ContainerInterface;
 use Phuria\SQLBuilder\Connection\ConnectionInterface;
 use Phuria\SQLBuilder\DependencyInjection\ContainerFactory;
 use Phuria\SQLBuilder\QueryBuilder\DeleteBuilder;
@@ -19,28 +20,27 @@ use Phuria\SQLBuilder\QueryBuilder\InsertSelectBuilder;
 use Phuria\SQLBuilder\QueryBuilder\SelectBuilder;
 use Phuria\SQLBuilder\QueryBuilder\UpdateBuilder;
 use Phuria\SQLBuilder\QueryCompiler\QueryCompilerInterface;
-use Pimple\Container;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-class QueryBuilderFactory
+class PhuriaSQLBuilder
 {
     /**
-     * @var Container $container
+     * @var ContainerInterface $container
      */
     private $container;
 
     /**
-     * @param Container|null $container
+     * @param ContainerInterface|null $container
      */
-    public function __construct(Container $container = null)
+    public function __construct(ContainerInterface $container = null)
     {
         $this->container = $container ?: (new ContainerFactory())->create();
     }
 
     /**
-     * @return Container
+     * @return ContainerInterface
      */
     public function getContainer()
     {
@@ -53,7 +53,7 @@ class QueryBuilderFactory
      */
     public function registerConnection(ConnectionInterface $connection, $name = 'default')
     {
-        $this->container['phuria.sql_builder.connection_manager']->registerConnection(
+        $this->container->get('phuria.sql_builder.connection_manager')->registerConnection(
             $connection, $name
         );
     }
@@ -65,13 +65,13 @@ class QueryBuilderFactory
      */
     private function createQueryBuilder($class)
     {
-        $parameterClass = $this->container['phuria.sql_builder.parameter_manager.class'];
+        $parameterClass = $this->container->get('phuria.sql_builder.parameter_manager.class');
 
         return new $class(
-            $this->container['phuria.sql_builder.table_factory'],
-            $this->container['phuria.sql_builder.query_compiler'],
+            $this->container->get('phuria.sql_builder.table_factory'),
+            $this->container->get('phuria.sql_builder.query_compiler'),
             new $parameterClass,
-            $this->container['phuria.sql_builder.query_factory']
+            $this->container->get('phuria.sql_builder.query_factory')
         );
     }
 

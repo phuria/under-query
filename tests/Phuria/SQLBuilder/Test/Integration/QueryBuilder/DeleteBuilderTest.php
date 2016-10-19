@@ -26,7 +26,7 @@ class DeleteBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function simpleDelete()
     {
-        $qb = static::qbFactory()->createDelete();
+        $qb = static::phuriaSQLBuilder()->createDelete();
 
         $table = $qb->from('example');
         $qb->andWhere("{$table->column('name')} = 'Foo'");
@@ -40,7 +40,7 @@ class DeleteBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function multipleTableDelete()
     {
-        $qb = static::qbFactory()->createDelete();
+        $qb = static::phuriaSQLBuilder()->createDelete();
 
         $qb->from('user', 'u');
         $qb->innerJoin('contact', 'c', 'u.id = c.user_id');
@@ -51,7 +51,7 @@ class DeleteBuilderTest extends \PHPUnit_Framework_TestCase
         $expectedSQL = 'DELETE u, c FROM user AS u INNER JOIN contact AS c ON u.id = c.user_id WHERE u.id = 1';
         static::assertSame($expectedSQL, $qb->buildSQL());
 
-        $qb = static::qbFactory()->createDelete();
+        $qb = static::phuriaSQLBuilder()->createDelete();
 
         $userTable = $qb->from('user', 'u');
         $contactTable = $qb->innerJoin('contact', 'c', 'u.id = c.user_id');
@@ -67,7 +67,7 @@ class DeleteBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function deleteWithOrderByAndLimit()
     {
-        $qb = static::qbFactory()->createDelete();
+        $qb = static::phuriaSQLBuilder()->createDelete();
 
         $qb->from('example');
         $qb->addOrderBy('name DESC');

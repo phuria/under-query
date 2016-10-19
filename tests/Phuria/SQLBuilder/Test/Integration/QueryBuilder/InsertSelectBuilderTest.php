@@ -26,13 +26,13 @@ class InsertSelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function insertSelect()
     {
-        $sourceQb = static::qbFactory()->createSelect();
+        $sourceQb = static::phuriaSQLBuilder()->createSelect();
 
         $sourceQb->from('transactions', 't');
         $sourceQb->addSelect('t.user_id', 'SUM(t.amount)');
         $sourceQb->addGroupBy('t.user_id');
 
-        $targetQb = static::qbFactory()->createInsertSelect();
+        $targetQb = static::phuriaSQLBuilder()->createInsertSelect();
         $targetQb->into('user_summary', ['user_id', 'total_price']);
         $targetQb->selectInsert($sourceQb);
 

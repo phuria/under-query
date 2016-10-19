@@ -26,7 +26,7 @@ class UpdateBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function itShouldCreateJoin()
     {
-        $qbFactory = static::qbFactory();
+        $qbFactory = static::phuriaSQLBuilder();
         $update = $qbFactory->createUpdate();
 
         $update->leftJoin('test');

@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Added
++ container-interop/container-interop
++ implementation ContainerInterface for Pimple
++ humbug/humbug with configuration
+### Changed
++ QueryBuilderFactory renamed to PhuriaSQLBuilder (it better shows entry point)
++ PhuriaSQLBuilder::__constructor() now expects ContainerInterface
 
 ## 0.4.0 [2016-10-17]
 ### Added

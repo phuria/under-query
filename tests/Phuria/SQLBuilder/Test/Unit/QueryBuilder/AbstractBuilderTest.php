@@ -26,7 +26,7 @@ class AbstractBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function itShouldSetParameter()
     {
-        $qb = static::qbFactory()->createSelect();
+        $qb = static::phuriaSQLBuilder()->createSelect();
         $qb->setParameter('test', 10);
 
         static::assertSame(10, $qb->getParameterManager()->getParameter('test')->getValue());

@@ -26,7 +26,7 @@ class InsertBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function simpleInsert()
     {
-        $qb = static::qbFactory()->createInsert();
+        $qb = static::phuriaSQLBuilder()->createInsert();
 
         $qb->into('example');
         $qb->setColumns(['id', 'name']);
@@ -42,7 +42,7 @@ class InsertBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function insertMultipleArguments()
     {
-        $qb = static::qbFactory()->createInsert();
+        $qb = static::phuriaSQLBuilder()->createInsert();
 
         $qb->into('user', ['username', 'email']);
         $qb->addValues(['foo', 'bar']);

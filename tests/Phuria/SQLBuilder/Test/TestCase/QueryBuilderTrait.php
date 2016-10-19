@@ -11,7 +11,7 @@
 
 namespace Phuria\SQLBuilder\Test\TestCase;
 
-use Phuria\SQLBuilder\QueryBuilderFactory;
+use Phuria\SQLBuilder\PhuriaSQLBuilder;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -19,15 +19,10 @@ use Phuria\SQLBuilder\QueryBuilderFactory;
 trait QueryBuilderTrait
 {
     /**
-     * @var QueryBuilderFactory
+     * @return PhuriaSQLBuilder
      */
-    protected static $qb;
-
-    /**
-     * @return QueryBuilderFactory
-     */
-    protected static function qbFactory()
+    protected static function phuriaSQLBuilder()
     {
-        return new QueryBuilderFactory();
+        return new PhuriaSQLBuilder();
     }
 }
