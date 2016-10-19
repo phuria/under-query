@@ -22,6 +22,17 @@ use Phuria\SQLBuilder\Query\Query;
 class QueryTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @return Query
+     */
+    private function createTestQuery()
+    {
+        $paramManager = new ParameterManager();
+        $connection = new NullConnection();
+
+        return new Query('', $paramManager, $connection);
+    }
+
+    /**
      * @test
      * @covers \Phuria\SQLBuilder\Query\Query
      */
@@ -41,16 +52,45 @@ class QueryTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers \Phuria\SQLBuilder\Query\Query
      */
+    public function isShouldReturnGivenAttributes()
+    {
+        $parameterManager = new ParameterManager();
+        $connection = $this->prophesize(ConnectionInterface::class)->reveal();
+
+        $query = new Query('test', $parameterManager, $connection);
+
+        static::assertSame('test', $query->getSQL());
+        static::assertSame($connection, $query->getConnection());
+        static::assertSame($parameterManager, $query->getParameterManager());
+    }
+
+    /**
+     * @test
+     * @covers \Phuria\SQLBuilder\Query\Query
+     */
     public function itShouldCallConnection()
     {
-        $paramManager = new ParameterManager();
-        $connection = new NullConnection();
-
-        $query = new Query('', $paramManager, $connection);
+        $query = $this->createTestQuery();
 
         static::assertSame(null, $query->fetchScalar());
         static::assertSame([], $query->fetchAll());
         static::assertSame(null, $query->fetchRow());
         static::assertSame(0, $query->rowCount());
+        static::assertSame(0, $query->execute());
+    }
+
+    /**
+     * @test
+     * @covers \Phuria\SQLBuilder\Query\Query
+     */
+    public function itSetParameter()
+    {
+        $query = $this->createTestQuery();
+        $query->setParameter('test', 1234);
+
+        $param = $query->getParameterManager()->getParameter('test');
+
+        static::assertSame($param->getValue(), 1234);
+        static::assertSame($param->getName(), 'test');
     }
 }
