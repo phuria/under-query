@@ -1,4 +1,5 @@
 .idea/*
 vendor/*
 phpunit.xml
-humbuglog.txt
+humbug.log
+humbug.json
