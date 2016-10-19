@@ -40,4 +40,17 @@ class TableRecognizerTest extends \PHPUnit_Framework_TestCase
         $type = $recognizer->recognizeType(new NullQueryBuilder());
         static::assertSame(TableRecognizer::TYPE_SUB_QUERY, $type);
     }
+
+    /**
+     * @test
+     * @covers \Phuria\SQLBuilder\TableRecognizer
+     */
+    public function itExtractClassName()
+    {
+        $recognizer = new TableRecognizer();
+
+        $class = $recognizer->extractClassName(function (ExampleTable $table) {});
+
+        static::assertSame(ExampleTable::class, $class);
+    }
 }

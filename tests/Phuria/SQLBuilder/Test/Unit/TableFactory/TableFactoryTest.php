@@ -11,17 +11,21 @@
 
 namespace Phuria\SQLBuilder\Test\Unit\TableFactory;
 
+use Phuria\SQLBuilder\Table\SubQueryTable;
 use Phuria\SQLBuilder\Table\UnknownTable;
 use Phuria\SQLBuilder\TableFactory\TableFactory;
 use Phuria\SQLBuilder\TableRegistry;
 use Phuria\SQLBuilder\Test\Fixtures\ExampleTable;
 use Phuria\SQLBuilder\Test\Fixtures\NullQueryBuilder;
+use Phuria\SQLBuilder\Test\TestCase\QueryBuilderTrait;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
 class TableFactoryTest extends \PHPUnit_Framework_TestCase
 {
+    use QueryBuilderTrait;
+
     /**
      * @test
      * @covers \Phuria\SQLBuilder\TableFactory\TableFactory
@@ -43,8 +47,27 @@ class TableFactoryTest extends \PHPUnit_Framework_TestCase
         $registry = new TableRegistry();
         $registry->registerTable(ExampleTable::class, 'example');
         $factory = new TableFactory($registry);
+
         $table = $factory->createNewTable('example', new NullQueryBuilder());
+        $tableByCallback = $factory->createNewTable(function (ExampleTable $table) {}, new NullQueryBuilder());
+        $tableByClass = $factory->createNewTable(ExampleTable::class, new NullQueryBuilder());
 
         static::assertInstanceOf(ExampleTable::class, $table);
+        static::assertInstanceOf(ExampleTable::class, $tableByCallback);
+        static::assertInstanceOf(ExampleTable::class, $tableByClass);
+    }
+
+    /**
+     * @test
+     * @covers \Phuria\SQLBuilder\TableFactory\TableFactory
+     */
+    public function itCreateSubQueryTable()
+    {
+        $factory = new TableFactory(new TableRegistry());
+        $qb = new NullQueryBuilder();
+
+        $table = $factory->createNewTable($qb, new NullQueryBuilder());
+
+        static::assertInstanceOf(SubQueryTable::class, $table);
     }
 }
