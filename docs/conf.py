@@ -48,7 +48,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Phuria SQLBuilder'
+project = u'Phuria SQL Builder'
 copyright = u'2016, Beniamin Jonatan Šimko'
 author = u'Beniamin Jonatan Šimko'
 
@@ -133,7 +133,7 @@ html_theme = 'default'
 # The name for this set of Sphinx documents.
 # "<project> v<release> documentation" by default.
 #
-# html_title = u'Phuria SQLBuilder v0.4.0'
+# html_title = u'Phuria SQL Builder v0.4.0'
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #
@@ -259,7 +259,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'PhuriaSQLBuilder.tex', u'Phuria SQLBuilder Documentation',
+    (master_doc, 'PhuriaSQLBuilder.tex', u'Phuria SQL Builder Documentation',
      u'Beniamin Jonatan Šimko', 'manual'),
 ]
 
@@ -301,7 +301,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'phuriasqlbuilder', u'Phuria SQLBuilder Documentation',
+    (master_doc, 'phuriasqlbuilder', u'Phuria SQL Builder Documentation',
      [author], 1)
 ]
 
@@ -316,7 +316,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'PhuriaSQLBuilder', u'Phuria SQLBuilder Documentation',
+    (master_doc, 'PhuriaSQLBuilder', u'Phuria SQL Builder Documentation',
      author, 'PhuriaSQLBuilder', 'One line description of project.',
      'Miscellaneous'),
 ]
