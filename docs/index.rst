@@ -13,8 +13,7 @@ Getting started
 ---------------
 
 .. toctree::
-  :hidden:
+  :maxdeepth: 2
 
-  getting_started/index
+  getting_started/license
 
-.. include:: getting_started/map.rst.inc
