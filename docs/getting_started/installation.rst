@@ -1,5 +1,5 @@
 .. index::
-single: Installation
+    single: Installation
 
 Installation
 ============
