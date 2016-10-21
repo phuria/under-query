@@ -13,7 +13,8 @@ Getting started
 ---------------
 
 .. toctree::
-  :maxdeepth: 2
+  :hidden:
+  :glob:
 
-  getting_started/installation
+  getting_started/*
 
