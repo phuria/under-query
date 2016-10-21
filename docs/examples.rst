@@ -115,3 +115,45 @@ Simple UPDATE
 
     UPDATE user AS u SET u.updated_at = NOW() WHERE u.id = 1
 
+Advanced UPDATE
+---------------
+
+.. code-block:: php
+
+    $sourceQb = $phuriaSQL->createSelect();
+    $sourceQb->addSelect('i.transactor_id');
+    $sourceQb->addSelect('SUM(i.gross) AS gross');
+    $sourceQb->addSelect('SUM(i.net) AS net');
+    $sourceQb->from('invoice', 'i');
+    $sourceQb->addGroupBy('i.transactor_id');
+
+    $qb = $phuriaSQL->update();
+
+    $qb->update('transactor_summary', 'summary');
+    $qb->innerJoin($sourceQb, 'source', 'summary.transactor_id = source.transactor_id');
+    $qb->addSet('summary.invoiced_gross = source.gross');
+    $qb->addSet('summary.invoiced_net = source.net');
+
+    echo $qb->buildSQL();
+
+.. code-block:: mysql
+
+    UPDATE transactor_summary AS summary INNER JOIN (...) AS source
+    SET summary.invoiced_gross = source.gross, summary.invoiced_net = source.net
+
+.. code-block:: php
+
+    $qb = $phuriaSQL->createUpdate();
+
+    $qb->update('players', 'p');
+    $qb->addSet('p.qualified = 1');
+    $qb->andWhere('p.league = 20');
+    $qb->addOrderBy('p.major_points DESC, p.minor_points DESC');
+    $qb->addLimit(20);
+
+    echo $qb->buildSQL();
+
+.. code-block:: mysql
+
+    UPDATE players AS p SET p.qualified = 1 WHERE p.league = 20
+    ORDER BY p.major_points DESC, p.minor_points DESC LIMIT 20

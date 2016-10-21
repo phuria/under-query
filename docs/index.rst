@@ -13,4 +13,6 @@ Contents:
    examples
    object_references
    table_class
+   sub-query
+   sql-clauses
 
