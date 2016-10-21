@@ -6,6 +6,7 @@ There are different query builder classes for each SQL query type:
 To create them we will use our factory:
 
 .. code-block:: php
+
     $phuriaSQL = new \Phuria\SQLBuilder\PhuriaSQLBuilder();
 
 Simple SELECT
