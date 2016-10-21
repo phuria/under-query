@@ -15,5 +15,5 @@ Getting started
 .. toctree::
   :maxdeepth: 2
 
-  getting_started/license
+  getting_started/installation
 
