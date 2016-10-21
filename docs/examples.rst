@@ -22,7 +22,7 @@ Simple SELECT
 
     echo $qb->buildSQL();
 
-.. code-bock:: sql
+.. code-bock:: mysql
 
     SELECT u.name, c.phone_number FROM user AS u LEFT JOIN contact AS c ON u.id = c.user_id;
 
@@ -38,7 +38,7 @@ Single Table DELETE
 
     echo $qb->buildSQL();
 
-.. code-block:: sql
+.. code-block:: mysql
 
     DELETE FROM user WHERE id = 1;
 
@@ -56,7 +56,7 @@ Multiple Table DELETE
 
     echo $qb->buildSQL();
 
-.. code-block:: sql
+.. code-block:: mysql
 
     DELETE u, c FROM user u LEFT JOIN contact c ON u.id = c.user_id WHERE u.id = 1
 
@@ -72,7 +72,7 @@ Simple INSERT
 
     echo $qb->buildSQL();
 
-.. code-block:: sql
+.. code-block:: mysql
 
     INSERT INTO user (username, email) VALUES ("phuria", "spam@simko.it")
 
@@ -93,7 +93,7 @@ INSERT ... SELECT
 
     echo $targetQb->buildSQL();
 
-.. code-block:: sql
+.. code-block:: mysql
 
     INSERT INTO user_summary (user_id, total_price)
     SELECT t.user_id, SUM(t.amount) FROM transactions AS t GROUP BY t.user_id
@@ -111,7 +111,7 @@ Simple UPDATE
 
     echo $qb->buildSQL();
 
-.. code-block:: sql
+.. code-block:: mysql
 
     UPDATE user AS u SET u.updated_at = NOW() WHERE u.id = 1
 

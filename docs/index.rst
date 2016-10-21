@@ -12,4 +12,5 @@ Contents:
    quick_start
    examples
    object_references
+   table_class
 
