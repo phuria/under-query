@@ -12,7 +12,7 @@ class SubQueryTable extends AbstractTable
     /**
      * @var BuilderInterface
      */
-    private $subQb;
+    private $wrappedQueryBuilder;
 
     /**
      * @param BuilderInterface $subQb
@@ -20,7 +20,7 @@ class SubQueryTable extends AbstractTable
      */
     public function __construct(BuilderInterface $subQb, BuilderInterface $qb)
     {
-        $this->subQb = $subQb;
+        $this->wrappedQueryBuilder = $subQb;
         parent::__construct($qb);
     }
 
@@ -29,8 +29,16 @@ class SubQueryTable extends AbstractTable
      */
     public function getTableName()
     {
-        $ref = $this->getQueryBuilder()->objectToString($this->subQb);
+        $ref = $this->getQueryBuilder()->objectToString($this->wrappedQueryBuilder);
 
         return '(' . $ref . ')';
+    }
+
+    /**
+     * @return BuilderInterface
+     */
+    public function getWrappedQueryBuilder()
+    {
+        return $this->wrappedQueryBuilder;
     }
 }

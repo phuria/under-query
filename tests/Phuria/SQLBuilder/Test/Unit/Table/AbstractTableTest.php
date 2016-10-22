@@ -11,6 +11,7 @@
 
 namespace Phuria\SQLBuilder\Test\Unit\Table;
 
+use Phuria\SQLBuilder\JoinType;
 use Phuria\SQLBuilder\Table\UnknownTable;
 use Phuria\SQLBuilder\Test\TestCase\QueryBuilderTrait;
 
@@ -77,5 +78,25 @@ class AbstractTableTest extends \PHPUnit_Framework_TestCase
 
         static::assertSame('test', $table->getAlias());
         static::assertSame('test', $table->getAliasOrName());
+    }
+
+    /**
+     * @test
+     * @covers \Phuria\SQLBuilder\Table\AbstractTable
+     */
+    public function itShouldHaveConfigurableJoins()
+    {
+        $table = $this->createTestTable();
+
+        $table->setJoinType(JoinType::INNER_JOIN);
+        $table->setNaturalJoin(true);
+        $table->setOuterJoin(true);
+        $table->joinOn('0 = 0');
+
+        static::assertTrue($table->isJoin());
+        static::assertTrue($table->isNaturalJoin());
+        static::assertTrue($table->isOuterJoin());
+        static::assertSame(JoinType::INNER_JOIN, $table->getJoinType());
+        static::assertSame('0 = 0', $table->getJoinOn());
     }
 }

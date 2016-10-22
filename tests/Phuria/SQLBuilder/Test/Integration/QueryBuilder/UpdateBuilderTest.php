@@ -85,4 +85,18 @@ class UpdateBuilderTest extends \PHPUnit_Framework_TestCase
 
         static::assertSame('UPDATE IGNORE example SET name = "test"', $qb->buildSQL());
     }
+
+    /**
+     * @test
+     * @coversNothing
+     */
+    public function itShouldCreateJoin()
+    {
+        $qbFactory = static::phuriaSQL();
+        $update = $qbFactory->createUpdate();
+
+        $update->leftJoin('test');
+
+        static::assertCount(1, $update->getJoinTables());
+    }
 }

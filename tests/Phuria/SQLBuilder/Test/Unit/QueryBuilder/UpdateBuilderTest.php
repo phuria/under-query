@@ -24,13 +24,27 @@ class UpdateBuilderTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers \Phuria\SQLBuilder\QueryBuilder\UpdateBuilder
      */
-    public function itShouldCreateJoin()
+    public function itCanHaveIgnoreHint()
     {
-        $qbFactory = static::phuriaSQL();
-        $update = $qbFactory->createUpdate();
+        $qb = static::phuriaSQL()->createUpdate();
 
-        $update->leftJoin('test');
+        static::assertFalse($qb->isIgnore());
+        $qb->setIgnore(true);
+        static::assertTrue($qb->isIgnore());
+    }
 
-        static::assertCount(1, $update->getJoinTables());
+    /**
+     * @test
+     * @covers \Phuria\SQLBuilder\QueryBuilder\UpdateBuilder
+     */
+    public function itCanHaveMultipleRootTables()
+    {
+        $qb = static::phuriaSQL()->createUpdate();
+
+        static::assertCount(0, $qb->getRootTables());
+        $qb->update('foo');
+        static::assertCount(1, $qb->getRootTables());
+        $qb->addUpdate('boo');
+        static::assertCount(2, $qb->getRootTables());
     }
 }

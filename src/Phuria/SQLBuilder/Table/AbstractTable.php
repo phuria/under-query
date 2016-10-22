@@ -109,26 +109,18 @@ abstract class AbstractTable implements TableInterface
 
     /**
      * @param int $joinType
-     *
-     * @return $this
      */
     public function setJoinType($joinType)
     {
         $this->joinType = $joinType;
-
-        return $this;
     }
 
     /**
      * @param string $clause
-     *
-     * @return $this
      */
     public function joinOn($clause)
     {
         $this->joinOn = $clause;
-
-        return $this;
     }
 
     /**
