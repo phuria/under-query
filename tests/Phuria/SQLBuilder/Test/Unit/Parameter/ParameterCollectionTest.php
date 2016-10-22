@@ -43,6 +43,22 @@ class ParameterCollectionTest extends \PHPUnit_Framework_TestCase
         $collection->getParameter('boo');
 
         $array = $collection->toArray();
+
         static::assertCount(2, $array);
+    }
+
+    /**
+     * @test
+     * @covers \Phuria\SQLBuilder\Parameter\ParameterCollection
+     */
+    public function itCanBeCloned()
+    {
+        $collection = new ParameterCollection();
+        $collection->getParameter('foo')->setValue(100);
+
+        $cloned = clone $collection;
+
+        static::assertInstanceOf(ParameterCollection::class, $collection);
+        static::assertSame(100, $cloned->getParameter('foo')->getValue());
     }
 }

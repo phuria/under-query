@@ -31,7 +31,7 @@ abstract class AbstractInsertBuilder extends AbstractBuilder implements
      */
     public function into($table, array $columns = [])
     {
-        if ($columns) {
+        if (count($columns)) {
             $this->setColumns($columns);
         }
 
