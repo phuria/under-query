@@ -1,10 +1,12 @@
 {
   "name": "phuria/sql-builder",
-  "description": "Query builder for PHP.",
+  "description": "Lightweight PHP Query Builder primarily focused on building reusable SQL queries.",
   "homepage": "https://github.com/phuria/sql-builder",
   "keywords": [
-    "query builder",
-    "sql"
+    "query",
+    "builder",
+    "sql",
+    "mysql"
   ],
   "license": "MIT",
   "minimum-stability": "dev",
@@ -26,6 +28,9 @@
     "phpunit/dbunit": "^2.0",
     "symfony/var-dumper": "^3.1",
     "humbug/humbug": "*"
+  },
+  "suggest": {
+    "phuria/sql-builder-bundle": "To integrate with Symfony."
   },
   "autoload": {
     "psr-4": {

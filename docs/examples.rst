@@ -26,7 +26,7 @@ Simple SELECT
 
     SELECT u.name, c.phone_number FROM user AS u LEFT JOIN contact AS c ON u.id = c.user_id;
 
-Single Table DELETE
+Single table DELETE
 -------------------
 
 .. code-block:: php
@@ -42,7 +42,7 @@ Single Table DELETE
 
     DELETE FROM user WHERE id = 1;
 
-Multiple Table DELETE
+Multiple table DELETE
 ---------------------
 
 .. code-block:: php
