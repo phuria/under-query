@@ -2,7 +2,9 @@ Phuria SQL Builder
 ==================
 
 Welcome to the Phuria SQL Builder documentation.
-Source code can be found on `GitHub<https://github.com/phuria/sql-builder>`_.
+Source code can be found on `GitHub`_.
+
+.. _GitHub: https://github.com/phuria/sql-builder
 
 .. toctree::
    :maxdepth: 2
