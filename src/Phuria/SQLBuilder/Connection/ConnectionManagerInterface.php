@@ -11,6 +11,8 @@
 
 namespace Phuria\SQLBuilder\Connection;
 
+use Phuria\SQLBuilder\Exception\ConnectionException;
+
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
@@ -25,9 +27,17 @@ interface ConnectionManagerInterface
     public function registerConnection(ConnectionInterface $connection, $name = 'default');
 
     /**
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function hasConnection($name);
+
+    /**
      * @param string|null $name
      *
      * @return ConnectionInterface
+     * @throws ConnectionException
      */
-    public function getConnection($name = null);
+    public function getConnection($name = 'default');
 }

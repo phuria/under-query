@@ -12,7 +12,7 @@
 namespace Phuria\SQLBuilder\Query;
 
 use Phuria\SQLBuilder\Connection\ConnectionInterface;
-use Phuria\SQLBuilder\Parameter\ParameterManagerInterface;
+use Phuria\SQLBuilder\Parameter\ParameterCollectionInterface;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -25,9 +25,9 @@ class Query
     private $sql;
 
     /**
-     * @var ParameterManagerInterface
+     * @var ParameterCollectionInterface
      */
-    private $parameterManager;
+    private $parameterCollection;
 
     /**
      * @var ConnectionInterface
@@ -35,17 +35,17 @@ class Query
     private $connection;
 
     /**
-     * @param string                    $sql
-     * @param ParameterManagerInterface $parameterManager
-     * @param ConnectionInterface       $connection
+     * @param string                       $sql
+     * @param ParameterCollectionInterface $parameterCollection
+     * @param ConnectionInterface          $connection
      */
     public function __construct(
         $sql,
-        ParameterManagerInterface $parameterManager,
+        ParameterCollectionInterface $parameterCollection,
         ConnectionInterface $connection
     ) {
         $this->sql = $sql;
-        $this->parameterManager = $parameterManager;
+        $this->parameterCollection = $parameterCollection;
         $this->connection = $connection;
     }
 
@@ -62,7 +62,7 @@ class Query
      */
     public function fetchScalar()
     {
-        return $this->connection->fetchScalar($this->sql, $this->parameterManager->toArray());
+        return $this->connection->fetchScalar($this->sql, $this->parameterCollection->toArray());
     }
 
     /**
@@ -70,7 +70,7 @@ class Query
      */
     public function fetchRow()
     {
-        return $this->connection->fetchRow($this->sql, $this->parameterManager->toArray());
+        return $this->connection->fetchRow($this->sql, $this->parameterCollection->toArray());
     }
 
     /**
@@ -78,7 +78,7 @@ class Query
      */
     public function fetchAll()
     {
-        return $this->connection->fetchAll($this->sql, $this->parameterManager->toArray());
+        return $this->connection->fetchAll($this->sql, $this->parameterCollection->toArray());
     }
 
     /**
@@ -86,7 +86,7 @@ class Query
      */
     public function rowCount()
     {
-        return $this->connection->rowCount($this->sql, $this->parameterManager->toArray());
+        return $this->connection->rowCount($this->sql, $this->parameterCollection->toArray());
     }
 
     /**
@@ -94,7 +94,15 @@ class Query
      */
     public function execute()
     {
-        return $this->connection->execute($this->sql, $this->parameterManager->toArray());
+        return $this->connection->execute($this->sql, $this->parameterCollection->toArray());
+    }
+
+    /**
+     * @return ParameterCollectionInterface
+     */
+    public function getParameterCollection()
+    {
+        return $this->parameterCollection;
     }
 
     /**
@@ -105,17 +113,9 @@ class Query
      */
     public function setParameter($name, $value)
     {
-        $this->parameterManager->getParameter($name)->setValue($value);
+        $this->getParameterCollection()->getParameter($name)->setValue($value);
 
         return $this;
-    }
-
-    /**
-     * @return ParameterManagerInterface
-     */
-    public function getParameterManager()
-    {
-        return $this->parameterManager;
     }
 
     /**

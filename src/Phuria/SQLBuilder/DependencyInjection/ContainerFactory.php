@@ -13,13 +13,14 @@ namespace Phuria\SQLBuilder\DependencyInjection;
 
 use Interop\Container\ContainerInterface;
 use Phuria\SQLBuilder\Connection\ConnectionManager;
-use Phuria\SQLBuilder\Parameter\ParameterManager;
+use Phuria\SQLBuilder\Parameter\ParameterCollection;
 use Phuria\SQLBuilder\Query\QueryFactory;
 use Phuria\SQLBuilder\QueryCompiler\ConcreteCompiler\DeleteCompiler;
 use Phuria\SQLBuilder\QueryCompiler\ConcreteCompiler\InsertCompiler;
 use Phuria\SQLBuilder\QueryCompiler\ConcreteCompiler\SelectCompiler;
 use Phuria\SQLBuilder\QueryCompiler\ConcreteCompiler\UpdateCompiler;
 use Phuria\SQLBuilder\QueryCompiler\QueryCompiler;
+use Phuria\SQLBuilder\Reference\ReferenceCollection;
 use Phuria\SQLBuilder\TableFactory\TableFactory;
 use Phuria\SQLBuilder\TableRegistry;
 use Pimple\Container;
@@ -37,7 +38,8 @@ class ContainerFactory
         $pimple = new Container();
         $container = new PimpleContainer($pimple);
 
-        $container->setParameter('phuria.sql_builder.parameter_manager.class', ParameterManager::class);
+        $container->setParameter('phuria.sql_builder.parameter_collection.class', ParameterCollection::class);
+        $container->setParameter('phuria.sql_builder.reference_collection.class', ReferenceCollection::class);
 
         $container->setServiceFromCallback('phuria.sql_builder.table_registry', [$this, 'createTableRegistry']);
         $container->setServiceFromCallback('phuria.sql_builder.table_factory', [$this, 'createTableFactory']);

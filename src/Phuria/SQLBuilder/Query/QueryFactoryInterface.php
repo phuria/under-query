@@ -11,7 +11,7 @@
 
 namespace Phuria\SQLBuilder\Query;
 
-use Phuria\SQLBuilder\Parameter\ParameterManagerInterface;
+use Phuria\SQLBuilder\Parameter\QueryParameterInterface;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -20,10 +20,10 @@ interface QueryFactoryInterface
 {
     /**
      * @param string                    $SQL
-     * @param ParameterManagerInterface $parameterManager
+     * @param QueryParameterInterface[] $parameters
      * @param mixed                     $connectionHint
      *
      * @return Query
      */
-    public function buildQuery($SQL, ParameterManagerInterface $parameterManager, $connectionHint = null);
+    public function buildQuery($SQL, array $parameters, $connectionHint = null);
 }

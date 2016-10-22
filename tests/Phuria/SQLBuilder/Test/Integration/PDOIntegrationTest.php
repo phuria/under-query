@@ -11,7 +11,7 @@
 
 namespace Phuria\SQLBuilder\Test\Integration;
 
-use Phuria\SQLBuilder\Parameter\ParameterManager;
+use Phuria\SQLBuilder\Parameter\ParameterCollection;
 use Phuria\SQLBuilder\Query\Query;
 use Phuria\SQLBuilder\Test\TestCase\DatabaseTestCase;
 
@@ -28,7 +28,7 @@ class PDOIntegrationTest extends DatabaseTestCase
     {
         $connection = $this->createQueryConnection();
         $sql = 'SELECT * FROM user WHERE id=1';
-        $query = new Query($sql, new ParameterManager(), $connection);
+        $query = new Query($sql, new ParameterCollection(), $connection);
 
         static::assertSame(1, $query->rowCount());
     }
@@ -41,12 +41,12 @@ class PDOIntegrationTest extends DatabaseTestCase
     {
         $connection = $this->createQueryConnection();
         $sql = 'UPDATE user SET username = "Benek" WHERE id = 1';
-        $query = new Query($sql, new ParameterManager(), $connection);
+        $query = new Query($sql, new ParameterCollection(), $connection);
 
         static::assertSame(1, $query->execute());
 
         $sql = 'SELECT username FROM user WHERE id = 1';
-        $query = new Query($sql, new ParameterManager(), $connection);
+        $query = new Query($sql, new ParameterCollection(), $connection);
 
         static::assertSame('Benek', $query->fetchScalar());
     }

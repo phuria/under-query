@@ -11,6 +11,8 @@
 
 namespace Phuria\SQLBuilder\Connection;
 
+use Phuria\SQLBuilder\Exception\ConnectionException;
+
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
@@ -32,12 +34,20 @@ class ConnectionManager implements ConnectionManagerInterface
     /**
      * @inheritdoc
      */
-    public function getConnection($name = null)
+    public function hasConnection($name)
     {
-        if (0 === count($this->connections)) {
-            return new NullConnection();
+        return array_key_exists($name, $this->connections);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getConnection($name = 'default')
+    {
+        if (false === $this->hasConnection($name)) {
+            throw ConnectionException::notRegistered($name);
         }
 
-        return $name ? $this->connections[$name] : reset($this->connections);
+        return $this->connections[$name];
     }
 }

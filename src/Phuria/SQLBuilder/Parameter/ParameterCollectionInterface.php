@@ -14,29 +14,17 @@ namespace Phuria\SQLBuilder\Parameter;
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-interface ParameterManagerInterface
+interface ParameterCollectionInterface
 {
     /**
      * @param string $name
      *
-     * @return QueryParameter
+     * @return QueryParameterInterface
      */
     public function getParameter($name);
 
     /**
-     * @param mixed $value
-     *
-     * @return string
-     */
-    public function createReference($value);
-
-    /**
-     * @return array
-     */
-    public function getReferences();
-
-    /**
-     * @return QueryParameter[]
+     * @return QueryParameterInterface[]
      */
     public function toArray();
 }

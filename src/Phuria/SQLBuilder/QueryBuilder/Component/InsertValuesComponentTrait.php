@@ -11,7 +11,7 @@
 
 namespace Phuria\SQLBuilder\QueryBuilder\Component;
 
-use Phuria\SQLBuilder\Parameter\ParameterManager;
+use Phuria\SQLBuilder\Reference\ReferenceCollectionInterface;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -19,9 +19,9 @@ use Phuria\SQLBuilder\Parameter\ParameterManager;
 trait InsertValuesComponentTrait
 {
     /**
-     * @return ParameterManager
+     * @return ReferenceCollectionInterface
      */
-    abstract public function getParameterManager();
+    abstract public function getReferences();
 
     /**
      * @var array
@@ -38,7 +38,7 @@ trait InsertValuesComponentTrait
         $valueReferences = [];
 
         foreach ($values as $value) {
-            $valueReferences[] = $this->getParameterManager()->createReference($value);
+            $valueReferences[] = $this->getReferences()->createReference($value);
         }
 
         $this->values[] = $valueReferences;

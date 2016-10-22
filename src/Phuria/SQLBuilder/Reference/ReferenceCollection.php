@@ -9,18 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Phuria\SQLBuilder\Parameter;
+namespace Phuria\SQLBuilder\Reference;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-class ParameterManager implements ParameterManagerInterface
+class ReferenceCollection implements ReferenceCollectionInterface
 {
-    /**
-     * @var QueryParameter[]
-     */
-    private $parameters = [];
-
     /**
      * @var array
      */
@@ -30,26 +25,6 @@ class ParameterManager implements ParameterManagerInterface
      * @var int
      */
     private $referenceCounter = 0;
-
-    /**
-     * @inheritdoc
-     */
-    public function getParameter($name)
-    {
-        if (false === array_key_exists($name, $this->parameters)) {
-            $this->parameters[$name] = new QueryParameter($name);
-        }
-
-        return $this->parameters[$name];
-    }
-
-    /**
-     * @return QueryParameter[]
-     */
-    public function toArray()
-    {
-        return $this->parameters;
-    }
 
     /**
      * @param mixed $value
@@ -65,9 +40,9 @@ class ParameterManager implements ParameterManagerInterface
     }
 
     /**
-     * @return array
+     * @inheritdoc
      */
-    public function getReferences()
+    public function toArray()
     {
         return $this->references;
     }

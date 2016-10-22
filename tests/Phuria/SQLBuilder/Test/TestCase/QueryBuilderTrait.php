@@ -11,6 +11,7 @@
 
 namespace Phuria\SQLBuilder\Test\TestCase;
 
+use Phuria\SQLBuilder\Connection\NullConnection;
 use Phuria\SQLBuilder\PhuriaSQLBuilder;
 
 /**
@@ -21,8 +22,11 @@ trait QueryBuilderTrait
     /**
      * @return PhuriaSQLBuilder
      */
-    protected static function phuriaSQLBuilder()
+    protected static function phuriaSQL()
     {
-        return new PhuriaSQLBuilder();
+        $phuriaSQL = new PhuriaSQLBuilder();
+        $phuriaSQL->registerConnection(new NullConnection(), 'default');
+
+        return $phuriaSQL;
     }
 }

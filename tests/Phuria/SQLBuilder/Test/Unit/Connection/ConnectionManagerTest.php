@@ -13,6 +13,7 @@ namespace Phuria\SQLBuilder\Test\Unit\Connection;
 
 use Phuria\SQLBuilder\Connection\ConnectionInterface;
 use Phuria\SQLBuilder\Connection\ConnectionManager;
+use Phuria\SQLBuilder\Exception\ConnectionException;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -48,5 +49,18 @@ class ConnectionManagerTest extends \PHPUnit_Framework_TestCase
 
         static::assertSame($defaultConnection, $manager->getConnection());
         static::assertSame($secondaryConnection, $manager->getConnection('secondary'));
+    }
+
+    /**
+     * @test
+     * @covers \Phuria\SQLBuilder\Connection\ConnectionManager
+     */
+    public function itWillNotFindConnection()
+    {
+        $manager = new ConnectionManager();
+
+        static::assertFalse($manager->hasConnection('default'));
+        static::expectException(ConnectionException::class);
+        $manager->getConnection('default');
     }
 }

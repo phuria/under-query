@@ -26,7 +26,7 @@ class UpdateBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function updateWithSetClause()
     {
-        $qb = static::phuriaSQLBuilder()->createUpdate();
+        $qb = static::phuriaSQL()->createUpdate();
 
         $exampleTable = $qb->update('example');
         $qb->addSet("{$exampleTable->column('name')} = NULL");
@@ -46,7 +46,7 @@ class UpdateBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function updateWithWhereClause()
     {
-        $qb = static::phuriaSQLBuilder()->createUpdate();
+        $qb = static::phuriaSQL()->createUpdate();
 
         $rootTable = $qb->update('example');
         $qb->addSet("{$rootTable->column('name')} = NULL");
@@ -61,7 +61,7 @@ class UpdateBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function updateWithOrderByAndLimit()
     {
-        $qb = static::phuriaSQLBuilder()->createUpdate();
+        $qb = static::phuriaSQL()->createUpdate();
 
         $rootTable = $qb->update('example');
         $qb->addSet("{$rootTable->column('salary')} = 100");
@@ -77,7 +77,7 @@ class UpdateBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function updateIgnore()
     {
-        $qb = static::phuriaSQLBuilder()->createUpdate();
+        $qb = static::phuriaSQL()->createUpdate();
 
         $qb->setIgnore(true);
         $qb->update('example');

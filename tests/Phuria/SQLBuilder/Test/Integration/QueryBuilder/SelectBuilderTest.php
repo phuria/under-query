@@ -26,7 +26,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectMinFromTest()
     {
-        $qb = static::phuriaSQLBuilder()->createSelect();
+        $qb = static::phuriaSQL()->createSelect();
 
         $qb->from('test');
         $qb->addSelect('MIN(test.id)');
@@ -40,7 +40,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectTableWithAlias()
     {
-        $qb = static::phuriaSQLBuilder()->createSelect();
+        $qb = static::phuriaSQL()->createSelect();
 
         $rootTable = $qb->from('test');
         $rootTable->setAlias('SRC');
@@ -55,7 +55,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectTwoColumns()
     {
-        $qb = static::phuriaSQLBuilder()->createSelect();
+        $qb = static::phuriaSQL()->createSelect();
 
         $qb->from('test');
         $qb->addSelect('test.id');
@@ -70,7 +70,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectColumnReferences()
     {
-        $qb = static::phuriaSQLBuilder()->createSelect();
+        $qb = static::phuriaSQL()->createSelect();
 
         $rootTable = $qb->from('example');
         $qb->addSelect($rootTable->column('id'));
@@ -89,7 +89,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectMaxColumnReference()
     {
-        $qb = static::phuriaSQLBuilder()->createSelect();
+        $qb = static::phuriaSQL()->createSelect();
 
         $rootTable = $qb->from('example');
         $qb->addSelect("MAX({$rootTable->column('points')})");
@@ -107,7 +107,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectWithWhereClause()
     {
-        $qb = static::phuriaSQLBuilder()->createSelect();
+        $qb = static::phuriaSQL()->createSelect();
 
         $rootTable = $qb->from('example');
         $qb->addSelect($rootTable->column('*'));
@@ -126,7 +126,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectWithWhereColumnReference()
     {
-        $qb = static::phuriaSQLBuilder()->createSelect();
+        $qb = static::phuriaSQL()->createSelect();
 
         $rootTable = $qb->from('example');
         $qb->addSelect('example.id');
@@ -143,7 +143,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectWithConnectedWhereClause()
     {
-        $qb = static::phuriaSQLBuilder()->createSelect();
+        $qb = static::phuriaSQL()->createSelect();
 
         $rootTable = $qb->from('example');
         $qb->addSelect('*');
@@ -165,7 +165,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectWithCrossJoinClause()
     {
-        $qb = static::phuriaSQLBuilder()->createSelect();
+        $qb = static::phuriaSQL()->createSelect();
 
         $qb->from('example');
         $qb->addSelect('*');
@@ -180,7 +180,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectWithMultipleFromTables()
     {
-        $qb = static::phuriaSQLBuilder()->createSelect();
+        $qb = static::phuriaSQL()->createSelect();
 
         $exampleTable = $qb->from('example');
         $testTable = $qb->addFrom('test');
@@ -200,7 +200,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectWithLeftJoinClause()
     {
-        $qb = static::phuriaSQLBuilder()->createSelect();
+        $qb = static::phuriaSQL()->createSelect();
 
         $exampleTable = $qb->from('example');
         $qb->addSelect('*');
@@ -216,7 +216,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectWithDifferentJoins()
     {
-        $qb = static::phuriaSQLBuilder()->createSelect();
+        $qb = static::phuriaSQL()->createSelect();
 
         $userTable = $qb->from('users');
         $userTable->setAlias('u');
@@ -236,7 +236,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
 
         static::assertSame($expectedSQL, $qb->buildSQL());
 
-        $qb = static::phuriaSQLBuilder()->createSelect();
+        $qb = static::phuriaSQL()->createSelect();
 
         $qb->from('users', 'u');
         $qb->addSelect('*');
@@ -252,7 +252,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectWithLimitClause()
     {
-        $qb = static::phuriaSQLBuilder()->createSelect();
+        $qb = static::phuriaSQL()->createSelect();
 
         $qb->from('example');
         $qb->addSelect('*');
@@ -271,7 +271,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectWithGroupByClause()
     {
-        $qb = static::phuriaSQLBuilder()->createSelect();
+        $qb = static::phuriaSQL()->createSelect();
 
         $exampleTable = $qb->from('price_list');
         $exampleTable->setAlias('p');
@@ -288,12 +288,12 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectFromSubQuery()
     {
-        $maxQb = static::phuriaSQLBuilder()->createSelect();
+        $maxQb = static::phuriaSQL()->createSelect();
 
         $exampleTable = $maxQb->from('example');
         $maxQb->addSelect("MAX({$exampleTable->column('value')}) AS max_value");
 
-        $qb = static::phuriaSQLBuilder()->createSelect();
+        $qb = static::phuriaSQL()->createSelect();
         $subQuery = $qb->from($maxQb);
         $subQuery->setAlias('SRC');
         $qb->addSelect($subQuery->column('max_value'));
@@ -313,7 +313,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectWithOrderByClause()
     {
-        $qb = static::phuriaSQLBuilder()->createSelect();
+        $qb = static::phuriaSQL()->createSelect();
 
         $exampleTable = $qb->from('example');
         $qb->addSelect('*');
@@ -334,7 +334,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectOnly()
     {
-        $qb = static::phuriaSQLBuilder()->createSelect();
+        $qb = static::phuriaSQL()->createSelect();
         $qb->addSelect('1 + 1');
 
         static::assertSame('SELECT 1 + 1', $qb->buildSQL());
@@ -346,7 +346,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectWithOrderedGroupBy()
     {
-        $qb = static::phuriaSQLBuilder()->createSelect();
+        $qb = static::phuriaSQL()->createSelect();
 
         $exampleTable = $qb->from('example');
         $qb->addSelect('*');
@@ -361,7 +361,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectWithHavingClause()
     {
-        $qb = static::phuriaSQLBuilder()->createSelect();
+        $qb = static::phuriaSQL()->createSelect();
 
         $exampleTable = $qb->from('example');
         $qb->addSelect("SUM({$exampleTable->column('price')}) AS price");
@@ -377,7 +377,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectWithGroupByRollUp()
     {
-        $qb = static::phuriaSQLBuilder()->createSelect();
+        $qb = static::phuriaSQL()->createSelect();
 
         $table = $qb->from('example');
         $qb->addSelect("SUM(".$table->column('price').")");
@@ -395,7 +395,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectFromWithAlias()
     {
-        $qb = static::phuriaSQLBuilder()->createSelect();
+        $qb = static::phuriaSQL()->createSelect();
 
         $table = $qb->from('example', 'e');
         $qb->addSelect($table->column('name'));
@@ -409,7 +409,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function selectMultipleArguments()
     {
-        $qb = static::phuriaSQLBuilder()->createSelect();
+        $qb = static::phuriaSQL()->createSelect();
 
         $qb->addSelect('1+1', '2+2');
 

@@ -13,7 +13,8 @@ namespace Phuria\SQLBuilder\Test\Integration\DependencyInjection;
 
 use Interop\Container\ContainerInterface;
 use Phuria\SQLBuilder\DependencyInjection\ContainerFactory;
-use Phuria\SQLBuilder\Parameter\ParameterManagerInterface;
+use Phuria\SQLBuilder\Parameter\ParameterCollectionInterface;
+use Phuria\SQLBuilder\Reference\ReferenceCollectionInterface;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -31,8 +32,12 @@ class ContainerIntegrationTest extends \PHPUnit_Framework_TestCase
 
         static::assertInstanceOf(ContainerInterface::class, $container);
 
-        $parameterClass = $container->get('phuria.sql_builder.parameter_manager.class');
-        $parameterManager = new $parameterClass;
-        static::assertInstanceOf(ParameterManagerInterface::class, $parameterManager);
+        $parameterClass = $container->get('phuria.sql_builder.parameter_collection.class');
+        $collection = new $parameterClass;
+        static::assertInstanceOf(ParameterCollectionInterface::class, $collection);
+
+        $referenceClass = $container->get('phuria.sql_builder.reference_collection.class');
+        $collection = new $referenceClass;
+        static::assertInstanceOf(ReferenceCollectionInterface::class, $collection);
     }
 }

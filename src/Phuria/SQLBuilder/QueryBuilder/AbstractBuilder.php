@@ -11,10 +11,11 @@
 
 namespace Phuria\SQLBuilder\QueryBuilder;
 
-use Phuria\SQLBuilder\Parameter\ParameterManagerInterface;
+use Phuria\SQLBuilder\Parameter\ParameterCollectionInterface;
 use Phuria\SQLBuilder\Query\Query;
 use Phuria\SQLBuilder\Query\QueryFactoryInterface;
 use Phuria\SQLBuilder\QueryCompiler\QueryCompilerInterface;
+use Phuria\SQLBuilder\Reference\ReferenceCollectionInterface;
 use Phuria\SQLBuilder\TableFactory\TableFactoryInterface;
 
 /**
@@ -33,9 +34,14 @@ abstract class AbstractBuilder implements BuilderInterface
     private $queryCompiler;
 
     /**
-     * @var ParameterManagerInterface
+     * @var ParameterCollectionInterface
      */
-    private $parameterManager;
+    private $parameterCollection;
+
+    /**
+     * @var ReferenceCollectionInterface
+     */
+    private $referenceCollection;
 
     /**
      * @var QueryFactoryInterface
@@ -45,19 +51,21 @@ abstract class AbstractBuilder implements BuilderInterface
     /**
      * @param TableFactoryInterface     $tableFactory
      * @param QueryCompilerInterface    $queryCompiler
-     * @param ParameterManagerInterface $parameterManager
      * @param QueryFactoryInterface     $queryFactory
+     * @param array                     $options
      */
     public function __construct(
         TableFactoryInterface $tableFactory,
         QueryCompilerInterface $queryCompiler,
-        ParameterManagerInterface $parameterManager,
-        QueryFactoryInterface $queryFactory
+        QueryFactoryInterface $queryFactory,
+        array $options
     ) {
         $this->tableFactory = $tableFactory;
         $this->queryCompiler = $queryCompiler;
-        $this->parameterManager = $parameterManager;
         $this->queryFactory = $queryFactory;
+
+        $this->parameterCollection = new $options['parameter_collection_class'];
+        $this->referenceCollection = new $options['reference_collection_class'];
     }
 
     /**
@@ -85,11 +93,19 @@ abstract class AbstractBuilder implements BuilderInterface
     }
 
     /**
-     * @return ParameterManagerInterface
+     * @return ParameterCollectionInterface
      */
-    public function getParameterManager()
+    public function getParameters()
     {
-        return $this->parameterManager;
+        return $this->parameterCollection;
+    }
+
+    /**
+     * @return ReferenceCollectionInterface
+     */
+    public function getReferences()
+    {
+        return $this->referenceCollection;
     }
 
     /**
@@ -105,7 +121,7 @@ abstract class AbstractBuilder implements BuilderInterface
      */
     public function objectToString($object)
     {
-        return $this->getParameterManager()->createReference($object);
+        return $this->getReferences()->createReference($object);
     }
 
     /**
@@ -113,7 +129,7 @@ abstract class AbstractBuilder implements BuilderInterface
      */
     public function setParameter($name, $value)
     {
-        $parameter = $this->getParameterManager()->getParameter($name);
+        $parameter = $this->getParameters()->getParameter($name);
         $parameter->setValue($value);
 
         return $this;
@@ -124,8 +140,12 @@ abstract class AbstractBuilder implements BuilderInterface
      *
      * @return Query
      */
-    public function buildQuery($connectionHint = null)
+    public function buildQuery($connectionHint = 'default')
     {
-        return $this->queryFactory->buildQuery($this->buildSQL(), $this->getParameterManager(), $connectionHint);
+        return $this->queryFactory->buildQuery(
+            $this->buildSQL(),
+            $this->getParameters()->toArray(),
+            $connectionHint
+        );
     }
 }

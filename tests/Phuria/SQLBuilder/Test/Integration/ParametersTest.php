@@ -29,7 +29,7 @@ class ParametersTest extends DatabaseTestCase
     {
         $connection = $this->createQueryConnection();
 
-        $qb = static::phuriaSQLBuilder()->createSelect();
+        $qb = static::phuriaSQL()->createSelect();
         $userTable = $qb->from('user');
         $qb->addSelect($userTable->column('username'));
         $qb->andWhere("{$userTable->column('id')} = :id");
@@ -46,7 +46,7 @@ class ParametersTest extends DatabaseTestCase
     {
         $connection = $this->createQueryConnection();
 
-        $qb = static::phuriaSQLBuilder()->createSelect();
+        $qb = static::phuriaSQL()->createSelect();
         $userTable = $qb->from('user');
         $qb->addSelect($userTable->column('username'));
         $qb->andWhere("{$userTable->column('id')} = :id");
@@ -64,7 +64,7 @@ class ParametersTest extends DatabaseTestCase
     public function itWillSelectNotExistingUser()
     {
         $connection = $this->createQueryConnection();
-        $qb = static::phuriaSQLBuilder()->createSelect();
+        $qb = static::phuriaSQL()->createSelect();
         $userTable = $qb->from('user');
         $qb->addSelect($userTable->column('username'));
         $qb->andWhere("{$userTable->column('id')} = :id");
@@ -73,5 +73,21 @@ class ParametersTest extends DatabaseTestCase
         $query->setParameter('id', 65646565);
 
         static::assertNull($query->fetchScalar());
+    }
+
+    /**
+     * @test
+     * @coversNothing
+     */
+    public function itWillNotChangeParamInQuery()
+    {
+        $qb = static::phuriaSQL()->createSelect();
+        $qb->setParameter('test', 10);
+        $query = $qb->buildQuery();
+
+        $query->setParameter('test', 20);
+
+        static::assertSame(10, $qb->getParameters()->getParameter('test')->getValue());
+        static::assertSame(20, $query->getParameterCollection()->getParameter('test')->getValue());
     }
 }

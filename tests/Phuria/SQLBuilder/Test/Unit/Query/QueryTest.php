@@ -13,7 +13,7 @@ namespace Phuria\SQLBuilder\Test\Unit\Query;
 
 use Phuria\SQLBuilder\Connection\ConnectionInterface;
 use Phuria\SQLBuilder\Connection\NullConnection;
-use Phuria\SQLBuilder\Parameter\ParameterManager;
+use Phuria\SQLBuilder\Parameter\ParameterCollection;
 use Phuria\SQLBuilder\Query\Query;
 
 /**
@@ -26,7 +26,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
      */
     private function createTestQuery()
     {
-        $paramManager = new ParameterManager();
+        $paramManager = new ParameterCollection();
         $connection = new NullConnection();
 
         return new Query('', $paramManager, $connection);
@@ -38,7 +38,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
      */
     public function itShouldReturnScalarValue()
     {
-        $parameterManager = new ParameterManager();
+        $parameterManager = new ParameterCollection();
         $connection = $this->prophesize(ConnectionInterface::class);
         $connection->fetchScalar('', [])->willReturn(100);
         $connection = $connection->reveal();
@@ -54,14 +54,14 @@ class QueryTest extends \PHPUnit_Framework_TestCase
      */
     public function isShouldReturnGivenAttributes()
     {
-        $parameterManager = new ParameterManager();
+        $parameterManager = new ParameterCollection();
         $connection = $this->prophesize(ConnectionInterface::class)->reveal();
 
         $query = new Query('test', $parameterManager, $connection);
 
         static::assertSame('test', $query->getSQL());
         static::assertSame($connection, $query->getConnection());
-        static::assertSame($parameterManager, $query->getParameterManager());
+        static::assertSame($parameterManager, $query->getParameterCollection());
     }
 
     /**
@@ -88,7 +88,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $query = $this->createTestQuery();
         $query->setParameter('test', 1234);
 
-        $param = $query->getParameterManager()->getParameter('test');
+        $param = $query->getParameterCollection()->getParameter('test');
 
         static::assertSame($param->getValue(), 1234);
         static::assertSame($param->getName(), 'test');

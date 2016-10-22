@@ -13,7 +13,7 @@ namespace Phuria\SQLBuilder\Test\Unit\Query;
 
 use Phuria\SQLBuilder\Connection\ConnectionInterface;
 use Phuria\SQLBuilder\Connection\ConnectionManagerInterface;
-use Phuria\SQLBuilder\Parameter\ParameterManagerInterface;
+use Phuria\SQLBuilder\Parameter\ParameterCollectionInterface;
 use Phuria\SQLBuilder\Query\QueryFactory;
 
 /**
@@ -31,13 +31,12 @@ class QueryFactoryTest extends \PHPUnit_Framework_TestCase
         $connection = $this->prophesize(ConnectionInterface::class)->reveal();
         $connectionManager->getConnection(null)->willReturn($connection);
         $connectionManager = $connectionManager->reveal();
-        $parameterManager = $this->prophesize(ParameterManagerInterface::class)->reveal();
 
         $queryFactory = new QueryFactory($connectionManager);
-        $query = $queryFactory->buildQuery('SQL', $parameterManager);
+        $query = $queryFactory->buildQuery('SQL', []);
 
         static::assertSame('SQL', $query->getSQL());
-        static::assertSame($parameterManager, $query->getParameterManager());
+        static::assertInstanceOf(ParameterCollectionInterface::class, $query->getParameterCollection());
     }
 
     /**
@@ -50,12 +49,10 @@ class QueryFactoryTest extends \PHPUnit_Framework_TestCase
         $connection = $this->prophesize(ConnectionInterface::class)->reveal();
         $connectionManager->getConnection($connection)->willReturn($connection);
         $connectionManager = $connectionManager->reveal();
-        $parameterManager = $this->prophesize(ParameterManagerInterface::class)->reveal();
 
         $queryFactory = new QueryFactory($connectionManager);
-        $query = $queryFactory->buildQuery('SQL', $parameterManager, $connection);
+        $query = $queryFactory->buildQuery('SQL', [], $connection);
 
         static::assertSame('SQL', $query->getSQL());
-        static::assertSame($parameterManager, $query->getParameterManager());
     }
 }

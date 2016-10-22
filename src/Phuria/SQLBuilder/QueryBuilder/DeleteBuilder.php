@@ -27,7 +27,6 @@ class DeleteBuilder extends AbstractBuilder implements
     use Clause\OrderByClauseTrait;
     use Clause\WhereClauseTrait;
     use Component\JoinComponentTrait;
-    use Component\ParameterComponentTrait;
     use Component\TableComponentTrait;
 
     /**

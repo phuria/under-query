@@ -31,7 +31,7 @@ class ReferenceCompiler
         $references = [];
 
         if ($builder instanceof AbstractBuilder) {
-            $references = $builder->getParameterManager()->getReferences();
+            $references = $builder->getReferences()->toArray();
         }
 
         $actualSQL = $this->compile($payload->getActualSQL(), $references);

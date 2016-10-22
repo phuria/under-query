@@ -13,7 +13,7 @@ namespace Phuria\SQLBuilder\Query;
 
 use Phuria\SQLBuilder\Connection\ConnectionInterface;
 use Phuria\SQLBuilder\Connection\ConnectionManagerInterface;
-use Phuria\SQLBuilder\Parameter\ParameterManagerInterface;
+use Phuria\SQLBuilder\Parameter\ParameterCollection;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -36,7 +36,7 @@ class QueryFactory implements QueryFactoryInterface
     /**
      * @inheritdoc
      */
-    public function buildQuery($SQL, ParameterManagerInterface $parameterManager, $connectionHint = null)
+    public function buildQuery($SQL, array $parameters, $connectionHint = null)
     {
         if ($connectionHint instanceof ConnectionInterface) {
             $connection = $connectionHint;
@@ -44,6 +44,6 @@ class QueryFactory implements QueryFactoryInterface
             $connection = $this->connectionManager->getConnection($connectionHint);
         }
 
-        return new Query($SQL, $parameterManager, $connection);
+        return new Query($SQL, new ParameterCollection($parameters), $connection);
     }
 }

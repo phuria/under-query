@@ -65,13 +65,16 @@ class PhuriaSQLBuilder
      */
     private function createQueryBuilder($class)
     {
-        $parameterClass = $this->container->get('phuria.sql_builder.parameter_manager.class');
+        $options = [
+            'parameter_collection_class' => $this->container->get('phuria.sql_builder.parameter_collection.class'),
+            'reference_collection_class' => $this->container->get('phuria.sql_builder.reference_collection.class')
+        ];
 
         return new $class(
             $this->container->get('phuria.sql_builder.table_factory'),
             $this->container->get('phuria.sql_builder.query_compiler'),
-            new $parameterClass,
-            $this->container->get('phuria.sql_builder.query_factory')
+            $this->container->get('phuria.sql_builder.query_factory'),
+            $options
         );
     }
 

@@ -12,6 +12,7 @@
 namespace Phuria\SQLBuilder\Test\Unit\Connection;
 
 use Phuria\SQLBuilder\Connection\PDOConnection;
+use Phuria\SQLBuilder\Parameter\QueryParameter;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -56,5 +57,27 @@ class PDOConnectionTest extends \PHPUnit_Framework_TestCase
 
         $connection = new PDOConnection($pdo);
         static::assertSame($result, $connection->fetchAll('test'));
+    }
+
+    /**
+     * @test
+     * @covers \Phuria\SQLBuilder\Connection\PDOConnection
+     */
+    public function itWillBindParameters()
+    {
+        $parameter = new QueryParameter('param1');
+        $parameter->setValue(100);
+
+        $pdo = $this->prophesize(\PDO::class);
+        $pdoStmt = $this->prophesize(\PDOStatement::class);
+        $pdoStmt->bindValue($parameter->getName(), $parameter->getValue())->willReturn(null);
+        $pdoStmt->execute()->willReturn(null);
+        $pdoStmt->rowCount()->willReturn(0);
+        $pdoStmt = $pdoStmt->reveal();
+        $pdo->prepare('test')->willReturn($pdoStmt);
+        $pdo = $pdo->reveal();
+
+        $connection = new PDOConnection($pdo);
+        $connection->execute('test', [$parameter]);
     }
 }

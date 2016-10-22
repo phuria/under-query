@@ -9,25 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace Phuria\SQLBuilder\Parameter;
+namespace Phuria\SQLBuilder\Exception;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-interface QueryParameterInterface
+class ConnectionException extends \DomainException
 {
     /**
-     * @return mixed
+     * @param string $name
+     *
+     * @return ConnectionException
      */
-    public function getName();
-
-    /**
-     * @return mixed
-     */
-    public function getValue();
-
-    /**
-     * @param mixed $value
-     */
-    public function setValue($value);
+    public static function notRegistered($name)
+    {
+        return new self("Connection [{$name}] is not registered.");
+    }
 }

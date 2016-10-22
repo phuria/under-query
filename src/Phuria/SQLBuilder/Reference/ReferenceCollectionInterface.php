@@ -9,25 +9,22 @@
  * file that was distributed with this source code.
  */
 
-namespace Phuria\SQLBuilder\Parameter;
+namespace Phuria\SQLBuilder\Reference;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-interface QueryParameterInterface
+interface ReferenceCollectionInterface
 {
     /**
-     * @return mixed
-     */
-    public function getName();
-
-    /**
-     * @return mixed
-     */
-    public function getValue();
-
-    /**
      * @param mixed $value
+     *
+     * @return string
      */
-    public function setValue($value);
+    public function createReference($value);
+
+    /**
+     * @return array
+     */
+    public function toArray();
 }

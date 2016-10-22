@@ -9,9 +9,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 + container-interop/container-interop
 + implementation ContainerInterface for Pimple
 + humbug/humbug with configuration
++ ParameterCollection and QueryParameter to handling external parameters
++ ReferenceCollection to handling internal parameters
 ### Changed
 + QueryBuilderFactory renamed to PhuriaSQLBuilder (it better shows entry point)
 + PhuriaSQLBuilder::__constructor() now expects ContainerInterface
++ documentation moved from README.md to readthedocs.org
+### Removed
++ ParameterManager
 
 ## 0.4.0 [2016-10-17]
 ### Added
