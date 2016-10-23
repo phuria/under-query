@@ -19,16 +19,16 @@ use Phuria\SQLBuilder\Table\AbstractTable;
 trait FromComponentTrait
 {
     /**
-     * @param mixed  $table
-     * @param string $alias
+     * @param mixed       $table
+     * @param string|null $alias
      *
      * @return AbstractTable
      */
     abstract public function addRootTable($table, $alias = null);
 
     /**
-     * @param mixed  $table
-     * @param string $alias
+     * @param mixed       $table
+     * @param string|null $alias
      *
      * @return AbstractTable
      */
@@ -38,8 +38,8 @@ trait FromComponentTrait
     }
 
     /**
-     * @param mixed  $table
-     * @param string $alias
+     * @param mixed       $table
+     * @param string|null $alias
      *
      * @return AbstractTable
      */
