@@ -11,14 +11,14 @@
 
 namespace Phuria\UnderQuery\Tests\Integration\QueryBuilder;
 
-use Phuria\UnderQuery\Tests\TestCase\QueryBuilderTrait;
+use Phuria\UnderQuery\Tests\TestCase\UnderQueryTrait;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
 class InsertSelectBuilderTest extends \PHPUnit_Framework_TestCase
 {
-    use QueryBuilderTrait;
+    use UnderQueryTrait;
 
     /**
      * @test
@@ -26,13 +26,13 @@ class InsertSelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function insertSelect()
     {
-        $sourceQb = static::phuriaSQL()->createSelect();
+        $sourceQb = static::underQuery()->createSelect();
 
         $sourceQb->from('transactions', 't');
         $sourceQb->addSelect('t.user_id', 'SUM(t.amount)');
         $sourceQb->addGroupBy('t.user_id');
 
-        $targetQb = static::phuriaSQL()->createInsertSelect();
+        $targetQb = static::underQuery()->createInsertSelect();
         $targetQb->into('user_summary', ['user_id', 'total_price']);
         $targetQb->selectInsert($sourceQb);
 

@@ -11,14 +11,14 @@
 
 namespace Phuria\UnderQuery\Tests\Unit\QueryBuilder;
 
-use Phuria\UnderQuery\Tests\TestCase\QueryBuilderTrait;
+use Phuria\UnderQuery\Tests\TestCase\UnderQueryTrait;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
 class SelectBuilderTestTest extends \PHPUnit_Framework_TestCase
 {
-    use QueryBuilderTrait;
+    use UnderQueryTrait;
 
     /**
      * @test
@@ -26,7 +26,7 @@ class SelectBuilderTestTest extends \PHPUnit_Framework_TestCase
      */
     public function itCanAddSelect()
     {
-        $qb = static::phuriaSQL()->createSelect();
+        $qb = static::underQuery()->createSelect();
 
         static::assertCount(0, $qb->getSelectClauses());
 

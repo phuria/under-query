@@ -17,14 +17,14 @@ use Phuria\UnderQuery\TableFactory\TableFactory;
 use Phuria\UnderQuery\TableRegistry;
 use Phuria\UnderQuery\Tests\Fixtures\ExampleTable;
 use Phuria\UnderQuery\Tests\Fixtures\NullQueryBuilder;
-use Phuria\UnderQuery\Tests\TestCase\QueryBuilderTrait;
+use Phuria\UnderQuery\Tests\TestCase\UnderQueryTrait;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
 class TableFactoryTest extends \PHPUnit_Framework_TestCase
 {
-    use QueryBuilderTrait;
+    use UnderQueryTrait;
 
     /**
      * @test

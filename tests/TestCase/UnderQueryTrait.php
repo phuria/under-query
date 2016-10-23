@@ -12,19 +12,19 @@
 namespace Phuria\UnderQuery\Tests\TestCase;
 
 use Phuria\UnderQuery\Connection\NullConnection;
-use Phuria\UnderQuery\PhuriaSQLBuilder;
+use Phuria\UnderQuery\UnderQuery;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-trait QueryBuilderTrait
+trait UnderQueryTrait
 {
     /**
-     * @return PhuriaSQLBuilder
+     * @return UnderQuery
      */
-    protected static function phuriaSQL()
+    protected static function underQuery()
     {
-        $phuriaSQL = new PhuriaSQLBuilder();
+        $phuriaSQL = new UnderQuery();
         $phuriaSQL->registerConnection(new NullConnection(), 'default');
 
         return $phuriaSQL;

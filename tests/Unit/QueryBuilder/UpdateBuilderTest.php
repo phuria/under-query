@@ -11,14 +11,14 @@
 
 namespace Phuria\UnderQuery\Tests\Unit\QueryBuilder;
 
-use Phuria\UnderQuery\Tests\TestCase\QueryBuilderTrait;
+use Phuria\UnderQuery\Tests\TestCase\UnderQueryTrait;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
 class UpdateBuilderTest extends \PHPUnit_Framework_TestCase
 {
-    use QueryBuilderTrait;
+    use UnderQueryTrait;
 
     /**
      * @test
@@ -26,7 +26,7 @@ class UpdateBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function itCanHaveIgnoreHint()
     {
-        $qb = static::phuriaSQL()->createUpdate();
+        $qb = static::underQuery()->createUpdate();
 
         static::assertFalse($qb->isIgnore());
         $qb->setIgnore(true);
@@ -39,7 +39,7 @@ class UpdateBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function itCanHaveMultipleRootTables()
     {
-        $qb = static::phuriaSQL()->createUpdate();
+        $qb = static::underQuery()->createUpdate();
 
         static::assertCount(0, $qb->getRootTables());
         $qb->update('foo');

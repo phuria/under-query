@@ -13,12 +13,12 @@ namespace Phuria\UnderQuery\Tests\Unit;
 
 use Interop\Container\ContainerInterface;
 use Phuria\UnderQuery\Connection\ConnectionInterface;
-use Phuria\UnderQuery\PhuriaSQLBuilder;
 use Phuria\UnderQuery\QueryBuilder\DeleteBuilder;
 use Phuria\UnderQuery\QueryBuilder\InsertBuilder;
 use Phuria\UnderQuery\QueryBuilder\InsertSelectBuilder;
 use Phuria\UnderQuery\QueryBuilder\SelectBuilder;
 use Phuria\UnderQuery\QueryBuilder\UpdateBuilder;
+use Phuria\UnderQuery\UnderQuery;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -27,11 +27,11 @@ class PhuriaSQLBuilderTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     * @covers \Phuria\UnderQuery\PhuriaSQLBuilder
+     * @covers \Phuria\UnderQuery\UnderQuery
      */
     public function itCreateValidBuilders()
     {
-        $phuriaBuilder = new PhuriaSQLBuilder();
+        $phuriaBuilder = new UnderQuery();
         static::assertInstanceOf(SelectBuilder::class, $phuriaBuilder->createSelect());
         static::assertInstanceOf(InsertBuilder::class, $phuriaBuilder->createInsert());
         static::assertInstanceOf(InsertSelectBuilder::class, $phuriaBuilder->createInsertSelect());
@@ -41,22 +41,22 @@ class PhuriaSQLBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \Phuria\UnderQuery\PhuriaSQLBuilder
+     * @covers \Phuria\UnderQuery\UnderQuery
      */
     public function itReturnGivenContainer()
     {
         $container = $this->prophesize(ContainerInterface::class)->reveal();
-        $phuriaBuilder = new PhuriaSQLBuilder($container);
+        $phuriaBuilder = new UnderQuery($container);
         static::assertSame($container, $phuriaBuilder->getContainer());
     }
 
     /**
      * @test
-     * @covers \Phuria\UnderQuery\PhuriaSQLBuilder
+     * @covers \Phuria\UnderQuery\UnderQuery
      */
     public function itRegisterConnection()
     {
-        $phuriaBuilder = new PhuriaSQLBuilder();
+        $phuriaBuilder = new UnderQuery();
         $connection = $this->prophesize(ConnectionInterface::class)->reveal();
         $phuriaBuilder->registerConnection($connection);
 

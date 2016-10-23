@@ -11,14 +11,14 @@
 
 namespace Phuria\UnderQuery\Tests\Unit\QueryBuilder;
 
-use Phuria\UnderQuery\Tests\TestCase\QueryBuilderTrait;
+use Phuria\UnderQuery\Tests\TestCase\UnderQueryTrait;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
 class InsertBuilderTest extends \PHPUnit_Framework_TestCase
 {
-    use QueryBuilderTrait;
+    use UnderQueryTrait;
 
     /**
      * @test
@@ -26,7 +26,7 @@ class InsertBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function itCanSetValues()
     {
-        $qb = static::phuriaSQL()->createInsert();
+        $qb = static::underQuery()->createInsert();
 
         static::assertEmpty($qb->getValues());
 

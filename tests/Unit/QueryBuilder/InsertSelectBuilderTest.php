@@ -11,14 +11,14 @@
 
 namespace Phuria\UnderQuery\Tests\Unit\QueryBuilder;
 
-use Phuria\UnderQuery\Tests\TestCase\QueryBuilderTrait;
+use Phuria\UnderQuery\Tests\TestCase\UnderQueryTrait;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
 class InsertSelectBuilderTest extends \PHPUnit_Framework_TestCase
 {
-    use QueryBuilderTrait;
+    use UnderQueryTrait;
 
     /**
      * @test
@@ -26,11 +26,11 @@ class InsertSelectBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function itCanSetSelect()
     {
-        $qb = static::phuriaSQL()->createInsertSelect();
+        $qb = static::underQuery()->createInsertSelect();
 
         static::assertNull($qb->getSelectInsert());
 
-        $select = static::phuriaSQL()->createSelect();
+        $select = static::underQuery()->createSelect();
         $qb->selectInsert($select);
 
         static::assertSame($select, $qb->getSelectInsert());

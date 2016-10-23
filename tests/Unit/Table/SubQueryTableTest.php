@@ -12,14 +12,14 @@
 namespace Phuria\UnderQuery\Tests\Unit\Table;
 
 use Phuria\UnderQuery\Table\SubQueryTable;
-use Phuria\UnderQuery\Tests\TestCase\QueryBuilderTrait;
+use Phuria\UnderQuery\Tests\TestCase\UnderQueryTrait;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
 class SubQueryTableTest extends \PHPUnit_Framework_TestCase
 {
-    use QueryBuilderTrait;
+    use UnderQueryTrait;
 
     /**
      * @test
@@ -27,8 +27,8 @@ class SubQueryTableTest extends \PHPUnit_Framework_TestCase
      */
     public function itCreateTableFromQuery()
     {
-        $rootQuery = static::phuriaSQL()->createSelect();
-        $subQuery = static::phuriaSQL()->createSelect();
+        $rootQuery = static::underQuery()->createSelect();
+        $subQuery = static::underQuery()->createSelect();
 
         $table = new SubQueryTable($subQuery, $rootQuery);
 

@@ -11,14 +11,14 @@
 
 namespace Phuria\UnderQuery\Tests\Unit\QueryBuilder\Component;
 
-use Phuria\UnderQuery\Tests\TestCase\QueryBuilderTrait;
+use Phuria\UnderQuery\Tests\TestCase\UnderQueryTrait;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
 class TableComponentTraitTest extends \PHPUnit_Framework_TestCase
 {
-    use QueryBuilderTrait;
+    use UnderQueryTrait;
 
     /**
      * @test
@@ -26,7 +26,7 @@ class TableComponentTraitTest extends \PHPUnit_Framework_TestCase
      */
     public function itCanAddRootTable()
     {
-        $qb = static::phuriaSQL()->createDelete();
+        $qb = static::underQuery()->createDelete();
 
         static::assertEmpty($qb->getRootTables());
 

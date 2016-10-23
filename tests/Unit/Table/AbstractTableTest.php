@@ -13,21 +13,21 @@ namespace Phuria\UnderQuery\Tests\Unit\Table;
 
 use Phuria\UnderQuery\JoinType;
 use Phuria\UnderQuery\Table\UnknownTable;
-use Phuria\UnderQuery\Tests\TestCase\QueryBuilderTrait;
+use Phuria\UnderQuery\Tests\TestCase\UnderQueryTrait;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
 class AbstractTableTest extends \PHPUnit_Framework_TestCase
 {
-    use QueryBuilderTrait;
+    use UnderQueryTrait;
 
     /**
      * @return UnknownTable
      */
     private function createTestTable()
     {
-        $qb = static::phuriaSQL()->createSelect();
+        $qb = static::underQuery()->createSelect();
         $table = new UnknownTable($qb);
 
         return $table;

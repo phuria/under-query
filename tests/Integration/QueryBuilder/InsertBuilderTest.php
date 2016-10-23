@@ -11,14 +11,14 @@
 
 namespace Phuria\UnderQuery\Tests\Integration\QueryBuilder;
 
-use Phuria\UnderQuery\Tests\TestCase\QueryBuilderTrait;
+use Phuria\UnderQuery\Tests\TestCase\UnderQueryTrait;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
 class InsertBuilderTest extends \PHPUnit_Framework_TestCase
 {
-    use QueryBuilderTrait;
+    use UnderQueryTrait;
 
     /**
      * @test
@@ -26,7 +26,7 @@ class InsertBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function simpleInsert()
     {
-        $qb = static::phuriaSQL()->createInsert();
+        $qb = static::underQuery()->createInsert();
 
         $qb->into('example');
         $qb->setColumns(['id', 'name']);
@@ -42,7 +42,7 @@ class InsertBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function insertMultipleArguments()
     {
-        $qb = static::phuriaSQL()->createInsert();
+        $qb = static::underQuery()->createInsert();
 
         $qb->into('user', ['username', 'email']);
         $qb->addValues(['foo', 'bar']);

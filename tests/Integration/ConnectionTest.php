@@ -13,14 +13,14 @@ namespace Phuria\UnderQuery\Tests\Integration;
 
 use Phuria\UnderQuery\Connection\ConnectionInterface;
 use Phuria\UnderQuery\Tests\TestCase\DatabaseTestCase;
-use Phuria\UnderQuery\Tests\TestCase\QueryBuilderTrait;
+use Phuria\UnderQuery\Tests\TestCase\UnderQueryTrait;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
 class ConnectionTest extends DatabaseTestCase
 {
-    use QueryBuilderTrait;
+    use UnderQueryTrait;
 
     /**
      * @test
@@ -28,7 +28,7 @@ class ConnectionTest extends DatabaseTestCase
      */
     public function itHasDefaultConnection()
     {
-        $qbFactory = static::phuriaSQL();
+        $qbFactory = static::underQuery();
 
         $connection = $this->prophesize(ConnectionInterface::class)->reveal();
         $qbFactory->registerConnection($connection);

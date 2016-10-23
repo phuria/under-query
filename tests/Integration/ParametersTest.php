@@ -12,14 +12,14 @@
 namespace Phuria\UnderQuery\Tests\Integration;
 
 use Phuria\UnderQuery\Tests\TestCase\DatabaseTestCase;
-use Phuria\UnderQuery\Tests\TestCase\QueryBuilderTrait;
+use Phuria\UnderQuery\Tests\TestCase\UnderQueryTrait;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
 class ParametersTest extends DatabaseTestCase
 {
-    use QueryBuilderTrait;
+    use UnderQueryTrait;
 
     /**
      * @test
@@ -29,7 +29,7 @@ class ParametersTest extends DatabaseTestCase
     {
         $connection = $this->createQueryConnection();
 
-        $qb = static::phuriaSQL()->createSelect();
+        $qb = static::underQuery()->createSelect();
         $userTable = $qb->from('user');
         $qb->addSelect($userTable->column('username'));
         $qb->andWhere("{$userTable->column('id')} = :id");
@@ -46,7 +46,7 @@ class ParametersTest extends DatabaseTestCase
     {
         $connection = $this->createQueryConnection();
 
-        $qb = static::phuriaSQL()->createSelect();
+        $qb = static::underQuery()->createSelect();
         $userTable = $qb->from('user');
         $qb->addSelect($userTable->column('username'));
         $qb->andWhere("{$userTable->column('id')} = :id");
@@ -64,7 +64,7 @@ class ParametersTest extends DatabaseTestCase
     public function itWillSelectNotExistingUser()
     {
         $connection = $this->createQueryConnection();
-        $qb = static::phuriaSQL()->createSelect();
+        $qb = static::underQuery()->createSelect();
         $userTable = $qb->from('user');
         $qb->addSelect($userTable->column('username'));
         $qb->andWhere("{$userTable->column('id')} = :id");
@@ -81,7 +81,7 @@ class ParametersTest extends DatabaseTestCase
      */
     public function itWillNotChangeParamInQuery()
     {
-        $qb = static::phuriaSQL()->createSelect();
+        $qb = static::underQuery()->createSelect();
         $qb->setParameter('test', 10);
         $query = $qb->buildQuery();
 

@@ -15,14 +15,14 @@ use Phuria\UnderQuery\Parameter\ParameterCollectionInterface;
 use Phuria\UnderQuery\Query\Query;
 use Phuria\UnderQuery\QueryCompiler\QueryCompilerInterface;
 use Phuria\UnderQuery\TableFactory\TableFactoryInterface;
-use Phuria\UnderQuery\Tests\TestCase\QueryBuilderTrait;
+use Phuria\UnderQuery\Tests\TestCase\UnderQueryTrait;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
 class AbstractBuilderTest extends \PHPUnit_Framework_TestCase
 {
-    use QueryBuilderTrait;
+    use UnderQueryTrait;
 
     /**
      * @test
@@ -30,7 +30,7 @@ class AbstractBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function itShouldSetParameter()
     {
-        $qb = static::phuriaSQL()->createSelect();
+        $qb = static::underQuery()->createSelect();
         $qb->setParameter('test', 10);
 
         static::assertSame(10, $qb->getParameters()->getParameter('test')->getValue());
@@ -42,7 +42,7 @@ class AbstractBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function itReturnSelf()
     {
-        $qb = static::phuriaSQL()->createSelect();
+        $qb = static::underQuery()->createSelect();
 
         static::assertSame($qb, $qb->getQueryBuilder());
     }
@@ -53,7 +53,7 @@ class AbstractBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function itConvertObjectToString()
     {
-        $qb = static::phuriaSQL()->createSelect();
+        $qb = static::underQuery()->createSelect();
         $object = (object) ['test'];
         $string = $qb->objectToString($object);
 
@@ -66,7 +66,7 @@ class AbstractBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function itWillBuildSQL()
     {
-        $qb = static::phuriaSQL()->createSelect();
+        $qb = static::underQuery()->createSelect();
 
         static::assertTrue(is_string($qb->buildSQL()));
     }
@@ -77,7 +77,7 @@ class AbstractBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function itWillBuildQuery()
     {
-        $qb = static::phuriaSQL()->createSelect();
+        $qb = static::underQuery()->createSelect();
 
         static::assertInstanceOf(Query::class, $qb->buildQuery());
     }
@@ -88,7 +88,7 @@ class AbstractBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function itHasValidInstances()
     {
-        $qb = static::phuriaSQL()->createSelect();
+        $qb = static::underQuery()->createSelect();
 
         static::assertInstanceOf(TableFactoryInterface::class, $qb->getTableFactory());
         static::assertInstanceOf(QueryCompilerInterface::class, $qb->getQueryCompiler());

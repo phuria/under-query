@@ -11,14 +11,14 @@
 
 namespace Phuria\UnderQuery\Tests\Unit\QueryBuilder;
 
-use Phuria\UnderQuery\Tests\TestCase\QueryBuilderTrait;
+use Phuria\UnderQuery\Tests\TestCase\UnderQueryTrait;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
 class AbstractInsertBuilderTest extends \PHPUnit_Framework_TestCase
 {
-    use QueryBuilderTrait;
+    use UnderQueryTrait;
 
     /**
      * @test
@@ -26,7 +26,7 @@ class AbstractInsertBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function itCreateRootTable()
     {
-        $qb = static::phuriaSQL()->createInsert();
+        $qb = static::underQuery()->createInsert();
 
         $qb->into('example_table');
 
@@ -39,7 +39,7 @@ class AbstractInsertBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function itUseGivenColumns()
     {
-        $qb = static::phuriaSQL()->createInsert();
+        $qb = static::underQuery()->createInsert();
 
         $qb->into('example_table', ['foo', 'boo']);
 
@@ -52,7 +52,7 @@ class AbstractInsertBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function itSetColumns()
     {
-        $qb = static::phuriaSQL()->createInsert();
+        $qb = static::underQuery()->createInsert();
 
         static::assertSame([], $qb->getColumns());
         $qb->setColumns(['a', 'b']);

@@ -24,7 +24,7 @@ use Phuria\UnderQuery\QueryCompiler\QueryCompilerInterface;
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-class PhuriaSQLBuilder
+class UnderQuery
 {
     /**
      * @var ContainerInterface $container

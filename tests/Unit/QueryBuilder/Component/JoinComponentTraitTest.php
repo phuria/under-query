@@ -11,14 +11,14 @@
 
 namespace Phuria\UnderQuery\Tests\Unit\QueryBuilder\Component;
 
-use Phuria\UnderQuery\Tests\TestCase\QueryBuilderTrait;
+use Phuria\UnderQuery\Tests\TestCase\UnderQueryTrait;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
 class JoinComponentTraitTest extends \PHPUnit_Framework_TestCase
 {
-    use QueryBuilderTrait;
+    use UnderQueryTrait;
 
     /**
      * @test
@@ -26,7 +26,7 @@ class JoinComponentTraitTest extends \PHPUnit_Framework_TestCase
      */
     public function itCanJoin()
     {
-        $qb = static::phuriaSQL()->createDelete();
+        $qb = static::underQuery()->createDelete();
 
         static::assertCount(0, $qb->getJoinTables());
 
@@ -46,7 +46,7 @@ class JoinComponentTraitTest extends \PHPUnit_Framework_TestCase
      */
     public function itCanJoinWithAlias()
     {
-        $qb = static::phuriaSQL()->createDelete();
+        $qb = static::underQuery()->createDelete();
 
         $table = $qb->join('table', 'a');
 
@@ -60,7 +60,7 @@ class JoinComponentTraitTest extends \PHPUnit_Framework_TestCase
      */
     public function itCanJoinWithOnClause()
     {
-        $qb = static::phuriaSQL()->createSelect();
+        $qb = static::underQuery()->createSelect();
 
         $table = $qb->join('table', null, '1=1');
 

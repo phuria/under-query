@@ -11,14 +11,14 @@
 
 namespace Phuria\UnderQuery\Tests\Integration\QueryBuilder;
 
-use Phuria\UnderQuery\Tests\TestCase\QueryBuilderTrait;
+use Phuria\UnderQuery\Tests\TestCase\UnderQueryTrait;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
 class UpdateBuilderTest extends \PHPUnit_Framework_TestCase
 {
-    use QueryBuilderTrait;
+    use UnderQueryTrait;
 
     /**
      * @test
@@ -26,7 +26,7 @@ class UpdateBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function updateWithSetClause()
     {
-        $qb = static::phuriaSQL()->createUpdate();
+        $qb = static::underQuery()->createUpdate();
 
         $exampleTable = $qb->update('example');
         $qb->addSet("{$exampleTable->column('name')} = NULL");
@@ -46,7 +46,7 @@ class UpdateBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function updateWithWhereClause()
     {
-        $qb = static::phuriaSQL()->createUpdate();
+        $qb = static::underQuery()->createUpdate();
 
         $rootTable = $qb->update('example');
         $qb->addSet("{$rootTable->column('name')} = NULL");
@@ -61,7 +61,7 @@ class UpdateBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function updateWithOrderByAndLimit()
     {
-        $qb = static::phuriaSQL()->createUpdate();
+        $qb = static::underQuery()->createUpdate();
 
         $rootTable = $qb->update('example');
         $qb->addSet("{$rootTable->column('salary')} = 100");
@@ -77,7 +77,7 @@ class UpdateBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function updateIgnore()
     {
-        $qb = static::phuriaSQL()->createUpdate();
+        $qb = static::underQuery()->createUpdate();
 
         $qb->setIgnore(true);
         $qb->update('example');
@@ -92,7 +92,7 @@ class UpdateBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function itShouldCreateJoin()
     {
-        $qbFactory = static::phuriaSQL();
+        $qbFactory = static::underQuery();
         $update = $qbFactory->createUpdate();
 
         $update->leftJoin('test');
