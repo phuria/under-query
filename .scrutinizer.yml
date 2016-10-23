@@ -30,7 +30,7 @@ build:
   dependencies:
     before:
       - 'sudo mysql -e "CREATE DATABASE phuria_test"'
-      - 'sudo mysql phuria_test < tests/Phuria/SQLBuilder/Test/Resources/schema.sql'
+      - 'sudo mysql phuria_test < tests/Resources/schema.sql'
   tests:
     override:
       -

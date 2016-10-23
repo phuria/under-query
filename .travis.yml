@@ -12,6 +12,6 @@ env:
 install:
   - 'composer $COMPOSER_ARGS'
   - 'sudo mysql -e "CREATE DATABASE phuria_test"'
-  - 'sudo mysql phuria_test < tests/Phuria/SQLBuilder/Test/Resources/schema.sql'
+  - 'sudo mysql phuria_test < tests/Resources/schema.sql'
 script:
   - 'phpunit tests'

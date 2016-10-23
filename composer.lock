@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "23d144feaa50e2a5c11bf4b56b6afd27",
+    "hash": "76331ba654f5fd89593cf20b5ffb76fe",
     "content-hash": "0caf13fba3b1b31e2055f89197e9f26a",
     "packages": [
         {
@@ -1717,12 +1717,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "e12930d96cc0c15fd1de61d14a037c707baa901f"
+                "reference": "72fafa731ed6dcfdeadc60ed92922e8d6ff451b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/e12930d96cc0c15fd1de61d14a037c707baa901f",
-                "reference": "e12930d96cc0c15fd1de61d14a037c707baa901f",
+                "url": "https://api.github.com/repos/symfony/console/zipball/72fafa731ed6dcfdeadc60ed92922e8d6ff451b5",
+                "reference": "72fafa731ed6dcfdeadc60ed92922e8d6ff451b5",
                 "shasum": ""
             },
             "require": {
@@ -1772,7 +1772,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2016-10-06 08:59:27"
+            "time": "2016-10-21 21:28:04"
         },
         {
             "name": "symfony/debug",
@@ -2054,12 +2054,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "f5156e90c29a17f1b4f00570d2df9e8e003e16e5"
+                "reference": "c4ff00bb0f6b4a240312214c551077c69fb65fb6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/f5156e90c29a17f1b4f00570d2df9e8e003e16e5",
-                "reference": "f5156e90c29a17f1b4f00570d2df9e8e003e16e5",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/c4ff00bb0f6b4a240312214c551077c69fb65fb6",
+                "reference": "c4ff00bb0f6b4a240312214c551077c69fb65fb6",
                 "shasum": ""
             },
             "require": {
@@ -2109,7 +2109,7 @@
                 "debug",
                 "dump"
             ],
-            "time": "2016-10-06 08:59:27"
+            "time": "2016-10-21 19:59:10"
         },
         {
             "name": "symfony/yaml",
@@ -2117,12 +2117,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "f3abbc0c63c0c7803db79a7398bb983e5b089f53"
+                "reference": "3d42c56f989688ad0790dcdc3c706d60748af6a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/f3abbc0c63c0c7803db79a7398bb983e5b089f53",
-                "reference": "f3abbc0c63c0c7803db79a7398bb983e5b089f53",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/3d42c56f989688ad0790dcdc3c706d60748af6a6",
+                "reference": "3d42c56f989688ad0790dcdc3c706d60748af6a6",
                 "shasum": ""
             },
             "require": {
@@ -2164,7 +2164,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2016-09-28 14:20:56"
+            "time": "2016-10-21 21:10:51"
         },
         {
             "name": "webmozart/assert",

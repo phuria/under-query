@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 + QueryBuilderFactory renamed to PhuriaSQLBuilder (it better shows entry point)
 + PhuriaSQLBuilder::__constructor() now expects ContainerInterface
 + documentation moved from README.md to readthedocs.org
++ project name from Phuria SQL Builder to UnderQuery 
 ### Removed
 + ParameterManager
 

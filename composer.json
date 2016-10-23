@@ -34,7 +34,8 @@
   },
   "autoload": {
     "psr-4": {
-      "": ["src/", "tests/"]
+      "Phuria\\UnderQuery\\": "src",
+      "Phuria\\UnderQuery\\Tests\\": "tests"
     }
   }
 }
