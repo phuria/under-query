@@ -16,12 +16,34 @@ use Phuria\SQLBuilder\Table\AbstractTable;
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-abstract class AbstractInsertBuilder extends AbstractBuilder implements
-    Clause\InsertColumnsClauseInterface,
-    Component\TableComponentInterface
+abstract class AbstractInsertBuilder extends AbstractBuilder implements Component\TableComponentInterface
 {
-    use Clause\InsertColumnsClauseTrait;
     use Component\TableComponentTrait;
+
+    /**
+     * @var array
+     */
+    private $columns = [];
+
+    /**
+     * @param array $columns
+     *
+     * @return $this
+     */
+    public function setColumns($columns)
+    {
+        $this->columns = $columns;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getColumns()
+    {
+        return $this->columns;
+    }
 
     /**
      * @param mixed $table

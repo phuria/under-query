@@ -13,8 +13,7 @@ namespace Phuria\SQLBuilder\QueryCompiler\ConcreteCompiler;
 
 use Phuria\SQLBuilder\QueryBuilder\AbstractInsertBuilder;
 use Phuria\SQLBuilder\QueryBuilder\BuilderInterface;
-use Phuria\SQLBuilder\QueryBuilder\Clause;
-use Phuria\SQLBuilder\QueryBuilder\Component;
+use Phuria\SQLBuilder\QueryBuilder\InsertBuilder;
 use Phuria\SQLBuilder\QueryBuilder\InsertSelectBuilder;
 use Phuria\SQLBuilder\QueryCompiler\CompilerPayload;
 use Phuria\SQLBuilder\QueryCompiler\ReferenceCompiler;
@@ -80,7 +79,7 @@ class InsertCompiler extends AbstractConcreteCompiler
     {
         $builder = $payload->getBuilder();
 
-        if ($builder instanceof Clause\InsertColumnsClauseInterface) {
+        if ($builder instanceof AbstractInsertBuilder) {
             $newSQL = '(' . implode(', ', $builder->getColumns()) . ')';
             $payload = $payload->appendSQL($newSQL);
         }
@@ -97,7 +96,7 @@ class InsertCompiler extends AbstractConcreteCompiler
     {
         $builder = $payload->getBuilder();
 
-        if ($builder instanceof Component\InsertValuesComponentInterface) {
+        if ($builder instanceof InsertBuilder) {
             $newSQL = 'VALUES ' . implode(', ', array_map(function (array $values) {
                 return '('. implode(', ', $values) . ')';
             }, $builder->getValues()));

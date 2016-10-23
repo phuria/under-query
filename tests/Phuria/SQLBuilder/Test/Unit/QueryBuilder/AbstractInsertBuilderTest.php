@@ -45,4 +45,17 @@ class AbstractInsertBuilderTest extends \PHPUnit_Framework_TestCase
 
         static::assertSame(['foo', 'boo'], $qb->getColumns());
     }
+
+    /**
+     * @test
+     * @covers \Phuria\SQLBuilder\QueryBuilder\AbstractInsertBuilder
+     */
+    public function itSetColumns()
+    {
+        $qb = static::phuriaSQL()->createInsert();
+
+        static::assertSame([], $qb->getColumns());
+        $qb->setColumns(['a', 'b']);
+        static::assertSame(['a', 'b'], $qb->getColumns());
+    }
 }

@@ -14,7 +14,36 @@ namespace Phuria\SQLBuilder\QueryBuilder;
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-class InsertBuilder extends AbstractInsertBuilder implements Component\InsertValuesComponentInterface
+class InsertBuilder extends AbstractInsertBuilder
 {
-    use Component\InsertValuesComponentTrait;
+    /**
+     * @var array
+     */
+    private $values;
+
+    /**
+     * @param array $values
+     *
+     * @return $this
+     */
+    public function addValues(array $values)
+    {
+        $valueReferences = [];
+
+        foreach ($values as $value) {
+            $valueReferences[] = $this->getReferences()->createReference($value);
+        }
+
+        $this->values[] = $valueReferences;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getValues()
+    {
+        return $this->values;
+    }
 }

@@ -41,7 +41,7 @@ trait TableComponentTrait
      *
      * @return AbstractTable
      */
-    protected function addRootTable($table, $alias = null)
+    public function addRootTable($table, $alias = null)
     {
         $this->rootTables[] = $table = $this->getTableFactory()->createNewTable($table, $this->getQueryBuilder());
 
