@@ -33,7 +33,7 @@ class Query
      * @param string $sql
      * @param array  $parameters
      */
-    public function __construct($sql, array $parameters)
+    public function __construct($sql, array $parameters = [])
     {
         $this->sql = $sql;
         $this->parameterCollection = new ParameterCollection($parameters);

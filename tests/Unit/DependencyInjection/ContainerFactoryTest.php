@@ -34,7 +34,6 @@ class ContainerFactoryTest extends \PHPUnit_Framework_TestCase
 
         static::assertInstanceOf(ContainerInterface::class, $container = $factory->create());
         static::assertInstanceOf(ConnectionManagerInterface::class, $container->get('phuria.sql_builder.connection_manager'));
-        static::assertInstanceOf(QueryFactoryInterface::class, $container->get('phuria.sql_builder.query_factory'));
         static::assertInstanceOf(QueryCompilerInterface::class, $container->get('phuria.sql_builder.query_compiler'));
         static::assertInstanceOf(TableRegistry::class, $container->get('phuria.sql_builder.table_registry'));
         static::assertInstanceOf(TableFactoryInterface::class, $container->get('phuria.sql_builder.table_factory'));

@@ -25,60 +25,6 @@ class ParametersTest extends DatabaseTestCase
      * @test
      * @coversNothing
      */
-    public function itShouldWorkWithParameterSetInQb()
-    {
-        $connection = $this->createQueryConnection();
-
-        $qb = static::underQuery()->createSelect();
-        $userTable = $qb->from('user');
-        $qb->addSelect($userTable->column('username'));
-        $qb->andWhere("{$userTable->column('id')} = :id");
-        $qb->setParameter('id', 1);
-
-        static::assertSame('phuria', $qb->buildQuery($connection)->fetchScalar());
-    }
-
-    /**
-     * @test
-     * @coversNothing
-     */
-    public function itShouldWorkWithParameterSetInQuery()
-    {
-        $connection = $this->createQueryConnection();
-
-        $qb = static::underQuery()->createSelect();
-        $userTable = $qb->from('user');
-        $qb->addSelect($userTable->column('username'));
-        $qb->andWhere("{$userTable->column('id')} = :id");
-
-        $query = $qb->buildQuery($connection);
-        $query->setParameter('id', 2);
-
-        static::assertSame('romero', $query->fetchScalar());
-    }
-
-    /**
-     * @test
-     * @coversNothing
-     */
-    public function itWillSelectNotExistingUser()
-    {
-        $connection = $this->createQueryConnection();
-        $qb = static::underQuery()->createSelect();
-        $userTable = $qb->from('user');
-        $qb->addSelect($userTable->column('username'));
-        $qb->andWhere("{$userTable->column('id')} = :id");
-
-        $query = $qb->buildQuery($connection);
-        $query->setParameter('id', 65646565);
-
-        static::assertNull($query->fetchScalar());
-    }
-
-    /**
-     * @test
-     * @coversNothing
-     */
     public function itWillNotChangeParamInQuery()
     {
         $qb = static::underQuery()->createSelect();
@@ -88,6 +34,6 @@ class ParametersTest extends DatabaseTestCase
         $query->setParameter('test', 20);
 
         static::assertSame(10, $qb->getParameters()->getParameter('test')->getValue());
-        static::assertSame(20, $query->getParameterCollection()->getParameter('test')->getValue());
+        static::assertSame(20, $query->getParameters()->getParameter('test')->getValue());
     }
 }

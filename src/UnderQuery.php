@@ -13,6 +13,7 @@ namespace Phuria\UnderQuery;
 
 use Interop\Container\ContainerInterface;
 use Phuria\UnderQuery\Connection\ConnectionInterface;
+use Phuria\UnderQuery\Connection\ConnectionManagerInterface;
 use Phuria\UnderQuery\DependencyInjection\ContainerFactory;
 use Phuria\UnderQuery\QueryBuilder\DeleteBuilder;
 use Phuria\UnderQuery\QueryBuilder\InsertBuilder;
@@ -53,9 +54,15 @@ class UnderQuery
      */
     public function registerConnection(ConnectionInterface $connection, $name = 'default')
     {
-        $this->container->get('phuria.sql_builder.connection_manager')->registerConnection(
-            $connection, $name
-        );
+        $this->getConnectionManager()->registerConnection($connection, $name);
+    }
+
+    /**
+     * @return ConnectionManagerInterface
+     */
+    public function getConnectionManager()
+    {
+        return $this->container->get('phuria.sql_builder.connection_manager');
     }
 
     /**
@@ -65,16 +72,9 @@ class UnderQuery
      */
     private function createQueryBuilder($class)
     {
-        $options = [
-            'parameter_collection_class' => $this->container->get('phuria.sql_builder.parameter_collection.class'),
-            'reference_collection_class' => $this->container->get('phuria.sql_builder.reference_collection.class')
-        ];
-
         return new $class(
             $this->container->get('phuria.sql_builder.table_factory'),
-            $this->container->get('phuria.sql_builder.query_compiler'),
-            $this->container->get('phuria.sql_builder.query_factory'),
-            $options
+            $this->container->get('phuria.sql_builder.query_compiler')
         );
     }
 

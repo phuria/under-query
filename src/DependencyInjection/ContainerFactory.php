@@ -45,7 +45,6 @@ class ContainerFactory
         $container->setServiceFromCallback('phuria.sql_builder.table_factory', [$this, 'createTableFactory']);
         $container->setServiceFromCallback('phuria.sql_builder.query_compiler', [$this, 'createTableCompiler']);
         $container->setServiceFromCallback('phuria.sql_builder.connection_manager', [$this, 'createConnectionManager']);
-        $container->setServiceFromCallback('phuria.sql_builder.query_factory', [$this, 'createQueryFactory']);
 
         return $container;
     }
@@ -92,16 +91,5 @@ class ContainerFactory
     public function createConnectionManager()
     {
         return new ConnectionManager();
-    }
-
-    /**
-     * @internal
-     * @param Container $container
-     *
-     * @return QueryFactory
-     */
-    public function createQueryFactory(Container $container)
-    {
-        return new QueryFactory($container['phuria.sql_builder.connection_manager']);
     }
 }

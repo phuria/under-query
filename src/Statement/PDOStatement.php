@@ -14,7 +14,7 @@ namespace Phuria\UnderQuery\Statement;
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-class PDOStatement
+class PDOStatement implements StatementInterface
 {
     /**
      * @var \PDOStatement
@@ -27,5 +27,23 @@ class PDOStatement
     public function __construct(\PDOStatement $stmt)
     {
         $this->wrappedStatement = $stmt;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function execute()
+    {
+        $this->wrappedStatement->execute();
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function rowCount()
+    {
+        return $this->wrappedStatement->rowCount();
     }
 }

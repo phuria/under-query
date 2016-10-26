@@ -11,7 +11,7 @@
 
 namespace Phuria\UnderQuery\Connection;
 
-use Phuria\UnderQuery\Parameter\QueryParameterInterface;
+use Phuria\UnderQuery\Statement\PDOStatement;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -40,12 +40,12 @@ class PDOConnection implements ConnectionInterface
     }
 
     /**
-     * @param $SQL
-     *
-     * @return \PDOStatement
+     * @inheritdoc
      */
     public function prepareStatement($SQL)
     {
-        return $this->wrappedConnection->prepare($SQL);
+        $stmt = $this->wrappedConnection->prepare($SQL);
+
+        return new PDOStatement($stmt);
     }
 }
