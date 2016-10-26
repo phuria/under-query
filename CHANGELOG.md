@@ -7,8 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 Unreleased
 ---------
 
+### Added
++ StatementInterface and PDO implementation
+
 ### Changed
 + now Query contains only SQL and parameters
++ ConnectionInterface no longer be responsible for fetching data
 
 0.5.0 [2016-10-26]
 -----------------
