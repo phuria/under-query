@@ -1,10 +1,10 @@
-Phuria SQL Builder
-==================
+UnderQuery
+==========
 
-Welcome to the Phuria SQL Builder documentation.
+Welcome to the UnderQuery documentation.
 Source code can be found on `GitHub`_.
 
-.. _GitHub: https://github.com/phuria/sql-builder
+.. _GitHub: https://github.com/phuria/under-query
 
 .. toctree::
    :maxdepth: 2
