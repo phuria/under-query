@@ -9,15 +9,23 @@
  * file that was distributed with this source code.
  */
 
-namespace Phuria\UnderQuery\QueryBuilder\Clause;
+namespace Phuria\UnderQuery\Statement;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-interface OrderByClauseInterface
+class PDOStatement
 {
     /**
-     * @return array
+     * @var \PDOStatement
      */
-    public function getOrderByClauses();
+    private $wrappedStatement;
+
+    /**
+     * @param \PDOStatement $stmt
+     */
+    public function __construct(\PDOStatement $stmt)
+    {
+        $this->wrappedStatement = $stmt;
+    }
 }

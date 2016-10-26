@@ -3,7 +3,7 @@
 namespace Phuria\UnderQuery;
 
 /**
- * This file is part of Phuria SQL Builder package.
+ * This file is part of UnderQuery package.
  *
  * Copyright (c) 2016 Beniamin Jonatan Šimko
  *

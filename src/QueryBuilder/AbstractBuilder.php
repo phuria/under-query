@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file is part of Phuria SQL Builder package.
+ * This file is part of UnderQuery package.
  *
  * Copyright (c) 2016 Beniamin Jonatan Šimko
  *
@@ -11,10 +11,12 @@
 
 namespace Phuria\UnderQuery\QueryBuilder;
 
+use Phuria\UnderQuery\Parameter\ParameterCollection;
 use Phuria\UnderQuery\Parameter\ParameterCollectionInterface;
 use Phuria\UnderQuery\Query\Query;
 use Phuria\UnderQuery\Query\QueryFactoryInterface;
 use Phuria\UnderQuery\QueryCompiler\QueryCompilerInterface;
+use Phuria\UnderQuery\Reference\ReferenceCollection;
 use Phuria\UnderQuery\Reference\ReferenceCollectionInterface;
 use Phuria\UnderQuery\TableFactory\TableFactoryInterface;
 
@@ -44,28 +46,15 @@ abstract class AbstractBuilder implements BuilderInterface
     private $referenceCollection;
 
     /**
-     * @var QueryFactoryInterface
-     */
-    private $queryFactory;
-
-    /**
      * @param TableFactoryInterface     $tableFactory
      * @param QueryCompilerInterface    $queryCompiler
-     * @param QueryFactoryInterface     $queryFactory
-     * @param array                     $options
      */
-    public function __construct(
-        TableFactoryInterface $tableFactory,
-        QueryCompilerInterface $queryCompiler,
-        QueryFactoryInterface $queryFactory,
-        array $options
-    ) {
+    public function __construct(TableFactoryInterface $tableFactory, QueryCompilerInterface $queryCompiler)
+    {
         $this->tableFactory = $tableFactory;
         $this->queryCompiler = $queryCompiler;
-        $this->queryFactory = $queryFactory;
-
-        $this->parameterCollection = new $options['parameter_collection_class'];
-        $this->referenceCollection = new $options['reference_collection_class'];
+        $this->parameterCollection = new ParameterCollection();
+        $this->referenceCollection = new ReferenceCollection();
     }
 
     /**
@@ -136,16 +125,10 @@ abstract class AbstractBuilder implements BuilderInterface
     }
 
     /**
-     * @param mixed $connectionHint
-     *
      * @return Query
      */
-    public function buildQuery($connectionHint = 'default')
+    public function buildQuery()
     {
-        return $this->queryFactory->buildQuery(
-            $this->buildSQL(),
-            $this->getParameters()->toArray(),
-            $connectionHint
-        );
+        return new Query($this->buildSQL(), $this->parameterCollection->toArray());
     }
 }

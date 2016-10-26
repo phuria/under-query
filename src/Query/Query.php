@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file is part of Phuria SQL Builder package.
+ * This file is part of UnderQuery package.
  *
  * Copyright (c) 2016 Beniamin Jonatan Šimko
  *
@@ -11,7 +11,7 @@
 
 namespace Phuria\UnderQuery\Query;
 
-use Phuria\UnderQuery\Connection\ConnectionInterface;
+use Phuria\UnderQuery\Parameter\ParameterCollection;
 use Phuria\UnderQuery\Parameter\ParameterCollectionInterface;
 
 /**
@@ -30,23 +30,13 @@ class Query
     private $parameterCollection;
 
     /**
-     * @var ConnectionInterface
+     * @param string $sql
+     * @param array  $parameters
      */
-    private $connection;
-
-    /**
-     * @param string                       $sql
-     * @param ParameterCollectionInterface $parameterCollection
-     * @param ConnectionInterface          $connection
-     */
-    public function __construct(
-        $sql,
-        ParameterCollectionInterface $parameterCollection,
-        ConnectionInterface $connection
-    ) {
+    public function __construct($sql, array $parameters)
+    {
         $this->sql = $sql;
-        $this->parameterCollection = $parameterCollection;
-        $this->connection = $connection;
+        $this->parameterCollection = new ParameterCollection($parameters);
     }
 
     /**
@@ -58,49 +48,9 @@ class Query
     }
 
     /**
-     * @return mixed
-     */
-    public function fetchScalar()
-    {
-        return $this->connection->fetchScalar($this->sql, $this->parameterCollection->toArray());
-    }
-
-    /**
-     * @return array
-     */
-    public function fetchRow()
-    {
-        return $this->connection->fetchRow($this->sql, $this->parameterCollection->toArray());
-    }
-
-    /**
-     * @return array
-     */
-    public function fetchAll()
-    {
-        return $this->connection->fetchAll($this->sql, $this->parameterCollection->toArray());
-    }
-
-    /**
-     * @return int
-     */
-    public function rowCount()
-    {
-        return $this->connection->rowCount($this->sql, $this->parameterCollection->toArray());
-    }
-
-    /**
-     * @return int
-     */
-    public function execute()
-    {
-        return $this->connection->execute($this->sql, $this->parameterCollection->toArray());
-    }
-
-    /**
      * @return ParameterCollectionInterface
      */
-    public function getParameterCollection()
+    public function getParameters()
     {
         return $this->parameterCollection;
     }
@@ -113,16 +63,8 @@ class Query
      */
     public function setParameter($name, $value)
     {
-        $this->getParameterCollection()->getParameter($name)->setValue($value);
+        $this->getParameters()->getParameter($name)->setValue($value);
 
         return $this;
-    }
-
-    /**
-     * @return ConnectionInterface
-     */
-    public function getConnection()
-    {
-        return $this->connection;
     }
 }

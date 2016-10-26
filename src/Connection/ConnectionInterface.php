@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file is part of Phuria SQL Builder package.
+ * This file is part of UnderQuery package.
  *
  * Copyright (c) 2016 Beniamin Jonatan Šimko
  *
@@ -16,43 +16,5 @@ namespace Phuria\UnderQuery\Connection;
  */
 interface ConnectionInterface
 {
-    /**
-     * @param string $SQL
-     * @param array  $parameters
-     *
-     * @return mixed|null Null when no results.
-     */
-    public function fetchScalar($SQL, array $parameters = []);
 
-    /**
-     * @param string $SQL
-     * @param array  $parameters
-     *
-     * @return mixed|null Null when no results.
-     */
-    public function fetchRow($SQL, array $parameters = []);
-
-    /**
-     * @param string $SQL
-     * @param array  $parameters
-     *
-     * @return array Empty array when no results.
-     */
-    public function fetchAll($SQL, array $parameters = []);
-
-    /**
-     * @param string $SQL
-     * @param array  $parameters
-     *
-     * @return int
-     */
-    public function rowCount($SQL, array $parameters = []);
-
-    /**
-     * @param string $SQL
-     * @param array  $parameters
-     *
-     * @return int Number of rows affected.
-     */
-    public function execute($SQL, array $parameters = []);
 }
