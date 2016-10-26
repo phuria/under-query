@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "76331ba654f5fd89593cf20b5ffb76fe",
-    "content-hash": "0caf13fba3b1b31e2055f89197e9f26a",
+    "hash": "66b6b5326a5254ea3e433b51d5627ce5",
+    "content-hash": "ab9dbad4839d0e285eeaaaae11f9e383",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -1780,12 +1780,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug.git",
-                "reference": "61de4883414e3a640ffac1798d411a37dc71bc20"
+                "reference": "e6688db8d93472b5fce48b05fadf566a2520da5e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/debug/zipball/61de4883414e3a640ffac1798d411a37dc71bc20",
-                "reference": "61de4883414e3a640ffac1798d411a37dc71bc20",
+                "url": "https://api.github.com/repos/symfony/debug/zipball/e6688db8d93472b5fce48b05fadf566a2520da5e",
+                "reference": "e6688db8d93472b5fce48b05fadf566a2520da5e",
                 "shasum": ""
             },
             "require": {
@@ -1829,7 +1829,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2016-09-30 10:45:11"
+            "time": "2016-10-25 13:27:26"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -2054,12 +2054,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "c4ff00bb0f6b4a240312214c551077c69fb65fb6"
+                "reference": "1cd05eb01408197d5391440ba5207c050635cc63"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/c4ff00bb0f6b4a240312214c551077c69fb65fb6",
-                "reference": "c4ff00bb0f6b4a240312214c551077c69fb65fb6",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/1cd05eb01408197d5391440ba5207c050635cc63",
+                "reference": "1cd05eb01408197d5391440ba5207c050635cc63",
                 "shasum": ""
             },
             "require": {
@@ -2109,7 +2109,7 @@
                 "debug",
                 "dump"
             ],
-            "time": "2016-10-21 19:59:10"
+            "time": "2016-10-25 13:27:26"
         },
         {
             "name": "symfony/yaml",
@@ -2117,12 +2117,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "3d42c56f989688ad0790dcdc3c706d60748af6a6"
+                "reference": "d2cab32980d8de786744fabdec95991a0ebd7ea8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/3d42c56f989688ad0790dcdc3c706d60748af6a6",
-                "reference": "3d42c56f989688ad0790dcdc3c706d60748af6a6",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/d2cab32980d8de786744fabdec95991a0ebd7ea8",
+                "reference": "d2cab32980d8de786744fabdec95991a0ebd7ea8",
                 "shasum": ""
             },
             "require": {
@@ -2164,7 +2164,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2016-10-21 21:10:51"
+            "time": "2016-10-24 18:44:12"
         },
         {
             "name": "webmozart/assert",
