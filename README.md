@@ -26,4 +26,4 @@ The current version can be seen at
 ## Symfony integration
 
 For applications based on Symfony framework we have integration bundle:
-[UnderQueryBundle](https://github.com/phuria/SQLBuilderBundle).
+[UnderQueryBundle](https://github.com/phuria/UnderQueryBundle).
