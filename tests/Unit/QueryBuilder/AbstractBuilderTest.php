@@ -14,6 +14,7 @@ namespace Phuria\UnderQuery\Tests\Unit\QueryBuilder;
 use Phuria\UnderQuery\Parameter\ParameterCollectionInterface;
 use Phuria\UnderQuery\Query\Query;
 use Phuria\UnderQuery\QueryCompiler\QueryCompilerInterface;
+use Phuria\UnderQuery\Reference\ReferenceCollectionInterface;
 use Phuria\UnderQuery\TableFactory\TableFactoryInterface;
 use Phuria\UnderQuery\Tests\TestCase\UnderQueryTrait;
 
@@ -90,8 +91,28 @@ class AbstractBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $qb = static::underQuery()->createSelect();
 
-        static::assertInstanceOf(TableFactoryInterface::class, $qb->getTableFactory());
-        static::assertInstanceOf(QueryCompilerInterface::class, $qb->getQueryCompiler());
         static::assertInstanceOf(ParameterCollectionInterface::class, $qb->getParameters());
+        static::assertInstanceOf(ReferenceCollectionInterface::class, $qb->getReferences());
+    }
+
+    /**
+     * @test
+     * @covers \Phuria\UnderQuery\QueryBuilder\AbstractBuilder
+     */
+    public function itCanAddRootTable()
+    {
+        $qb = static::underQuery()->createDelete();
+
+        static::assertEmpty($qb->getRootTables());
+
+        $table = $qb->addRootTable('test');
+
+        static::assertCount(1, $qb->getRootTables());
+        static::assertSame('test', $table->getTableName());
+
+        $table = $qb->addRootTable('test', 'a');
+
+        static::assertCount(2, $qb->getRootTables());
+        static::assertSame('a', $table->getAlias());
     }
 }

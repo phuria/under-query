@@ -32,11 +32,11 @@ class ContainerIntegrationTest extends \PHPUnit_Framework_TestCase
 
         static::assertInstanceOf(ContainerInterface::class, $container);
 
-        $parameterClass = $container->get('phuria.sql_builder.parameter_collection.class');
+        $parameterClass = $container->get('phuria.under_query.parameter_collection.class');
         $collection = new $parameterClass;
         static::assertInstanceOf(ParameterCollectionInterface::class, $collection);
 
-        $referenceClass = $container->get('phuria.sql_builder.reference_collection.class');
+        $referenceClass = $container->get('phuria.under_query.reference_collection.class');
         $collection = new $referenceClass;
         static::assertInstanceOf(ReferenceCollectionInterface::class, $collection);
     }

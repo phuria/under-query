@@ -25,4 +25,24 @@ interface StatementInterface
      * @return int
      */
     public function rowCount();
+
+    /*
+    public function fetch ($fetch_style = null, $cursor_orientation = PDO::FETCH_ORI_NEXT, $cursor_offset = 0) {}
+
+    public function bindParam ($parameter, &$variable, $data_type = PDO::PARAM_STR, $length = null, $driver_options = null) {}
+
+    public function bindValue ($parameter, $value, $data_type = PDO::PARAM_STR) {}
+
+    public function fetchColumn ($column_number = 0) {}
+
+    public function fetchAll ($fetch_style = null, $fetch_argument = null, array $ctor_args = 'array()') {}
+
+    public function fetchObject ($class_name = "stdClass", array $ctor_args = null) {}
+
+    public function errorCode () {}
+
+    public function nextRowset () {}
+
+    public function closeCursor () {}
+    */
 }

@@ -14,6 +14,7 @@ namespace Phuria\UnderQuery\QueryBuilder\Component;
 use Phuria\UnderQuery\JoinType;
 use Phuria\UnderQuery\QueryBuilder\BuilderInterface;
 use Phuria\UnderQuery\Table\AbstractTable;
+use Phuria\UnderQuery\Table\TableInterface;
 use Phuria\UnderQuery\TableFactory\TableFactoryInterface;
 
 /**
@@ -27,13 +28,12 @@ trait JoinComponentTrait
     private $joinTables = [];
 
     /**
-     * @return TableFactoryInterface
+     * @param mixed       $table
+     * @param string|null $alias
+     *
+     * @return AbstractTable
      */
-    abstract protected function getTableFactory();
-    /**
-     * @return BuilderInterface
-     */
-    abstract public function getQueryBuilder();
+    abstract public function createTable($table, $alias = null);
 
     /**
      * @param string      $joinType
@@ -45,16 +45,10 @@ trait JoinComponentTrait
      */
     private function doJoin($joinType, $table, $alias = null, $joinOn = null)
     {
-        $this->joinTables[] = $table = $this->getTableFactory()->createNewTable($table, $this->getQueryBuilder());
+        $this->joinTables[] = $table = $this->createTable($table, $alias);
+
         $table->setJoinType($joinType);
-
-        if ($alias) {
-            $table->setAlias($alias);
-        }
-
-        if ($joinOn) {
-            $table->joinOn($joinOn);
-        }
+        $table->joinOn($joinOn);
 
         return $table;
     }

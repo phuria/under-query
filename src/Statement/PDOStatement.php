@@ -30,6 +30,14 @@ class PDOStatement implements StatementInterface
     }
 
     /**
+     * @return \PDOStatement
+     */
+    public function getWrappedStatement()
+    {
+        return $this->wrappedStatement;
+    }
+
+    /**
      * @inheritdoc
      */
     public function execute()

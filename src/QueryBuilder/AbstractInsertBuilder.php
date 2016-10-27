@@ -16,10 +16,8 @@ use Phuria\UnderQuery\Table\AbstractTable;
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-abstract class AbstractInsertBuilder extends AbstractBuilder implements Component\TableComponentInterface
+abstract class AbstractInsertBuilder extends AbstractBuilder
 {
-    use Component\TableComponentTrait;
-
     /**
      * @var array
      */

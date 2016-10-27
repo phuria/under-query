@@ -15,6 +15,7 @@ use Interop\Container\ContainerInterface;
 use Phuria\UnderQuery\Connection\ConnectionManager;
 use Phuria\UnderQuery\Parameter\ParameterCollection;
 use Phuria\UnderQuery\Query\QueryFactory;
+use Phuria\UnderQuery\QueryBuilder\QueryBuilderFacade;
 use Phuria\UnderQuery\QueryCompiler\ConcreteCompiler\DeleteCompiler;
 use Phuria\UnderQuery\QueryCompiler\ConcreteCompiler\InsertCompiler;
 use Phuria\UnderQuery\QueryCompiler\ConcreteCompiler\SelectCompiler;
@@ -38,13 +39,14 @@ class ContainerFactory
         $pimple = new Container();
         $container = new PimpleContainer($pimple);
 
-        $container->setParameter('phuria.sql_builder.parameter_collection.class', ParameterCollection::class);
-        $container->setParameter('phuria.sql_builder.reference_collection.class', ReferenceCollection::class);
+        $container->setParameter('phuria.under_query.parameter_collection.class', ParameterCollection::class);
+        $container->setParameter('phuria.under_query.reference_collection.class', ReferenceCollection::class);
 
-        $container->setServiceFromCallback('phuria.sql_builder.table_registry', [$this, 'createTableRegistry']);
-        $container->setServiceFromCallback('phuria.sql_builder.table_factory', [$this, 'createTableFactory']);
-        $container->setServiceFromCallback('phuria.sql_builder.query_compiler', [$this, 'createTableCompiler']);
-        $container->setServiceFromCallback('phuria.sql_builder.connection_manager', [$this, 'createConnectionManager']);
+        $container->setServiceFromCallback('phuria.under_query.table_registry', [$this, 'createTableRegistry']);
+        $container->setServiceFromCallback('phuria.under_query.table_factory', [$this, 'createTableFactory']);
+        $container->setServiceFromCallback('phuria.under_query.query_compiler', [$this, 'createTableCompiler']);
+        $container->setServiceFromCallback('phuria.under_query.connection_manager', [$this, 'createConnectionManager']);
+        $container->setServiceFromCallback('phuria.under_query.query_builder_facade', [$this, 'createQueryBuilderFacade']);
 
         return $container;
     }
@@ -66,7 +68,7 @@ class ContainerFactory
      */
     public function createTableFactory(Container $container)
     {
-        return new TableFactory($container['phuria.sql_builder.table_registry']);
+        return new TableFactory($container['phuria.under_query.table_registry']);
     }
 
     /**
@@ -91,5 +93,20 @@ class ContainerFactory
     public function createConnectionManager()
     {
         return new ConnectionManager();
+    }
+
+    /**
+     * @internal
+     * @param Container $container
+     *
+     * @return QueryBuilderFacade
+     */
+    public function createQueryBuilderFacade(Container $container)
+    {
+        return new QueryBuilderFacade(
+            $container['phuria.under_query.table_factory'],
+            $container['phuria.under_query.query_compiler'],
+            $container['phuria.under_query.connection_manager']
+        );
     }
 }

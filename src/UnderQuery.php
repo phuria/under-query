@@ -62,7 +62,7 @@ class UnderQuery
      */
     public function getConnectionManager()
     {
-        return $this->container->get('phuria.sql_builder.connection_manager');
+        return $this->container->get('phuria.under_query.connection_manager');
     }
 
     /**
@@ -72,10 +72,7 @@ class UnderQuery
      */
     private function createQueryBuilder($class)
     {
-        return new $class(
-            $this->container->get('phuria.sql_builder.table_factory'),
-            $this->container->get('phuria.sql_builder.query_compiler')
-        );
+        return new $class($this->container->get('phuria.under_query.query_builder_facade'));
     }
 
     /**

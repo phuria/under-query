@@ -12,6 +12,7 @@
 namespace Phuria\UnderQuery\QueryCompiler;
 
 use Phuria\UnderQuery\JoinType;
+use Phuria\UnderQuery\QueryBuilder\AbstractBuilder;
 use Phuria\UnderQuery\QueryBuilder\Component;
 use Phuria\UnderQuery\QueryBuilder\DeleteBuilder;
 use Phuria\UnderQuery\QueryBuilder\SelectBuilder;
@@ -116,7 +117,7 @@ class TableCompiler
         $builder = $payload->getBuilder();
         $newSQL = '';
 
-        if ($builder instanceof Component\TableComponentInterface && $builder->getRootTables()) {
+        if ($builder instanceof AbstractBuilder && $builder->getRootTables()) {
             $newSQL = implode(', ', array_map([$this, 'compileTableDeclaration'], $builder->getRootTables()));
         }
 

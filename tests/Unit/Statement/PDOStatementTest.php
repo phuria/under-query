@@ -45,4 +45,17 @@ class PDOStatementTest extends \PHPUnit_Framework_TestCase
 
         static::assertSame(10, $stmt->rowCount());
     }
+
+    /**
+     * @test
+     * @covers \Phuria\UnderQuery\Statement\PDOStatement
+     */
+    public function itShouldReturnWrappedStmt()
+    {
+        $pdoStmt = $this->prophesize(\PDOStatement::class)->reveal();
+
+        $stmt = new PDOStatement($pdoStmt);
+
+        static::assertSame($pdoStmt, $stmt->getWrappedStatement());
+    }
 }

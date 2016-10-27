@@ -18,14 +18,12 @@ class DeleteBuilder extends AbstractBuilder implements
     Clause\LimitClauseInterface,
     Clause\OrderByClauseInterface,
     Clause\WhereClauseInterface,
-    Component\JoinComponentInterface,
-    Component\TableComponentInterface
+    Component\JoinComponentInterface
 {
     use Clause\LimitClauseTrait;
     use Clause\OrderByClauseTrait;
     use Clause\WhereClauseTrait;
     use Component\JoinComponentTrait;
-    use Component\TableComponentTrait;
     use Component\FromComponentTrait;
 
     /**

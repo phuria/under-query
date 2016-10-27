@@ -61,7 +61,7 @@ class PhuriaSQLBuilderTest extends \PHPUnit_Framework_TestCase
         $phuriaBuilder->registerConnection($connection);
 
         $registeredConnection = $phuriaBuilder->getContainer()
-            ->get('phuria.sql_builder.connection_manager')->getConnection();
+            ->get('phuria.under_query.connection_manager')->getConnection();
 
         static::assertSame($connection, $registeredConnection);
     }

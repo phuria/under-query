@@ -15,6 +15,7 @@ use Interop\Container\ContainerInterface;
 use Phuria\UnderQuery\Connection\ConnectionManagerInterface;
 use Phuria\UnderQuery\DependencyInjection\ContainerFactory;
 use Phuria\UnderQuery\Query\QueryFactoryInterface;
+use Phuria\UnderQuery\QueryBuilder\QueryBuilderFacade;
 use Phuria\UnderQuery\QueryCompiler\QueryCompilerInterface;
 use Phuria\UnderQuery\TableFactory\TableFactoryInterface;
 use Phuria\UnderQuery\TableRegistry;
@@ -33,9 +34,10 @@ class ContainerFactoryTest extends \PHPUnit_Framework_TestCase
         $factory = new ContainerFactory();
 
         static::assertInstanceOf(ContainerInterface::class, $container = $factory->create());
-        static::assertInstanceOf(ConnectionManagerInterface::class, $container->get('phuria.sql_builder.connection_manager'));
-        static::assertInstanceOf(QueryCompilerInterface::class, $container->get('phuria.sql_builder.query_compiler'));
-        static::assertInstanceOf(TableRegistry::class, $container->get('phuria.sql_builder.table_registry'));
-        static::assertInstanceOf(TableFactoryInterface::class, $container->get('phuria.sql_builder.table_factory'));
+        static::assertInstanceOf(ConnectionManagerInterface::class, $container->get('phuria.under_query.connection_manager'));
+        static::assertInstanceOf(QueryCompilerInterface::class, $container->get('phuria.under_query.query_compiler'));
+        static::assertInstanceOf(TableRegistry::class, $container->get('phuria.under_query.table_registry'));
+        static::assertInstanceOf(TableFactoryInterface::class, $container->get('phuria.under_query.table_factory'));
+        static::assertInstanceOf(QueryBuilderFacade::class, $container->get('phuria.under_query.query_builder_facade'));
     }
 }

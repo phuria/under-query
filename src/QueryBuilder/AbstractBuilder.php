@@ -14,11 +14,10 @@ namespace Phuria\UnderQuery\QueryBuilder;
 use Phuria\UnderQuery\Parameter\ParameterCollection;
 use Phuria\UnderQuery\Parameter\ParameterCollectionInterface;
 use Phuria\UnderQuery\Query\Query;
-use Phuria\UnderQuery\Query\QueryFactoryInterface;
-use Phuria\UnderQuery\QueryCompiler\QueryCompilerInterface;
 use Phuria\UnderQuery\Reference\ReferenceCollection;
 use Phuria\UnderQuery\Reference\ReferenceCollectionInterface;
-use Phuria\UnderQuery\TableFactory\TableFactoryInterface;
+use Phuria\UnderQuery\Statement\StatementInterface;
+use Phuria\UnderQuery\Table\AbstractTable;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -26,19 +25,9 @@ use Phuria\UnderQuery\TableFactory\TableFactoryInterface;
 abstract class AbstractBuilder implements BuilderInterface
 {
     /**
-     * @var TableFactoryInterface
+     * @var QueryBuilderFacade
      */
-    private $tableFactory;
-
-    /**
-     * @var QueryCompilerInterface
-     */
-    private $queryCompiler;
-
-    /**
-     * @var ParameterCollectionInterface
-     */
-    private $parameterCollection;
+    private $facade;
 
     /**
      * @var ReferenceCollectionInterface
@@ -46,13 +35,21 @@ abstract class AbstractBuilder implements BuilderInterface
     private $referenceCollection;
 
     /**
-     * @param TableFactoryInterface     $tableFactory
-     * @param QueryCompilerInterface    $queryCompiler
+     * @var ParameterCollectionInterface
      */
-    public function __construct(TableFactoryInterface $tableFactory, QueryCompilerInterface $queryCompiler)
+    private $parameterCollection;
+
+    /**
+     * @var AbstractTable[] $tables
+     */
+    private $rootTables = [];
+
+    /**
+     * @param QueryBuilderFacade $facade
+     */
+    public function __construct(QueryBuilderFacade $facade)
     {
-        $this->tableFactory = $tableFactory;
-        $this->queryCompiler = $queryCompiler;
+        $this->facade = $facade;
         $this->parameterCollection = new ParameterCollection();
         $this->referenceCollection = new ReferenceCollection();
     }
@@ -63,22 +60,6 @@ abstract class AbstractBuilder implements BuilderInterface
     public function getQueryBuilder()
     {
         return $this;
-    }
-
-    /**
-     * @return TableFactoryInterface
-     */
-    public function getTableFactory()
-    {
-        return $this->tableFactory;
-    }
-
-    /**
-     * @return QueryCompilerInterface
-     */
-    public function getQueryCompiler()
-    {
-        return $this->queryCompiler;
     }
 
     /**
@@ -98,11 +79,41 @@ abstract class AbstractBuilder implements BuilderInterface
     }
 
     /**
-     * @inheritdoc
+     * @param mixed  $table
+     * @param string $alias
+     *
+     * @return AbstractTable
      */
-    public function buildSQL()
+    public function addRootTable($table, $alias = null)
     {
-        return $this->getQueryCompiler()->compile($this->getQueryBuilder());
+        $this->rootTables[] = $table = $this->createTable($table, $alias);
+
+        return $table;
+    }
+
+    /**
+     * @return AbstractTable[]
+     */
+    public function getRootTables()
+    {
+        return $this->rootTables;
+    }
+
+    /**
+     * @param mixed       $table
+     * @param string|null $alias
+     *
+     * @return AbstractTable
+     */
+    public function createTable($table, $alias = null)
+    {
+        $table = $this->facade->createTable($this, $table);
+
+        if ($alias) {
+            $table->setAlias($alias);
+        }
+
+        return $table;
     }
 
     /**
@@ -130,5 +141,23 @@ abstract class AbstractBuilder implements BuilderInterface
     public function buildQuery()
     {
         return new Query($this->buildSQL(), $this->parameterCollection->toArray());
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function buildSQL()
+    {
+        return $this->facade->buildSQL($this);
+    }
+
+    /**
+     * @param array $parameters
+     *
+     * @return StatementInterface
+     */
+    public function buildStatement(array $parameters = [])
+    {
+        return $this->facade->buildStatement($this, $parameters);
     }
 }

@@ -20,8 +20,7 @@ class SelectBuilder extends AbstractBuilder implements
     Clause\LimitClauseInterface,
     Clause\OrderByClauseInterface,
     Clause\WhereClauseInterface,
-    Component\JoinComponentInterface,
-    Component\TableComponentInterface
+    Component\JoinComponentInterface
 {
     use Clause\GroupByClauseTrait;
     use Clause\HavingClauseTrait;
@@ -29,7 +28,6 @@ class SelectBuilder extends AbstractBuilder implements
     use Clause\OrderByClauseTrait;
     use Clause\WhereClauseTrait;
     use Component\JoinComponentTrait;
-    use Component\TableComponentTrait;
     use Component\FromComponentTrait;
 
     /**

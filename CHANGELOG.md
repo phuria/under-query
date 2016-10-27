@@ -9,10 +9,16 @@ Unreleased
 
 ### Added
 + StatementInterface and PDO implementation
++ QueryBuilderFacade as abstraction between QueryBuilder 
+and other library components
 
 ### Changed
 + now Query contains only SQL and parameters
 + ConnectionInterface no longer be responsible for fetching data
++ prefix for service's names
+
+### Removed
++ TableComponentTrait (logic moved to AbstractQueryBuilder)
 
 0.5.0 [2016-10-26]
 -----------------
