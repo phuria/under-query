@@ -37,4 +37,15 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $query = new Query('');
         static::assertEmpty($query->getParameters()->toArray());
     }
+
+    /**
+     * @test
+     * @covers \Phuria\UnderQuery\Query\Query
+     */
+    public function itShouldSetParameter()
+    {
+        $query = new Query('');
+        $query->setParameter('foo', 'boo');
+        static::assertSame('boo', $query->getParameters()->getParameter('foo')->getValue());
+    }
 }

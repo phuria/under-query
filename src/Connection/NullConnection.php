@@ -11,6 +11,8 @@
 
 namespace Phuria\UnderQuery\Connection;
 
+use Phuria\UnderQuery\Statement\NullStatement;
+
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  * @codeCoverageIgnore
@@ -22,7 +24,7 @@ class NullConnection implements ConnectionInterface
      */
     public function prepareStatement($SQL, $parameters = [])
     {
-        return null;
+        return new NullStatement();
     }
 
     /**

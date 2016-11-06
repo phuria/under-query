@@ -11,6 +11,7 @@ Unreleased
 + StatementInterface and PDO implementation
 + QueryBuilderFacade as abstraction between QueryBuilder 
 and other library components
++ NullStatement for NullConnection
 
 ### Changed
 + now Query contains only SQL and parameters

@@ -28,6 +28,8 @@ interface QueryParameterInterface
 
     /**
      * @param mixed $value
+     *
+     * @return QueryParameterInterface
      */
     public function setValue($value);
 }

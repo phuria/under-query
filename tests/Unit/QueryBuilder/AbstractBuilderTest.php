@@ -15,6 +15,7 @@ use Phuria\UnderQuery\Parameter\ParameterCollectionInterface;
 use Phuria\UnderQuery\Query\Query;
 use Phuria\UnderQuery\QueryCompiler\QueryCompilerInterface;
 use Phuria\UnderQuery\Reference\ReferenceCollectionInterface;
+use Phuria\UnderQuery\Statement\StatementInterface;
 use Phuria\UnderQuery\TableFactory\TableFactoryInterface;
 use Phuria\UnderQuery\Tests\TestCase\UnderQueryTrait;
 
@@ -114,5 +115,16 @@ class AbstractBuilderTest extends \PHPUnit_Framework_TestCase
 
         static::assertCount(2, $qb->getRootTables());
         static::assertSame('a', $table->getAlias());
+    }
+
+    /**
+     * @test
+     * @covers \Phuria\UnderQuery\QueryBuilder\AbstractBuilder
+     */
+    public function itShouldBuildStatement()
+    {
+        $qb = static::underQuery()->createSelect();
+
+        static::assertInstanceOf(StatementInterface::class, $qb->buildStatement());
     }
 }

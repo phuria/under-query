@@ -152,12 +152,10 @@ abstract class AbstractBuilder implements BuilderInterface
     }
 
     /**
-     * @param mixed|null $connectionHint
-     *
      * @return StatementInterface
      */
-    public function buildStatement($connectionHint = null)
+    public function buildStatement()
     {
-        return $this->facade->buildStatement($this->buildSQL(), $this->getParameters()->toArray(), $connectionHint);
+        return $this->facade->buildStatement($this->buildSQL(), $this->getParameters()->toArray());
     }
 }

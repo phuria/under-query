@@ -35,11 +35,13 @@ class QueryParameter implements QueryParameterInterface
     }
 
     /**
-     * @param mixed $value
+     * @inheritdoc
      */
     public function setValue($value)
     {
         $this->value = $value;
+
+        return $this;
     }
 
     /**

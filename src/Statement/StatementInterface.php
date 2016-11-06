@@ -24,7 +24,7 @@ interface StatementInterface
     public function execute();
 
     /**
-     * @return int
+     * @return int|null
      */
     public function rowCount();
 
