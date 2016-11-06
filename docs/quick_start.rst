@@ -6,11 +6,11 @@ Installation
 
 .. code-block:: bash
 
-    composer require phuria/sql-builder
+    composer require phuria/under-query
 
 Entry point
 -----------
 
 .. code-block:: php
 
-    $phuriaSQL = new \Phuria\SQLBuilder\PhuriaSQLBuilder();
+    $uq = new \Phuria\UnderQuery\UnderQuery();
