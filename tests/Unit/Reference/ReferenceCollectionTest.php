@@ -40,6 +40,12 @@ class ReferenceCollectionTest extends \PHPUnit_Framework_TestCase
         $ref = $collection->createReference('test');
 
         static::assertTrue(is_scalar($ref));
-        static::assertSame('test', $collection->toArray()[$ref]);
+        static::assertSame([$ref => 'test'], $collection->toArray());
+
+        $ref2 = $collection->createReference('test2');
+
+        static::assertTrue(is_scalar($ref2));
+        static::assertSame([$ref => 'test', $ref2 => 'test2'], $collection->toArray());
+        static::assertNotSame($ref, $ref2);
     }
 }
