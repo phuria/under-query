@@ -13,11 +13,11 @@ namespace Phuria\UnderQuery;
 
 use Interop\Container\ContainerInterface;
 use Phuria\UnderQuery\Connection\ConnectionInterface;
-use Phuria\UnderQuery\Connection\ConnectionManagerInterface;
 use Phuria\UnderQuery\DependencyInjection\ContainerFactory;
 use Phuria\UnderQuery\QueryBuilder\DeleteBuilder;
 use Phuria\UnderQuery\QueryBuilder\InsertBuilder;
 use Phuria\UnderQuery\QueryBuilder\InsertSelectBuilder;
+use Phuria\UnderQuery\QueryBuilder\QueryBuilderFacade;
 use Phuria\UnderQuery\QueryBuilder\SelectBuilder;
 use Phuria\UnderQuery\QueryBuilder\UpdateBuilder;
 use Phuria\UnderQuery\QueryCompiler\QueryCompilerInterface;
@@ -33,11 +33,13 @@ class UnderQuery
     private $container;
 
     /**
-     * @param ContainerInterface|null $container
+     * @param ConnectionInterface|null $connection
+     * @param ContainerInterface|null  $container
      */
-    public function __construct(ContainerInterface $container = null)
+    public function __construct(ConnectionInterface $connection = null, ContainerInterface $container = null)
     {
         $this->container = $container ?: (new ContainerFactory())->create();
+        $this->connection = $connection;
     }
 
     /**
@@ -49,30 +51,17 @@ class UnderQuery
     }
 
     /**
-     * @param ConnectionInterface $connection
-     * @param string              $name
-     */
-    public function registerConnection(ConnectionInterface $connection, $name = 'default')
-    {
-        $this->getConnectionManager()->registerConnection($connection, $name);
-    }
-
-    /**
-     * @return ConnectionManagerInterface
-     */
-    public function getConnectionManager()
-    {
-        return $this->container->get('phuria.under_query.connection_manager');
-    }
-
-    /**
      * @param string $class
      *
      * @return QueryCompilerInterface
      */
     private function createQueryBuilder($class)
     {
-        return new $class($this->container->get('phuria.under_query.query_builder_facade'));
+        return new $class(new QueryBuilderFacade(
+            $this->getContainer()->get('phuria.under_query.table_factory'),
+            $this->getContainer()->get('phuria.under_query.query_compiler'),
+            $this->connection
+        ));
     }
 
     /**

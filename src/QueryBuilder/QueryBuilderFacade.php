@@ -11,7 +11,7 @@
 
 namespace Phuria\UnderQuery\QueryBuilder;
 
-use Phuria\UnderQuery\Connection\ConnectionManagerInterface;
+use Phuria\UnderQuery\Connection\ConnectionInterface;
 use Phuria\UnderQuery\QueryCompiler\QueryCompilerInterface;
 use Phuria\UnderQuery\Statement\StatementInterface;
 use Phuria\UnderQuery\Table\AbstractTable;
@@ -33,23 +33,23 @@ class QueryBuilderFacade
     private $queryCompiler;
 
     /**
-     * @var ConnectionManagerInterface
+     * @var ConnectionInterface
      */
-    private $connectionManager;
+    private $connection;
 
     /**
-     * @param TableFactoryInterface      $tableFactory
-     * @param QueryCompilerInterface     $queryCompiler
-     * @param ConnectionManagerInterface $connection
+     * @param TableFactoryInterface    $tableFactory
+     * @param QueryCompilerInterface   $queryCompiler
+     * @param ConnectionInterface|null $connection
      */
     public function __construct(
-        TableFactoryInterface      $tableFactory,
-        QueryCompilerInterface     $queryCompiler,
-        ConnectionManagerInterface $connection
+        TableFactoryInterface  $tableFactory,
+        QueryCompilerInterface $queryCompiler,
+        ConnectionInterface    $connection = null
     ) {
         $this->tableFactory = $tableFactory;
         $this->queryCompiler = $queryCompiler;
-        $this->connectionManager = $connection;
+        $this->connection = $connection;
     }
 
     /**
@@ -65,13 +65,12 @@ class QueryBuilderFacade
     /**
      * @param string $compiledSQL
      * @param array  $parameters
-     * @param mixed  $connectionHint
      *
      * @return StatementInterface
      */
-    public function buildStatement($compiledSQL, array $parameters, $connectionHint)
+    public function buildStatement($compiledSQL, array $parameters)
     {
-        return $this->connectionManager->prepareStatement($compiledSQL, $parameters, $connectionHint);
+        return $this->connection->prepareStatement($compiledSQL, $parameters);
     }
 
     /**

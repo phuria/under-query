@@ -46,23 +46,7 @@ class PhuriaSQLBuilderTest extends \PHPUnit_Framework_TestCase
     public function itReturnGivenContainer()
     {
         $container = $this->prophesize(ContainerInterface::class)->reveal();
-        $phuriaBuilder = new UnderQuery($container);
+        $phuriaBuilder = new UnderQuery(null, $container);
         static::assertSame($container, $phuriaBuilder->getContainer());
-    }
-
-    /**
-     * @test
-     * @covers \Phuria\UnderQuery\UnderQuery
-     */
-    public function itRegisterConnection()
-    {
-        $phuriaBuilder = new UnderQuery();
-        $connection = $this->prophesize(ConnectionInterface::class)->reveal();
-        $phuriaBuilder->registerConnection($connection);
-
-        $registeredConnection = $phuriaBuilder->getContainer()
-            ->get('phuria.under_query.connection_manager')->getConnection();
-
-        static::assertSame($connection, $registeredConnection);
     }
 }

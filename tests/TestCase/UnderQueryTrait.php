@@ -24,8 +24,8 @@ trait UnderQueryTrait
      */
     protected static function underQuery()
     {
-        $phuriaSQL = new UnderQuery();
-        $phuriaSQL->registerConnection(new NullConnection(), 'default');
+        $connection = new NullConnection();
+        $phuriaSQL = new UnderQuery($connection);
 
         return $phuriaSQL;
     }
