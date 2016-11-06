@@ -11,6 +11,8 @@
 
 namespace Phuria\UnderQuery\Statement;
 
+use Phuria\UnderQuery\Parameter\QueryParameterInterface;
+
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
@@ -25,6 +27,29 @@ interface StatementInterface
      * @return int
      */
     public function rowCount();
+
+    /**
+     * @param QueryParameterInterface $parameter
+     *
+     * @return StatementInterface
+     */
+    public function bindParameter(QueryParameterInterface $parameter);
+
+    /**
+     * @param QueryParameterInterface[] $parameters
+     *
+     * @return StatementInterface
+     */
+    public function bindParameters($parameters);
+
+    /**
+     * @param $name
+     * @param $value
+     *
+     * @return StatementInterface
+     */
+    public function bindValue($name, $value);
+
 
     /*
     public function fetch ($fetch_style = null, $cursor_orientation = PDO::FETCH_ORI_NEXT, $cursor_offset = 0) {}

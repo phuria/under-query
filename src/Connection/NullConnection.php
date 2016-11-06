@@ -20,6 +20,14 @@ class NullConnection implements ConnectionInterface
     /**
      * @inheritdoc
      */
+    public function prepareStatement($SQL, $parameters = [])
+    {
+        return null;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function fetchScalar($SQL, array $parameters = [])
     {
         return null;

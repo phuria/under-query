@@ -12,7 +12,6 @@
 namespace Phuria\UnderQuery\Tests\Unit\Connection;
 
 use Phuria\UnderQuery\Connection\PDOConnection;
-use Phuria\UnderQuery\Parameter\QueryParameter;
 use Phuria\UnderQuery\Statement\StatementInterface;
 
 /**
@@ -32,6 +31,6 @@ class PDOConnectionTest extends \PHPUnit_Framework_TestCase
         $pdo = $pdo->reveal();
 
         $connection = new PDOConnection($pdo);
-        static::assertInstanceOf(StatementInterface::class, $connection->prepareStatement('test'));
+        static::assertInstanceOf(StatementInterface::class, $connection->prepareStatement('test', []));
     }
 }

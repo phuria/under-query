@@ -11,9 +11,9 @@
 
 namespace Phuria\UnderQuery\QueryBuilder;
 
-use Phuria\UnderQuery\Connection\ConnectionInterface;
 use Phuria\UnderQuery\Connection\ConnectionManagerInterface;
 use Phuria\UnderQuery\QueryCompiler\QueryCompilerInterface;
+use Phuria\UnderQuery\Statement\StatementInterface;
 use Phuria\UnderQuery\Table\AbstractTable;
 use Phuria\UnderQuery\TableFactory\TableFactoryInterface;
 
@@ -63,12 +63,15 @@ class QueryBuilderFacade
     }
 
     /**
-     * @param mixed $builder
-     * @param array $parameters
+     * @param string $compiledSQL
+     * @param array  $parameters
+     * @param mixed  $connectionHint
+     *
+     * @return StatementInterface
      */
-    public function buildStatement($builder, array $parameters = [])
+    public function buildStatement($compiledSQL, array $parameters, $connectionHint)
     {
-
+        return $this->connectionManager->prepareStatement($compiledSQL, $parameters, $connectionHint);
     }
 
     /**

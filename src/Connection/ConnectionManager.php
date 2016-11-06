@@ -18,6 +18,8 @@ use Phuria\UnderQuery\Exception\ConnectionException;
  */
 class ConnectionManager implements ConnectionManagerInterface
 {
+    const DEFAULT_CONNECTION_NAME = 'default';
+
     /**
      * @var array
      */
@@ -26,7 +28,7 @@ class ConnectionManager implements ConnectionManagerInterface
     /**
      * @inheritdoc
      */
-    public function registerConnection(ConnectionInterface $connection, $name = 'default')
+    public function registerConnection(ConnectionInterface $connection, $name = self::DEFAULT_CONNECTION_NAME)
     {
         $this->connections[$name] = $connection;
     }
@@ -42,12 +44,26 @@ class ConnectionManager implements ConnectionManagerInterface
     /**
      * @inheritdoc
      */
-    public function getConnection($name = 'default')
+    public function getConnection($name = self::DEFAULT_CONNECTION_NAME)
     {
         if (false === $this->hasConnection($name)) {
             throw ConnectionException::notRegistered($name);
         }
 
         return $this->connections[$name];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function prepareStatement(
+        $compiledSQL,
+        array $parameters = [],
+        $connectionHint = self::DEFAULT_CONNECTION_NAME
+    ) {
+        $connection = $this->getConnection($connectionHint);
+        $preparedStatement = $connection->prepareStatement($compiledSQL, $parameters);
+
+        return $preparedStatement;
     }
 }

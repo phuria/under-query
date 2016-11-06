@@ -12,6 +12,7 @@
 namespace Phuria\UnderQuery\Connection;
 
 use Phuria\UnderQuery\Exception\ConnectionException;
+use Phuria\UnderQuery\Statement\StatementInterface;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -24,7 +25,7 @@ interface ConnectionManagerInterface
      *
      * @return void
      */
-    public function registerConnection(ConnectionInterface $connection, $name = 'default');
+    public function registerConnection(ConnectionInterface $connection, $name);
 
     /**
      * @param string $name
@@ -39,5 +40,14 @@ interface ConnectionManagerInterface
      * @return ConnectionInterface
      * @throws ConnectionException
      */
-    public function getConnection($name = 'default');
+    public function getConnection($name);
+
+    /**
+     * @param string $compiledSQL
+     * @param array  $parameters
+     * @param mixed  $connectionHint
+     *
+     * @return StatementInterface
+     */
+    public function prepareStatement($compiledSQL, array $parameters, $connectionHint);
 }

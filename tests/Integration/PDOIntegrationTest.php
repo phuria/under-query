@@ -29,7 +29,7 @@ class PDOIntegrationTest extends DatabaseTestCase
         $connection = $this->createQueryConnection();
         $sql = 'SELECT * FROM user WHERE id=1';
 
-        $stmt = $connection->prepareStatement($sql);
+        $stmt = $connection->prepareStatement($sql, []);
         $stmt->execute();
 
         static::assertSame(1, $stmt->rowCount());

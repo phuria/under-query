@@ -11,10 +11,19 @@
 
 namespace Phuria\UnderQuery\Connection;
 
+use Phuria\UnderQuery\Parameter\QueryParameterInterface;
+use Phuria\UnderQuery\Statement\StatementInterface;
+
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
 interface ConnectionInterface
 {
-
+    /**
+     * @param string                    $SQL
+     * @param QueryParameterInterface[] $parameters
+     *
+     * @return StatementInterface
+     */
+    public function prepareStatement($SQL, $parameters = []);
 }

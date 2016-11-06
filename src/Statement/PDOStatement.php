@@ -11,6 +11,8 @@
 
 namespace Phuria\UnderQuery\Statement;
 
+use Phuria\UnderQuery\Parameter\QueryParameterInterface;
+
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
@@ -35,6 +37,40 @@ class PDOStatement implements StatementInterface
     public function getWrappedStatement()
     {
         return $this->wrappedStatement;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function bindParameter(QueryParameterInterface $parameter)
+    {
+        $this->bindValue($parameter->getName(), $parameter->getValue());
+
+        return $this;
+    }
+
+    /**
+     * @param QueryParameterInterface[] $parameters
+     *
+     * @return $this
+     */
+    public function bindParameters($parameters)
+    {
+        foreach ($parameters as $parameter) {
+            $this->bindParameter($parameter);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function bindValue($name, $value)
+    {
+        $this->wrappedStatement->bindValue($name, $value);
+
+        return $this;
     }
 
     /**

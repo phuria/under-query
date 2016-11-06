@@ -42,10 +42,15 @@ class PDOConnection implements ConnectionInterface
     /**
      * @inheritdoc
      */
-    public function prepareStatement($SQL)
+    public function prepareStatement($SQL, $parameters = [])
     {
         $stmt = $this->wrappedConnection->prepare($SQL);
+        $wrappedStatement = new PDOStatement($stmt);
 
-        return new PDOStatement($stmt);
+        if ($parameters) {
+            $wrappedStatement->bindParameters($parameters);
+        }
+
+        return $wrappedStatement;
     }
 }
