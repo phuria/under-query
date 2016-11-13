@@ -11,18 +11,20 @@
 
 namespace Phuria\UnderQuery\Query;
 
+use Phuria\UnderQuery\Connection\ConnectionInterface;
 use Phuria\UnderQuery\Parameter\ParameterCollection;
 use Phuria\UnderQuery\Parameter\ParameterCollectionInterface;
+use Phuria\UnderQuery\Statement\StatementInterface;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-class Query
+class Query implements QueryInterface
 {
     /**
      * @var string
      */
-    private $sql;
+    private $compiledSQL;
 
     /**
      * @var ParameterCollectionInterface
@@ -30,13 +32,20 @@ class Query
     private $parameterCollection;
 
     /**
-     * @param string $sql
-     * @param array  $parameters
+     * @var ConnectionInterface|null
      */
-    public function __construct($sql, array $parameters = [])
+    private $connection;
+
+    /**
+     * @param string                   $compiledSQL
+     * @param array                    $parameters
+     * @param ConnectionInterface|null $connection
+     */
+    public function __construct($compiledSQL, array $parameters = [], ConnectionInterface $connection = null)
     {
-        $this->sql = $sql;
+        $this->compiledSQL = $compiledSQL;
         $this->parameterCollection = new ParameterCollection($parameters);
+        $this->connection = $connection;
     }
 
     /**
@@ -44,7 +53,7 @@ class Query
      */
     public function getSQL()
     {
-        return $this->sql;
+        return $this->compiledSQL;
     }
 
     /**
@@ -63,8 +72,16 @@ class Query
      */
     public function setParameter($name, $value)
     {
-        $this->getParameters()->getParameter($name)->setValue($value);
+        $this->getParameters()->setValue($name, $value);
 
         return $this;
+    }
+
+    /**
+     * @return StatementInterface
+     */
+    public function prepareStatement()
+    {
+        return $this->connection->prepareStatement($this->getSQL(), $this->getParameters()->toArray());
     }
 }

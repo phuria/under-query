@@ -33,7 +33,7 @@ class QueryBuilderFacade
     private $queryCompiler;
 
     /**
-     * @var ConnectionInterface
+     * @var ConnectionInterface|null
      */
     private $connection;
 
@@ -63,17 +63,6 @@ class QueryBuilderFacade
     }
 
     /**
-     * @param string $compiledSQL
-     * @param array  $parameters
-     *
-     * @return StatementInterface
-     */
-    public function buildStatement($compiledSQL, array $parameters)
-    {
-        return $this->connection->prepareStatement($compiledSQL, $parameters);
-    }
-
-    /**
      * @param mixed $builder
      * @param mixed $table
      *
@@ -82,5 +71,13 @@ class QueryBuilderFacade
     public function createTable($builder, $table)
     {
         return $this->tableFactory->createNewTable($table, $builder);
+    }
+
+    /**
+     * @return ConnectionInterface|null
+     */
+    public function getConnection()
+    {
+        return $this->connection;
     }
 }

@@ -24,6 +24,14 @@ interface ParameterCollectionInterface
     public function getParameter($name);
 
     /**
+     * @param string $parameterName
+     * @param mixed  $value
+     *
+     * @return $this
+     */
+    public function setValue($parameterName, $value);
+
+    /**
      * @return QueryParameterInterface[]
      */
     public function toArray();

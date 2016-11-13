@@ -13,10 +13,8 @@ namespace Phuria\UnderQuery\Tests\Unit\QueryBuilder;
 
 use Phuria\UnderQuery\Parameter\ParameterCollectionInterface;
 use Phuria\UnderQuery\Query\Query;
-use Phuria\UnderQuery\QueryCompiler\QueryCompilerInterface;
 use Phuria\UnderQuery\Reference\ReferenceCollectionInterface;
 use Phuria\UnderQuery\Statement\StatementInterface;
-use Phuria\UnderQuery\TableFactory\TableFactoryInterface;
 use Phuria\UnderQuery\Tests\TestCase\UnderQueryTrait;
 
 /**
@@ -125,6 +123,7 @@ class AbstractBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $qb = static::underQuery()->createSelect();
 
-        static::assertInstanceOf(StatementInterface::class, $qb->buildStatement());
+        static::assertInstanceOf(StatementInterface::class, $qb->buildPreparedStatement());
+        static::assertInstanceOf(StatementInterface::class, $qb->buildExecutedStatement());
     }
 }

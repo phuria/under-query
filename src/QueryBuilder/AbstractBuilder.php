@@ -140,7 +140,11 @@ abstract class AbstractBuilder implements BuilderInterface
      */
     public function buildQuery()
     {
-        return new Query($this->buildSQL(), $this->parameterCollection->toArray());
+        return new Query(
+            $this->buildSQL(),
+            $this->parameterCollection->toArray(),
+            $this->facade->getConnection()
+        );
     }
 
     /**
@@ -154,8 +158,16 @@ abstract class AbstractBuilder implements BuilderInterface
     /**
      * @return StatementInterface
      */
-    public function buildStatement()
+    public function buildPreparedStatement()
     {
-        return $this->facade->buildStatement($this->buildSQL(), $this->getParameters()->toArray());
+        return $this->buildQuery()->prepareStatement();
+    }
+
+    /**
+     * @return StatementInterface
+     */
+    public function buildExecutedStatement()
+    {
+        return $this->buildQuery()->prepareStatement()->execute();
     }
 }

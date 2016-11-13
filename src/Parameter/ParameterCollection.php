@@ -67,4 +67,14 @@ class ParameterCollection implements ParameterCollectionInterface
 
         return $this->parameters[$name];
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function setValue($parameterName, $value)
+    {
+        $this->getParameter($parameterName)->setValue($value);
+
+        return $this;
+    }
 }
