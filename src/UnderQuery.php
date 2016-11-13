@@ -11,8 +11,8 @@
 
 namespace Phuria\UnderQuery;
 
+use Doctrine\DBAL\Driver\Connection as ConnectionInterface;
 use Interop\Container\ContainerInterface;
-use Phuria\UnderQuery\Connection\ConnectionInterface;
 use Phuria\UnderQuery\DependencyInjection\ContainerFactory;
 use Phuria\UnderQuery\QueryBuilder\DeleteBuilder;
 use Phuria\UnderQuery\QueryBuilder\InsertBuilder;
@@ -56,7 +56,7 @@ class UnderQuery
     }
 
     /**
-     * @return null|ConnectionInterface
+     * @return ConnectionInterface|null
      */
     public function getConnection()
     {

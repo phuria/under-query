@@ -11,10 +11,11 @@
 
 namespace Phuria\UnderQuery\Query;
 
-use Phuria\UnderQuery\Connection\ConnectionInterface;
+use Doctrine\DBAL\Driver\Connection as ConnectionInterface;
+use Doctrine\DBAL\Driver\Statement as StatementInterface;
+use Doctrine\DBAL\Driver\ResultStatement as ResultStatementInterface;
 use Phuria\UnderQuery\Parameter\ParameterCollection;
 use Phuria\UnderQuery\Parameter\ParameterCollectionInterface;
-use Phuria\UnderQuery\Statement\StatementInterface;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -65,6 +66,14 @@ class Query implements QueryInterface
     }
 
     /**
+     * @return ConnectionInterface|null
+     */
+    public function getConnection()
+    {
+        return $this->connection;
+    }
+
+    /**
      * @param int|string $name
      * @param mixed      $value
      *
@@ -82,6 +91,23 @@ class Query implements QueryInterface
      */
     public function prepareStatement()
     {
-        return $this->connection->prepareStatement($this->getSQL(), $this->getParameters()->toArray());
+        $stmt = $this->connection->prepare($this->getSQL());
+
+        foreach ($this->getParameters()->toArray() as $parameter) {
+            $stmt->bindValue($parameter->getName(), $parameter->getValue());
+        }
+
+        return $stmt;
+    }
+
+    /**
+     * @return ResultStatementInterface
+     */
+    public function getResult()
+    {
+        $stmt = $this->prepareStatement();
+        $stmt->execute();
+
+        return $stmt;
     }
 }

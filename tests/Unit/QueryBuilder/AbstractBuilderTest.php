@@ -114,16 +114,4 @@ class AbstractBuilderTest extends \PHPUnit_Framework_TestCase
         static::assertCount(2, $qb->getRootTables());
         static::assertSame('a', $table->getAlias());
     }
-
-    /**
-     * @test
-     * @covers \Phuria\UnderQuery\QueryBuilder\AbstractBuilder
-     */
-    public function itShouldBuildStatement()
-    {
-        $qb = static::underQuery()->createSelect();
-
-        static::assertInstanceOf(StatementInterface::class, $qb->buildPreparedStatement());
-        static::assertInstanceOf(StatementInterface::class, $qb->buildExecutedStatement());
-    }
 }

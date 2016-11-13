@@ -11,7 +11,6 @@
 
 namespace Phuria\UnderQuery\Tests\TestCase;
 
-use Phuria\UnderQuery\Connection\NullConnection;
 use Phuria\UnderQuery\UnderQuery;
 
 /**
@@ -24,9 +23,6 @@ trait UnderQueryTrait
      */
     protected static function underQuery()
     {
-        $connection = new NullConnection();
-        $phuriaSQL = new UnderQuery($connection);
-
-        return $phuriaSQL;
+        return new UnderQuery();
     }
 }

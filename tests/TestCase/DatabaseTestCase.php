@@ -11,7 +11,8 @@
 
 namespace Phuria\UnderQuery\Tests\TestCase;
 
-use Phuria\UnderQuery\Connection\PDOConnection;
+use Doctrine\DBAL\Driver\Connection as ConnectionInterface;
+use Doctrine\DBAL\DriverManager;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -34,30 +35,36 @@ abstract class DatabaseTestCase extends \PHPUnit_Extensions_Database_TestCase
     protected function getConnection()
     {
         if (null === $this->connection) {
-            $this->connection = $this->createDefaultDBConnection(static::getPDOConnection(), $GLOBALS['DB_DBNAME']);
+            $this->connection = $this->createDefaultDBConnection(
+                $this->createPDOConnection(),
+                $GLOBALS['DB_DBNAME']
+            );
         }
 
         return $this->connection;
     }
 
-    /**
-     * @return \PDO
-     */
-    protected static function getPDOConnection()
+    protected function createPDOConnection()
     {
-        if (null === static::$pdo) {
-            static::$pdo = new \PDO($GLOBALS['DB_DSN'], $GLOBALS['DB_USER'], $GLOBALS['DB_PASSWORD']);
-        }
-
-        return static::$pdo;
+        return new \PDO(
+            "{$GLOBALS['DB_TYPE']}:dbname={$GLOBALS['DB_DBNAME']};host={$GLOBALS['DB_HOST']}",
+            $GLOBALS['DB_USER'],
+            $GLOBALS['DB_PASSWORD']
+        );
     }
 
     /**
-     * @return PDOConnection
+     * @return ConnectionInterface
      */
-    protected function createQueryConnection()
+    protected function createDoctrineConnection()
     {
-        return new PDOConnection($this->getPDOConnection());
+        return DriverManager::getConnection([
+            'dbname'   => $GLOBALS['DB_DBNAME'],
+            'user'     => $GLOBALS['DB_USER'],
+            'password' => $GLOBALS['DB_PASSWORD'],
+            'host'     => $GLOBALS['DB_HOST'],
+            'driver'   => $GLOBALS['DB_DRIVER']
+        ]);
     }
 
     /**
@@ -66,7 +73,7 @@ abstract class DatabaseTestCase extends \PHPUnit_Extensions_Database_TestCase
     public function getDataSet()
     {
         return new \PHPUnit_Extensions_Database_DataSet_YamlDataSet(
-            dirname(__FILE__) . '/../Resources/data_set.yml'
+            __DIR__ . '/../Resources/data_set.yml'
         );
     }
 }

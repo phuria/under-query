@@ -16,7 +16,6 @@ use Phuria\UnderQuery\Parameter\ParameterCollectionInterface;
 use Phuria\UnderQuery\Query\Query;
 use Phuria\UnderQuery\Reference\ReferenceCollection;
 use Phuria\UnderQuery\Reference\ReferenceCollectionInterface;
-use Phuria\UnderQuery\Statement\StatementInterface;
 use Phuria\UnderQuery\Table\AbstractTable;
 
 /**
@@ -153,21 +152,5 @@ abstract class AbstractBuilder implements BuilderInterface
     public function buildSQL()
     {
         return $this->facade->buildSQL($this);
-    }
-
-    /**
-     * @return StatementInterface
-     */
-    public function buildPreparedStatement()
-    {
-        return $this->buildQuery()->prepareStatement();
-    }
-
-    /**
-     * @return StatementInterface
-     */
-    public function buildExecutedStatement()
-    {
-        return $this->buildQuery()->prepareStatement()->execute();
     }
 }

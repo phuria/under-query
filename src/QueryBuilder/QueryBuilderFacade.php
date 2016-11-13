@@ -11,9 +11,8 @@
 
 namespace Phuria\UnderQuery\QueryBuilder;
 
-use Phuria\UnderQuery\Connection\ConnectionInterface;
+use Doctrine\DBAL\Driver\Connection as ConnectionInterface;
 use Phuria\UnderQuery\QueryCompiler\QueryCompilerInterface;
-use Phuria\UnderQuery\Statement\StatementInterface;
 use Phuria\UnderQuery\Table\AbstractTable;
 use Phuria\UnderQuery\TableFactory\TableFactoryInterface;
 

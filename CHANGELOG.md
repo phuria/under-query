@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+Unreleased
+---------
+
+### Added
++ doctrine/dbal package
+
+### Changed
++ PDOStatement::bindParameter() moved to AbstractStatement
+
+### Removed
++ Connection and Statement
+
+
 0.6.1 [2016-11-13]
 -----------------
 
