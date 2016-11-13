@@ -24,6 +24,11 @@ interface StatementInterface
     public function execute();
 
     /**
+     * @return $this
+     */
+    public function closeCursor();
+
+    /**
      * @return int|null
      */
     public function rowCount();
@@ -43,31 +48,48 @@ interface StatementInterface
     public function bindParameters($parameters);
 
     /**
-     * @param $name
-     * @param $value
+     * @param mixed $name
+     * @param mixed $value
      *
      * @return StatementInterface
      */
     public function bindValue($name, $value);
 
+    /**
+     * @param int|null $fetchStyle
+     * @param int      $cursorOrientation
+     * @param int      $cursorOffset
+     *
+     * @return mixed
+     */
+    public function fetch($fetchStyle = null, $cursorOrientation = \PDO::FETCH_ORI_NEXT, $cursorOffset = 0);
 
-    /*
-    public function fetch ($fetch_style = null, $cursor_orientation = PDO::FETCH_ORI_NEXT, $cursor_offset = 0) {}
+    /**
+     * @param int $column
+     *
+     * @return mixed
+     */
+    public function fetchColumn($column = 0);
 
-    public function bindParam ($parameter, &$variable, $data_type = PDO::PARAM_STR, $length = null, $driver_options = null) {}
+    /**
+     * @param int|null $fetchStyle
+     *
+     * @return array
+     */
+    public function fetchAll($fetchStyle = null);
 
-    public function bindValue ($parameter, $value, $data_type = PDO::PARAM_STR) {}
+    /**
+     * @param string $className
+     * @param array  $constructorArguments
+     *
+     * @return mixed
+     */
+    public function fetchObject($className = 'stdClass', $constructorArguments = []);
 
-    public function fetchColumn ($column_number = 0) {}
-
-    public function fetchAll ($fetch_style = null, $fetch_argument = null, array $ctor_args = 'array()') {}
-
-    public function fetchObject ($class_name = "stdClass", array $ctor_args = null) {}
-
-    public function errorCode () {}
-
-    public function nextRowset () {}
-
-    public function closeCursor () {}
-    */
+    /**
+     * @param callable $callback
+     *
+     * @return mixed
+     */
+    public function fetchCallback(callable $callback);
 }

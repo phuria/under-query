@@ -28,9 +28,14 @@ use Phuria\UnderQuery\QueryCompiler\QueryCompilerInterface;
 class UnderQuery
 {
     /**
-     * @var ContainerInterface $container
+     * @var ContainerInterface
      */
     private $container;
+
+    /**
+     * @var ConnectionInterface|null
+     */
+    private $connection;
 
     /**
      * @param ConnectionInterface|null $connection
@@ -48,6 +53,14 @@ class UnderQuery
     public function getContainer()
     {
         return $this->container;
+    }
+
+    /**
+     * @return null|ConnectionInterface
+     */
+    public function getConnection()
+    {
+        return $this->connection;
     }
 
     /**

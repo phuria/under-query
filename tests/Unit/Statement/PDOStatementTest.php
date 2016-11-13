@@ -12,50 +12,25 @@
 namespace Phuria\UnderQuery\Tests\Unit\Statement;
 
 use Phuria\UnderQuery\Statement\PDOStatement;
+use Phuria\UnderQuery\Tests\TestCase\DatabaseTestCase;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-class PDOStatementTest extends \PHPUnit_Framework_TestCase
+class PDOStatementTest extends DatabaseTestCase
 {
     /**
      * @test
      * @covers \Phuria\UnderQuery\Statement\PDOStatement
      */
-    public function itShouldCallExecute()
+    public function itWillBeExecuted()
     {
-        $stmt = $this->prophesize(\PDOStatement::class);
-        $stmt->execute()->willReturn(null);
-
-        $stmt = new PDOStatement($stmt->reveal());
+        $connection = $this->getPDOConnection();
+        $stmt = new PDOStatement($connection->prepare('SELECT 1+1'));
 
         static::assertSame($stmt, $stmt->execute());
-    }
-
-    /**
-     * @test
-     * @covers \Phuria\UnderQuery\Statement\PDOStatement
-     */
-    public function itShouldCallRowCount()
-    {
-        $stmt = $this->prophesize(\PDOStatement::class);
-        $stmt->rowCount()->willReturn(10);
-
-        $stmt = new PDOStatement($stmt->reveal());
-
-        static::assertSame(10, $stmt->rowCount());
-    }
-
-    /**
-     * @test
-     * @covers \Phuria\UnderQuery\Statement\PDOStatement
-     */
-    public function itShouldReturnWrappedStmt()
-    {
-        $pdoStmt = $this->prophesize(\PDOStatement::class)->reveal();
-
-        $stmt = new PDOStatement($pdoStmt);
-
-        static::assertSame($pdoStmt, $stmt->getWrappedStatement());
+        static::assertSame('2', $stmt->fetchColumn());
+        static::assertSame(1, $stmt->rowCount());
+        static::assertSame($stmt, $stmt->closeCursor());
     }
 }

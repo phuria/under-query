@@ -16,7 +16,7 @@ use Phuria\UnderQuery\Parameter\QueryParameterInterface;
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-class PDOStatement implements StatementInterface
+class PDOStatement extends AbstractStatement
 {
     /**
      * @var \PDOStatement
@@ -50,20 +50,6 @@ class PDOStatement implements StatementInterface
     }
 
     /**
-     * @param QueryParameterInterface[] $parameters
-     *
-     * @return $this
-     */
-    public function bindParameters($parameters)
-    {
-        foreach ($parameters as $parameter) {
-            $this->bindParameter($parameter);
-        }
-
-        return $this;
-    }
-
-    /**
      * @inheritdoc
      */
     public function bindValue($name, $value)
@@ -89,5 +75,55 @@ class PDOStatement implements StatementInterface
     public function rowCount()
     {
         return $this->wrappedStatement->rowCount();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function closeCursor()
+    {
+        $this->wrappedStatement->closeCursor();
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function fetch($fetchStyle = null, $cursorOrientation = \PDO::FETCH_ORI_NEXT, $cursorOffset = 0)
+    {
+        return $this->wrappedStatement->fetch($fetchStyle, $cursorOrientation, $cursorOffset);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function fetchColumn($column = 0)
+    {
+        return $this->wrappedStatement->fetchColumn($column);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function fetchAll($fetchStyle = null)
+    {
+        return $this->fetchAll($fetchStyle);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function fetchObject($className = 'stdClass', $constructorArguments = [])
+    {
+        return $this->fetchObject($className, $constructorArguments);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function fetchCallback(callable $callback)
+    {
+        return $this->wrappedStatement->fetchAll(\PDO::FETCH_FUNC, $callback);
     }
 }
