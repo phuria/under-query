@@ -106,13 +106,17 @@ abstract class AbstractBuilder implements BuilderInterface
      */
     public function createTable($table, $alias = null)
     {
-        $table = $this->facade->createTable($this, $table);
+        $tableObject = $this->facade->createTable($this, $table);
 
         if ($alias) {
-            $table->setAlias($alias);
+            $tableObject->setAlias($alias);
         }
 
-        return $table;
+        if (is_callable($table)) {
+            $table($tableObject);
+        }
+
+        return $tableObject;
     }
 
     /**
