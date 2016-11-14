@@ -12,8 +12,6 @@
 namespace Phuria\UnderQuery\Query;
 
 use Doctrine\DBAL\Driver\Connection as ConnectionInterface;
-use Doctrine\DBAL\Driver\Statement as StatementInterface;
-use Doctrine\DBAL\Driver\ResultStatement as ResultStatementInterface;
 use Phuria\UnderQuery\Parameter\ParameterCollection;
 use Phuria\UnderQuery\Parameter\ParameterCollectionInterface;
 
@@ -87,9 +85,9 @@ class Query implements QueryInterface
     }
 
     /**
-     * @return StatementInterface
+     * @inheritdoc
      */
-    public function prepareStatement()
+    public function prepare()
     {
         $stmt = $this->connection->prepare($this->getSQL());
 
@@ -101,11 +99,11 @@ class Query implements QueryInterface
     }
 
     /**
-     * @return ResultStatementInterface
+     * @inheritdoc
      */
-    public function getResult()
+    public function execute()
     {
-        $stmt = $this->prepareStatement();
+        $stmt = $this->prepare();
         $stmt->execute();
 
         return $stmt;

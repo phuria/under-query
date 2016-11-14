@@ -11,7 +11,8 @@
 
 namespace Phuria\UnderQuery\Query;
 
-use Phuria\UnderQuery\Statement\StatementInterface;
+use Doctrine\DBAL\Driver\Statement as StatementInterface;
+use Doctrine\DBAL\Driver\ResultStatement as ResultStatementInterface;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -21,5 +22,10 @@ interface QueryInterface
     /**
      * @return StatementInterface
      */
-    public function prepareStatement();
+    public function prepare();
+
+    /**
+     * @return ResultStatementInterface
+     */
+    public function execute();
 }

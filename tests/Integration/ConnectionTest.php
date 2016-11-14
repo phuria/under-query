@@ -28,6 +28,6 @@ class ConnectionTest extends DatabaseTestCase
         $uq = new UnderQuery($this->createDoctrineConnection());
         $query = $uq->createSelect()->addSelect('2+2')->buildQuery();
 
-        static::assertSame('4', $query->getResult()->fetchColumn());
+        static::assertSame('4', $query->execute()->fetchColumn());
     }
 }
