@@ -47,8 +47,8 @@ trait JoinComponentTrait
     {
         $this->joinTables[] = $table = $this->createTable($table, $alias);
 
-        $table->setJoinType($joinType);
-        $table->joinOn($joinOn);
+        null !== $joinType && $table->setJoinType($joinType);
+        null !== $joinOn && $table->joinOn($joinOn);
 
         return $table;
     }
