@@ -4,12 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-Unreleased
+0.7.2 [2016-11-15]
 -----------------
 
 ### Changed
 + Query::getResult() renamed to Query::execute()
 + Query::prepareStatement() renamed to Query::perpare()
++ fixed overwriting join settings
 
 0.7.1 [2016-11-14]
 -----------------
