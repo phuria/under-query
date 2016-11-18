@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+0.7.3 [2016-11-18]
+----------------
+
+### Added
++ callback in getQueryBuilder, to mark what QueryBuilder we expect
+
 0.7.2 [2016-11-15]
 -----------------
 

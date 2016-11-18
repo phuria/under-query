@@ -131,4 +131,20 @@ class AbstractBuilderTest extends \PHPUnit_Framework_TestCase
             throw new \Exception('called!');
         });
     }
+
+    /**
+     * @test
+     * @covers \Phuria\UnderQuery\QueryBuilder\AbstractBuilder
+     */
+    public function itCallQueryBuilderCallback()
+    {
+        $qb = static::underQuery()->createSelect();
+
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('called!');
+
+        $qb->getQueryBuilder(function () {
+            throw new \Exception('called!');
+        });
+    }
 }

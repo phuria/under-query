@@ -54,10 +54,14 @@ abstract class AbstractBuilder implements BuilderInterface
     }
 
     /**
+     * @param callable $callback
+     *
      * @return BuilderInterface
      */
-    public function getQueryBuilder()
+    public function getQueryBuilder(callable $callback = null)
     {
+        $callback && $callback($this);
+
         return $this;
     }
 
