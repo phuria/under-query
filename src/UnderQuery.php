@@ -12,15 +12,19 @@
 namespace Phuria\UnderQuery;
 
 use Doctrine\DBAL\Driver\Connection as ConnectionInterface;
-use Interop\Container\ContainerInterface;
-use Phuria\UnderQuery\DependencyInjection\ContainerFactory;
 use Phuria\UnderQuery\QueryBuilder\DeleteBuilder;
 use Phuria\UnderQuery\QueryBuilder\InsertBuilder;
 use Phuria\UnderQuery\QueryBuilder\InsertSelectBuilder;
 use Phuria\UnderQuery\QueryBuilder\QueryBuilderFacade;
 use Phuria\UnderQuery\QueryBuilder\SelectBuilder;
 use Phuria\UnderQuery\QueryBuilder\UpdateBuilder;
+use Phuria\UnderQuery\QueryCompiler\ConcreteCompiler\DeleteCompiler;
+use Phuria\UnderQuery\QueryCompiler\ConcreteCompiler\InsertCompiler;
+use Phuria\UnderQuery\QueryCompiler\ConcreteCompiler\SelectCompiler;
+use Phuria\UnderQuery\QueryCompiler\ConcreteCompiler\UpdateCompiler;
+use Phuria\UnderQuery\QueryCompiler\QueryCompiler;
 use Phuria\UnderQuery\QueryCompiler\QueryCompilerInterface;
+use Phuria\UnderQuery\TableFactory\TableFactory;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -28,9 +32,9 @@ use Phuria\UnderQuery\QueryCompiler\QueryCompilerInterface;
 class UnderQuery
 {
     /**
-     * @var ContainerInterface
+     * @var QueryCompiler
      */
-    private $container;
+    private $queryCompiler;
 
     /**
      * @var ConnectionInterface|null
@@ -39,20 +43,18 @@ class UnderQuery
 
     /**
      * @param ConnectionInterface|null $connection
-     * @param ContainerInterface|null  $container
      */
-    public function __construct(ConnectionInterface $connection = null, ContainerInterface $container = null)
+    public function __construct(ConnectionInterface $connection = null)
     {
-        $this->container = $container ?: (new ContainerFactory())->create();
         $this->connection = $connection;
-    }
+        $this->queryCompiler = $this->createQueryCompiler();
+        $this->tableFactory = $this->createTableFactory();
 
-    /**
-     * @return ContainerInterface
-     */
-    public function getContainer()
-    {
-        return $this->container;
+        $this->queryFacade = new QueryBuilderFacade(
+            $this->tableFactory,
+            $this->queryCompiler,
+            $this->connection
+        );
     }
 
     /**
@@ -64,17 +66,37 @@ class UnderQuery
     }
 
     /**
+     * @return QueryCompiler
+     */
+    private function createQueryCompiler()
+    {
+        $queryCompiler = new QueryCompiler();
+        $queryCompiler->addConcreteCompiler(new SelectCompiler());
+        $queryCompiler->addConcreteCompiler(new InsertCompiler());
+        $queryCompiler->addConcreteCompiler(new DeleteCompiler());
+        $queryCompiler->addConcreteCompiler(new UpdateCompiler());
+
+        return $queryCompiler;
+    }
+
+    /**
+     * @return TableFactory
+     */
+    private function createTableFactory()
+    {
+        $tableFactory = new TableFactory();
+
+        return $tableFactory;
+    }
+
+    /**
      * @param string $class
      *
      * @return QueryCompilerInterface
      */
     private function createQueryBuilder($class)
     {
-        return new $class(new QueryBuilderFacade(
-            $this->getContainer()->get('phuria.under_query.table_factory'),
-            $this->getContainer()->get('phuria.under_query.query_compiler'),
-            $this->connection
-        ));
+        return new $class($this->queryFacade);
     }
 
     /**

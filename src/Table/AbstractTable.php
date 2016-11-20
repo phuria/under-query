@@ -64,10 +64,14 @@ abstract class AbstractTable implements TableInterface
     }
 
     /**
+     * @param callable|null $callback
+     *
      * @return BuilderInterface
      */
-    public function getQueryBuilder()
+    public function getQueryBuilder(callable $callback = null)
     {
+        $callback && $callback($this);
+
         return $this->qb;
     }
 

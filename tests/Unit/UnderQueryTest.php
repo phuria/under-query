@@ -23,7 +23,7 @@ use Phuria\UnderQuery\UnderQuery;
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-class PhuriaSQLBuilderTest extends \PHPUnit_Framework_TestCase
+class UnderQueryTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
@@ -37,16 +37,5 @@ class PhuriaSQLBuilderTest extends \PHPUnit_Framework_TestCase
         static::assertInstanceOf(InsertSelectBuilder::class, $phuriaBuilder->createInsertSelect());
         static::assertInstanceOf(DeleteBuilder::class, $phuriaBuilder->createDelete());
         static::assertInstanceOf(UpdateBuilder::class, $phuriaBuilder->createUpdate());
-    }
-
-    /**
-     * @test
-     * @covers \Phuria\UnderQuery\UnderQuery
-     */
-    public function itReturnGivenContainer()
-    {
-        $container = $this->prophesize(ContainerInterface::class)->reveal();
-        $phuriaBuilder = new UnderQuery(null, $container);
-        static::assertSame($container, $phuriaBuilder->getContainer());
     }
 }

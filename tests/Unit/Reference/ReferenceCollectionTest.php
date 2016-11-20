@@ -48,4 +48,19 @@ class ReferenceCollectionTest extends \PHPUnit_Framework_TestCase
         static::assertSame([$ref => 'test', $ref2 => 'test2'], $collection->toArray());
         static::assertNotSame($ref, $ref2);
     }
+
+    /**
+     * @test
+     * @covers \Phuria\UnderQuery\Reference\ReferenceCollection
+     */
+    public function itGenerateValidToken()
+    {
+        $collection = new ReferenceCollection();
+
+        static::assertSame('@[0]', $collection->createReference(''));
+        static::assertSame('@[1]', $collection->createReference(''));
+        static::assertSame('@[2]', $collection->createReference(''));
+
+        static::assertSame(['@[0]', '@[1]', '@[2]'], array_keys($collection->toArray()));
+    }
 }

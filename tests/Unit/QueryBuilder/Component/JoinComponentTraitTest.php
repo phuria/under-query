@@ -50,6 +50,7 @@ class JoinComponentTraitTest extends \PHPUnit_Framework_TestCase
 
         $table = $qb->join('table', 'a');
 
+        static::assertInternalType('string', $table->getTableName());
         static::assertSame('table', $table->getTableName());
         static::assertSame('a', $table->getAlias());
     }

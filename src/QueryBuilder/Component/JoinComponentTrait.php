@@ -12,10 +12,7 @@
 namespace Phuria\UnderQuery\QueryBuilder\Component;
 
 use Phuria\UnderQuery\JoinType;
-use Phuria\UnderQuery\QueryBuilder\BuilderInterface;
 use Phuria\UnderQuery\Table\AbstractTable;
-use Phuria\UnderQuery\Table\TableInterface;
-use Phuria\UnderQuery\TableFactory\TableFactoryInterface;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -43,7 +40,7 @@ trait JoinComponentTrait
      *
      * @return AbstractTable
      */
-    private function doJoin($joinType, $table, $alias = null, $joinOn = null)
+    public function doJoin($joinType, $table, $alias = null, $joinOn = null)
     {
         $this->joinTables[] = $table = $this->createTable($table, $alias);
 

@@ -14,7 +14,6 @@ namespace Phuria\UnderQuery\Tests\Unit\TableFactory;
 use Phuria\UnderQuery\Table\SubQueryTable;
 use Phuria\UnderQuery\Table\UnknownTable;
 use Phuria\UnderQuery\TableFactory\TableFactory;
-use Phuria\UnderQuery\TableRegistry;
 use Phuria\UnderQuery\Tests\Fixtures\ExampleTable;
 use Phuria\UnderQuery\Tests\Fixtures\NullQueryBuilder;
 use Phuria\UnderQuery\Tests\TestCase\UnderQueryTrait;
@@ -32,7 +31,7 @@ class TableFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function itCreateUnknownTable()
     {
-        $factory = new TableFactory(new TableRegistry());
+        $factory = new TableFactory();
         $table = $factory->createNewTable('unknown_table', new NullQueryBuilder());
 
         static::assertInstanceOf(UnknownTable::class, $table);
@@ -44,15 +43,11 @@ class TableFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function itCreateExampleTable()
     {
-        $registry = new TableRegistry();
-        $registry->registerTable(ExampleTable::class, 'example');
-        $factory = new TableFactory($registry);
+        $factory = new TableFactory();
 
-        $table = $factory->createNewTable('example', new NullQueryBuilder());
         $tableByCallback = $factory->createNewTable(function (ExampleTable $table) {}, new NullQueryBuilder());
         $tableByClass = $factory->createNewTable(ExampleTable::class, new NullQueryBuilder());
 
-        static::assertInstanceOf(ExampleTable::class, $table);
         static::assertInstanceOf(ExampleTable::class, $tableByCallback);
         static::assertInstanceOf(ExampleTable::class, $tableByClass);
     }
@@ -63,11 +58,45 @@ class TableFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function itCreateSubQueryTable()
     {
-        $factory = new TableFactory(new TableRegistry());
+        $factory = new TableFactory();
         $qb = new NullQueryBuilder();
 
         $table = $factory->createNewTable($qb, new NullQueryBuilder());
 
         static::assertInstanceOf(SubQueryTable::class, $table);
+    }
+
+    /**
+     * @test
+     * @covers \Phuria\UnderQuery\TableFactory\TableFactory
+     */
+    public function itWillReturnValidTypes()
+    {
+        $factory = new TableFactory();
+
+        $type = $factory->recognizeType(function (ExampleTable $table) { });
+        static::assertSame(TableFactory::TYPE_CLOSURE, $type);
+
+        $type = $factory->recognizeType(ExampleTable::class);
+        static::assertSame(TableFactory::TYPE_CLASS_NAME, $type);
+
+        $type = $factory->recognizeType('example_table_name');
+        static::assertSame(TableFactory::TYPE_TABLE_NAME, $type);
+
+        $type = $factory->recognizeType(new NullQueryBuilder());
+        static::assertSame(TableFactory::TYPE_SUB_QUERY, $type);
+    }
+
+    /**
+     * @test
+     * @covers \Phuria\UnderQuery\TableFactory\TableFactory
+     */
+    public function itExtractClassName()
+    {
+        $recognizer = new TableFactory();
+
+        $class = $recognizer->extractClassName(function (ExampleTable $table) {});
+
+        static::assertSame(ExampleTable::class, $class);
     }
 }
