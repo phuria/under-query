@@ -30,4 +30,21 @@ class RecursiveArgs
             }
         }
     }
+
+    /**
+     * @param array    $args
+     * @param callable $resolver
+     *
+     * @return array
+     */
+    public static function map(array $args, callable $resolver)
+    {
+        $collection = [];
+
+        static::each($args, function ($arg) use (&$collection, $resolver) {
+            $collection[] = $resolver($arg);
+        });
+
+        return $collection;
+    }
 }

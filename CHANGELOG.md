@@ -9,6 +9,7 @@ Unreleased
 
 ### Added
 + SelectInterface
++ RelativeQueryBuilder
 
 ### Changed
 + UnknownTable renamed to DefaultTable

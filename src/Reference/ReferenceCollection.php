@@ -52,6 +52,6 @@ class ReferenceCollection implements ReferenceCollectionInterface
      */
     private function generateNextReference()
     {
-        return sprintf('@[%d]', $this->referenceCounter++);
+        return sprintf('@ref[%d]', $this->referenceCounter++);
     }
 }

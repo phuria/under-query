@@ -70,9 +70,19 @@ abstract class AbstractTable implements TableInterface
      */
     public function getQueryBuilder(callable $callback = null)
     {
-        $callback && $callback($this);
+        $callback && $callback($this->qb);
 
         return $this->qb;
+    }
+
+    /**
+     * @param callable|null $callback
+     *
+     * @return mixed
+     */
+    public function relative(callable $callback = null)
+    {
+        return $callback(new RelativeQueryBuilder($this->getQueryBuilder(), $this));
     }
 
     /**

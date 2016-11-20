@@ -57,10 +57,10 @@ class ReferenceCollectionTest extends \PHPUnit_Framework_TestCase
     {
         $collection = new ReferenceCollection();
 
-        static::assertSame('@[0]', $collection->createReference(''));
-        static::assertSame('@[1]', $collection->createReference(''));
-        static::assertSame('@[2]', $collection->createReference(''));
+        static::assertSame('@ref[0]', $collection->createReference(''));
+        static::assertSame('@ref[1]', $collection->createReference(''));
+        static::assertSame('@ref[2]', $collection->createReference(''));
 
-        static::assertSame(['@[0]', '@[1]', '@[2]'], array_keys($collection->toArray()));
+        static::assertSame(['@ref[0]', '@ref[1]', '@ref[2]'], array_keys($collection->toArray()));
     }
 }
