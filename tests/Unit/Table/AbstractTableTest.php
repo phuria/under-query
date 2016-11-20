@@ -12,7 +12,7 @@
 namespace Phuria\UnderQuery\Tests\Unit\Table;
 
 use Phuria\UnderQuery\JoinType;
-use Phuria\UnderQuery\Table\UnknownTable;
+use Phuria\UnderQuery\Table\DefaultTable;
 use Phuria\UnderQuery\Tests\TestCase\UnderQueryTrait;
 
 /**
@@ -23,12 +23,12 @@ class AbstractTableTest extends \PHPUnit_Framework_TestCase
     use UnderQueryTrait;
 
     /**
-     * @return UnknownTable
+     * @return DefaultTable
      */
     private function createTestTable()
     {
         $qb = static::underQuery()->createSelect();
-        $table = new UnknownTable($qb);
+        $table = new DefaultTable($qb);
 
         return $table;
     }

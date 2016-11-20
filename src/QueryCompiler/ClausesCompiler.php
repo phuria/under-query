@@ -27,7 +27,7 @@ class ClausesCompiler
     {
         $builder = $payload->getBuilder();
 
-        if ($builder instanceof Clause\WhereClauseInterface && $builder->getWhereClauses()) {
+        if ($builder instanceof Clause\WhereInterface && $builder->getWhereClauses()) {
             $newSQL = 'WHERE ' . implode(' AND ', $builder->getWhereClauses());
             $payload = $payload->appendSQL($newSQL);
         }
@@ -44,12 +44,12 @@ class ClausesCompiler
     {
         $builder = $payload->getBuilder();
 
-        if ($builder instanceof Clause\GroupByClauseInterface && $builder->getGroupByClauses()) {
+        if ($builder instanceof Clause\GroupByInterface && $builder->getGroupByClauses()) {
             $newSQL = 'GROUP BY ' . implode(', ', $builder->getGroupByClauses());
             $payload = $payload->appendSQL($newSQL);
         }
 
-        if ($builder instanceof Clause\GroupByClauseInterface && $builder->isGroupByWithRollUp()) {
+        if ($builder instanceof Clause\GroupByInterface && $builder->isGroupByWithRollUp()) {
             $payload = $payload->appendSQL('WITH ROLLUP');
         }
 
@@ -65,7 +65,7 @@ class ClausesCompiler
     {
         $builder = $payload->getBuilder();
 
-        if ($builder instanceof Clause\HavingClauseInterface && $builder->getHavingClauses()) {
+        if ($builder instanceof Clause\HavingInterface && $builder->getHavingClauses()) {
             $newSQL = 'HAVING ' . implode(' AND ', $builder->getHavingClauses());
             $payload = $payload->appendSQL($newSQL);
         }
@@ -82,7 +82,7 @@ class ClausesCompiler
     {
         $builder = $payload->getBuilder();
 
-        if ($builder instanceof Clause\OrderByClauseInterface && $builder->getOrderByClauses()) {
+        if ($builder instanceof Clause\OrderByInterface && $builder->getOrderByClauses()) {
             $newSQL = 'ORDER BY ' . implode(', ', $builder->getOrderByClauses());
             $payload = $payload->appendSQL($newSQL);
         }
@@ -99,7 +99,7 @@ class ClausesCompiler
     {
         $builder = $payload->getBuilder();
 
-        if ($builder instanceof Clause\LimitClauseInterface && $builder->getLimitClause()) {
+        if ($builder instanceof Clause\LimitInterface && $builder->getLimitClause()) {
             $newSQL = 'LIMIT ' . $builder->getLimitClause();
             $payload = $payload->appendSQL($newSQL);
         }
@@ -116,9 +116,26 @@ class ClausesCompiler
     {
         $builder = $payload->getBuilder();
 
-        if ($builder instanceof Clause\SetClauseInterface && $builder->getSetClauses()) {
+        if ($builder instanceof Clause\SetInterface && $builder->getSetClauses()) {
             $newSQL = 'SET ' . implode(', ', $builder->getSetClauses());
             $payload = $payload->appendSQL($newSQL);
+        }
+
+        return $payload;
+    }
+
+    /**
+     * @param CompilerPayload $payload
+     *
+     * @return CompilerPayload
+     */
+    public function compileSelect(CompilerPayload $payload)
+    {
+        $builder = $payload->getBuilder();
+
+        if ($builder instanceof Clause\SelectInterface && $builder->getSelectClauses()) {
+            $actualSQL = 'SELECT ' . implode(', ', $builder->getSelectClauses());
+            $payload = $payload->updateSQL($actualSQL);
         }
 
         return $payload;

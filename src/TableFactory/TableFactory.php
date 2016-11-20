@@ -13,7 +13,7 @@ namespace Phuria\UnderQuery\TableFactory;
 
 use Phuria\UnderQuery\QueryBuilder\BuilderInterface;
 use Phuria\UnderQuery\Table\SubQueryTable;
-use Phuria\UnderQuery\Table\UnknownTable;
+use Phuria\UnderQuery\Table\DefaultTable;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -60,7 +60,7 @@ class TableFactory implements TableFactoryInterface
                 return new SubQueryTable($table, $qb);
         }
 
-        $tableObject = new UnknownTable($qb);
+        $tableObject = new DefaultTable($qb);
         $tableObject->setTableName($table);
 
         return $tableObject;

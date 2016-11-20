@@ -14,30 +14,17 @@ namespace Phuria\UnderQuery\QueryBuilder\Clause;
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-trait WhereClauseTrait
+interface SelectInterface
 {
     /**
-     * @var array
-     */
-    private $whereClauses = [];
-
-    /**
-     * @param string $clause
+     * @param mixed $_
      *
      * @return $this
      */
-    public function andWhere($clause)
-    {
-        $this->whereClauses[] = $clause;
-
-        return $this;
-    }
+    public function addSelect($_);
 
     /**
      * @return array
      */
-    public function getWhereClauses()
-    {
-        return $this->whereClauses;
-    }
+    public function getSelectClauses();
 }

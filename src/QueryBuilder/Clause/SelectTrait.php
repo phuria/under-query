@@ -11,24 +11,28 @@
 
 namespace Phuria\UnderQuery\QueryBuilder\Clause;
 
+use Phuria\UnderQuery\Utils\RecursiveArgs;
+
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-trait SetClauseTrait
+trait SelectTrait
 {
     /**
-     * @var array $setClauses
+     * @var array $selectClauses
      */
-    private $setClauses = [];
+    private $selectClauses = [];
 
     /**
-     * @param string $clause
+     * @param mixed $_
      *
      * @return $this
      */
-    public function addSet($clause)
+    public function addSelect($_)
     {
-        $this->setClauses[] = $clause;
+        RecursiveArgs::each(func_get_args(), function ($arg) {
+           $this->selectClauses[] = $arg;
+        });
 
         return $this;
     }
@@ -36,8 +40,8 @@ trait SetClauseTrait
     /**
      * @return array
      */
-    public function getSetClauses()
+    public function getSelectClauses()
     {
-        return $this->setClauses;
+        return $this->selectClauses;
     }
 }

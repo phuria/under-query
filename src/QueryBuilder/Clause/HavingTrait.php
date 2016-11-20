@@ -11,24 +11,28 @@
 
 namespace Phuria\UnderQuery\QueryBuilder\Clause;
 
+use Phuria\UnderQuery\Utils\RecursiveArgs;
+
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-trait OrderByClauseTrait
+trait HavingTrait
 {
     /**
-     * @var array $orderByClauses
+     * @var array $havingClauses
      */
-    private $orderByClauses = [];
+    private $havingClauses = [];
 
     /**
-     * @param string $clause
+     * @param mixed $_
      *
      * @return $this
      */
-    public function addOrderBy($clause)
+    public function andHaving($_)
     {
-        $this->orderByClauses[] = $clause;
+        RecursiveArgs::each(func_get_args(), function ($arg) {
+            $this->havingClauses[] = $arg;
+        });
 
         return $this;
     }
@@ -36,8 +40,8 @@ trait OrderByClauseTrait
     /**
      * @return array
      */
-    public function getOrderByClauses()
+    public function getHavingClauses()
     {
-        return $this->orderByClauses;
+        return $this->havingClauses;
     }
 }

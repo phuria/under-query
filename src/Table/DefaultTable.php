@@ -5,7 +5,7 @@ namespace Phuria\UnderQuery\Table;
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-class UnknownTable extends AbstractTable
+class DefaultTable extends AbstractTable
 {
     /**
      * @var string $tableName

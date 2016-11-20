@@ -11,10 +11,12 @@
 
 namespace Phuria\UnderQuery\QueryBuilder\Clause;
 
+use Phuria\UnderQuery\Utils\RecursiveArgs;
+
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-trait GroupByClauseTrait
+trait GroupByTrait
 {
     /**
      * @var bool
@@ -27,13 +29,15 @@ trait GroupByClauseTrait
     private $groupByClauses = [];
 
     /**
-     * @param string $clause
+     * @param mixed $_
      *
      * @return $this
      */
-    public function addGroupBy($clause)
+    public function addGroupBy($_)
     {
-        $this->groupByClauses[] = $clause;
+        RecursiveArgs::each(func_get_args(), function ($arg) {
+            $this->groupByClauses[] = $arg;
+        });
 
         return $this;
     }
@@ -56,9 +60,13 @@ trait GroupByClauseTrait
 
     /**
      * @param boolean $groupByWithRollUp
+     *
+     * @return $this
      */
     public function setGroupByWithRollUp($groupByWithRollUp)
     {
         $this->groupByWithRollUp = $groupByWithRollUp;
+
+        return $this;
     }
 }

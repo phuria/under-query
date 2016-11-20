@@ -33,7 +33,7 @@ class SelectCompiler extends AbstractConcreteCompiler
         $clauseCompiler = new ClausesCompiler();
 
         parent::__construct([
-            [$this, 'compileSelect'],
+            [$clauseCompiler, 'compileSelect'],
             [$tableCompiler, 'compileRootTables'],
             [$tableCompiler, 'compileJoinTables'],
             [$clauseCompiler, 'compileWhere'],
@@ -51,22 +51,5 @@ class SelectCompiler extends AbstractConcreteCompiler
     public function supportsBuilder(BuilderInterface $builder)
     {
         return $builder instanceof SelectBuilder;
-    }
-
-    /**
-     * @param CompilerPayload $payload
-     *
-     * @return CompilerPayload
-     */
-    public function compileSelect(CompilerPayload $payload)
-    {
-        $builder = $payload->getBuilder();
-
-        if ($builder instanceof SelectBuilder) {
-            $actualSQL = 'SELECT ' . implode(', ', $builder->getSelectClauses());
-            $payload = $payload->updateSQL($actualSQL);
-        }
-
-        return $payload;
     }
 }

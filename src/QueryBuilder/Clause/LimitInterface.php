@@ -14,10 +14,17 @@ namespace Phuria\UnderQuery\QueryBuilder\Clause;
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-interface SetClauseInterface
+interface LimitInterface
 {
     /**
-     * @return array
+     * @return string
      */
-    public function getSetClauses();
+    public function getLimitClause();
+
+    /**
+     * @param string $limitClause
+     *
+     * @return $this
+     */
+    public function setLimit($limitClause);
 }

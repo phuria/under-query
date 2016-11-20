@@ -12,7 +12,7 @@
 namespace Phuria\UnderQuery\Tests\Unit\TableFactory;
 
 use Phuria\UnderQuery\Table\SubQueryTable;
-use Phuria\UnderQuery\Table\UnknownTable;
+use Phuria\UnderQuery\Table\DefaultTable;
 use Phuria\UnderQuery\TableFactory\TableFactory;
 use Phuria\UnderQuery\Tests\Fixtures\ExampleTable;
 use Phuria\UnderQuery\Tests\Fixtures\NullQueryBuilder;
@@ -34,7 +34,7 @@ class TableFactoryTest extends \PHPUnit_Framework_TestCase
         $factory = new TableFactory();
         $table = $factory->createNewTable('unknown_table', new NullQueryBuilder());
 
-        static::assertInstanceOf(UnknownTable::class, $table);
+        static::assertInstanceOf(DefaultTable::class, $table);
     }
 
     /**

@@ -11,7 +11,7 @@
 
 namespace Phuria\UnderQuery\Tests\Unit\Table;
 
-use Phuria\UnderQuery\Table\UnknownTable;
+use Phuria\UnderQuery\Table\DefaultTable;
 use Phuria\UnderQuery\Tests\TestCase\UnderQueryTrait;
 
 /**
@@ -23,11 +23,11 @@ class UnknownTableTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \Phuria\UnderQuery\Table\UnknownTable
+     * @covers \Phuria\UnderQuery\Table\DefaultTable
      */
     public function itHaveOwnTableName()
     {
-        $table = new UnknownTable(static::underQuery()->createSelect());
+        $table = new DefaultTable(static::underQuery()->createSelect());
 
         $table->setTableName('test');
         static::assertSame('test', $table->getTableName());

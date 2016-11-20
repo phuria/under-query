@@ -11,24 +11,28 @@
 
 namespace Phuria\UnderQuery\QueryBuilder\Clause;
 
+use Phuria\UnderQuery\Utils\RecursiveArgs;
+
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-trait HavingClauseTrait
+trait WhereTrait
 {
     /**
-     * @var array $havingClauses
+     * @var array
      */
-    private $havingClauses = [];
+    private $whereClauses = [];
 
     /**
-     * @param string $clause
+     * @param string $_
      *
      * @return $this
      */
-    public function andHaving($clause)
+    public function andWhere($_)
     {
-        $this->havingClauses[] = $clause;
+        RecursiveArgs::each(func_get_args(), function ($arg) {
+            $this->whereClauses[] = $arg;
+        });
 
         return $this;
     }
@@ -36,8 +40,8 @@ trait HavingClauseTrait
     /**
      * @return array
      */
-    public function getHavingClauses()
+    public function getWhereClauses()
     {
-        return $this->havingClauses;
+        return $this->whereClauses;
     }
 }

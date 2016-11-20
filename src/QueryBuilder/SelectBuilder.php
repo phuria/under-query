@@ -15,51 +15,20 @@ namespace Phuria\UnderQuery\QueryBuilder;
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
 class SelectBuilder extends AbstractBuilder implements
-    Clause\GroupByClauseInterface,
-    Clause\HavingClauseInterface,
-    Clause\LimitClauseInterface,
-    Clause\OrderByClauseInterface,
-    Clause\WhereClauseInterface,
+    Clause\GroupByInterface,
+    Clause\HavingInterface,
+    Clause\LimitInterface,
+    Clause\OrderByInterface,
+    Clause\SelectInterface,
+    Clause\WhereInterface,
     Component\JoinComponentInterface
 {
-    use Clause\GroupByClauseTrait;
-    use Clause\HavingClauseTrait;
-    use Clause\LimitClauseTrait;
-    use Clause\OrderByClauseTrait;
-    use Clause\WhereClauseTrait;
+    use Clause\GroupByTrait;
+    use Clause\HavingTrait;
+    use Clause\LimitTrait;
+    use Clause\OrderByTrait;
+    use Clause\SelectTrait;
+    use Clause\WhereTrait;
     use Component\JoinComponentTrait;
     use Component\FromComponentTrait;
-
-    /**
-     * @var array $selectClauses
-     */
-    private $selectClauses = [];
-
-    /**
-     * @return $this
-     */
-    public function addSelect()
-    {
-        foreach (func_get_args() as $clause) {
-            $this->doAddSelect($clause);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param string $clause
-     */
-    private function doAddSelect($clause)
-    {
-        $this->selectClauses[] = $clause;
-    }
-
-    /**
-     * @return array
-     */
-    public function getSelectClauses()
-    {
-        return $this->selectClauses;
-    }
 }

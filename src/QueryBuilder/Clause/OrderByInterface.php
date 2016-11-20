@@ -14,10 +14,17 @@ namespace Phuria\UnderQuery\QueryBuilder\Clause;
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-interface LimitClauseInterface
+interface OrderByInterface
 {
     /**
-     * @return string
+     * @return array
      */
-    public function getLimitClause();
+    public function getOrderByClauses();
+
+    /**
+     * @param mixed $_
+     *
+     * @return $this
+     */
+    public function addOrderBy($_);
 }

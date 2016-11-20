@@ -14,10 +14,17 @@ namespace Phuria\UnderQuery\QueryBuilder\Clause;
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-interface HavingClauseInterface
+interface WhereInterface
 {
     /**
      * @return array
      */
-    public function getHavingClauses();
+    public function getWhereClauses();
+
+    /**
+     * @param string $_
+     *
+     * @return $this
+     */
+    public function andWhere($_);
 }

@@ -14,30 +14,29 @@ namespace Phuria\UnderQuery\QueryBuilder\Clause;
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-trait LimitClauseTrait
+interface GroupByInterface
 {
     /**
-     * @var string $limitClause
+     * @return array
      */
-    private $limitClause;
+    public function getGroupByClauses();
 
     /**
-     * @return string
+     * @return array
      */
-    public function getLimitClause()
-    {
-        return $this->limitClause;
-    }
+    public function isGroupByWithRollUp();
 
     /**
-     * @param string $limitClause
+     * @param mixed $_
      *
      * @return $this
      */
-    public function setLimit($limitClause)
-    {
-        $this->limitClause = $limitClause;
+    public function addGroupBy($_);
 
-        return $this;
-    }
+    /**
+     * @param bool $groupByWithRollUp
+     *
+     * @return $this
+     */
+    public function setGroupByWithRollUp($groupByWithRollUp);
 }

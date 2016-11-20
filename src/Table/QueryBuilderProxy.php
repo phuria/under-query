@@ -9,15 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Phuria\UnderQuery\QueryBuilder\Clause;
+namespace Phuria\UnderQuery\Table;
+
+use Phuria\UnderQuery\QueryBuilder\BuilderInterface;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-interface OrderByClauseInterface
+class QueryBuilderProxy
 {
-    /**
-     * @return array
-     */
-    public function getOrderByClauses();
+    private $wrappedBuilder;
+
+    public function __construct(BuilderInterface $builder)
+    {
+        $this->wrappedBuilder = $builder;
+    }
 }

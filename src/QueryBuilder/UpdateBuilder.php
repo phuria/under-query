@@ -17,16 +17,16 @@ use Phuria\UnderQuery\Table\AbstractTable;
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
 class UpdateBuilder extends AbstractBuilder implements
-    Clause\LimitClauseInterface,
-    Clause\OrderByClauseInterface,
-    Clause\SetClauseInterface,
-    Clause\WhereClauseInterface,
+    Clause\LimitInterface,
+    Clause\OrderByInterface,
+    Clause\SetInterface,
+    Clause\WhereInterface,
     Component\JoinComponentInterface
 {
-    use Clause\SetClauseTrait;
-    use Clause\WhereClauseTrait;
-    use Clause\OrderByClauseTrait;
-    use Clause\LimitClauseTrait;
+    use Clause\SetTrait;
+    use Clause\WhereTrait;
+    use Clause\OrderByTrait;
+    use Clause\LimitTrait;
     use Component\JoinComponentTrait;
 
     /**
