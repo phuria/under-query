@@ -437,4 +437,24 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
 
         static::assertSame('SELECT boo.column1, boo.column2 FROM foo AS boo', $qb->buildSQL());
     }
+
+    /**
+     * @test
+     * @coversNothing
+     */
+    public function itCanJoinRelativeSelf()
+    {
+        $qb = static::underQuery()->createSelect();
+
+        $qb->from('foo')
+            ->getRelativeBuilder()
+            ->leftJoin('boo', null, '@self.id = @.boo_id')
+            ->getRelativeBuilder()
+            ->leftJoin('too', null, '@self.id = @.too_id');
+
+        $qb->addSelect('*');
+
+        $expectedSQL = 'SELECT * FROM foo LEFT JOIN boo ON boo.id = foo.boo_id LEFT JOIN too ON too.id = boo.too_id';
+        static::assertSame($expectedSQL, $qb->buildSQL());
+    }
 }

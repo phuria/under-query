@@ -62,15 +62,43 @@ class ReferenceCompiler
      */
     private function convertReferenceToValue($reference)
     {
+        if (is_scalar($reference)) {
+            return $this->convertScalarReference($reference);
+        } else {
+            return $this->convertObjectReference($reference);
+        }
+    }
+
+    /**
+     * @param $reference
+     *
+     * @return string
+     */
+    private function convertScalarReference($reference)
+    {
         if (is_string($reference)) {
             return "\"" . $reference ."\"";
-        } elseif ($reference instanceof AbstractTable) {
+        }
+
+        return $reference;
+    }
+
+    /**
+     * @param mixed $reference
+     *
+     * @return string
+     */
+    private function convertObjectReference($reference)
+    {
+        if ($reference instanceof AbstractTable) {
             return $reference->getAliasOrName();
         } elseif ($reference instanceof BuilderInterface) {
             return $reference->buildSQL();
         } elseif ($reference instanceof RelativeClause) {
-            $table = $this->convertReferenceToValue($reference->getRelatedTable());
-            return str_replace('@.', $table . '.', $reference->getClause());
+            $table = $this->convertObjectReference($reference->getRelatedTable());
+            $clause = $this->convertObjectReference($reference->getClause());
+
+            return str_replace($reference->getDirective(), $table . '.', $clause);
         }
 
         return $reference;
