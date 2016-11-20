@@ -36,6 +36,18 @@ abstract class AbstractInsertBuilder extends AbstractBuilder
     }
 
     /**
+     * @param mixed $column
+     *
+     * @return $this
+     */
+    public function addColumn($column)
+    {
+        $this->columns[] = $column;
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getColumns()
