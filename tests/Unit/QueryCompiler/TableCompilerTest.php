@@ -13,6 +13,7 @@ namespace Phuria\UnderQuery\Tests\Unit\QueryCompiler;
 
 use Phuria\UnderQuery\JoinType;
 use Phuria\UnderQuery\QueryCompiler\TableCompiler;
+use Phuria\UnderQuery\Table\JoinMetadata;
 use Phuria\UnderQuery\Tests\Fixtures\ExampleTable;
 use Phuria\UnderQuery\Tests\Fixtures\NullQueryBuilder;
 
@@ -26,7 +27,21 @@ class TableCompilerTest extends \PHPUnit_Framework_TestCase
      */
     private function createTable()
     {
-        return new ExampleTable(new NullQueryBuilder());
+        $table = new ExampleTable(new NullQueryBuilder());
+
+        return $table;
+    }
+
+    /**
+     * @return ExampleTable
+     */
+    private function createJoinTable()
+    {
+        $table = $this->createTable();
+        $metadata = new JoinMetadata();
+        $table->setJoinMetadata($metadata);
+
+        return $table;
     }
 
     /**
@@ -37,8 +52,8 @@ class TableCompilerTest extends \PHPUnit_Framework_TestCase
     {
         $compiler = new TableCompiler();
 
-        $table = $this->createTable();
-        $table->setJoinType(JoinType::JOIN);
+        $table = $this->createJoinTable();
+        $table->getJoinMetadata()->setJoinType(JoinType::JOIN);
 
         static::assertSame('JOIN example', $compiler->compileTableDeclaration($table));
     }
@@ -51,8 +66,8 @@ class TableCompilerTest extends \PHPUnit_Framework_TestCase
     {
         $compiler = new TableCompiler();
 
-        $table = $this->createTable();
-        $table->setJoinType(JoinType::LEFT_JOIN);
+        $table = $this->createJoinTable();
+        $table->getJoinMetadata()->setJoinType(JoinType::LEFT_JOIN);
 
         static::assertSame('LEFT JOIN example', $compiler->compileTableDeclaration($table));
     }
@@ -65,9 +80,9 @@ class TableCompilerTest extends \PHPUnit_Framework_TestCase
     {
         $compiler = new TableCompiler();
 
-        $table = $this->createTable();
-        $table->setJoinType(JoinType::RIGHT_JOIN);
-        $table->setNaturalJoin(true);
+        $table = $this->createJoinTable();
+        $table->getJoinMetadata()->setJoinType(JoinType::RIGHT_JOIN);
+        $table->getJoinMetadata()->setNaturalJoin(true);
 
         static::assertSame('NATURAL RIGHT JOIN example', $compiler->compileTableDeclaration($table));
     }
@@ -80,10 +95,10 @@ class TableCompilerTest extends \PHPUnit_Framework_TestCase
     {
         $compiler = new TableCompiler();
 
-        $table = $this->createTable();
-        $table->setJoinType(JoinType::LEFT_JOIN);
-        $table->setNaturalJoin(true);
-        $table->setOuterJoin(true);
+        $table = $this->createJoinTable();
+        $table->getJoinMetadata()->setJoinType(JoinType::LEFT_JOIN);
+        $table->getJoinMetadata()->setNaturalJoin(true);
+        $table->getJoinMetadata()->setOuterJoin(true);
 
         static::assertSame('NATURAL LEFT OUTER JOIN example', $compiler->compileTableDeclaration($table));
     }
@@ -96,8 +111,8 @@ class TableCompilerTest extends \PHPUnit_Framework_TestCase
     {
         $compiler = new TableCompiler();
 
-        $table = $this->createTable();
-        $table->setJoinType(JoinType::STRAIGHT_JOIN);
+        $table = $this->createJoinTable();
+        $table->getJoinMetadata()->setJoinType(JoinType::STRAIGHT_JOIN);
 
         static::assertSame('STRAIGHT_JOIN example', $compiler->compileTableDeclaration($table));
     }
@@ -124,9 +139,9 @@ class TableCompilerTest extends \PHPUnit_Framework_TestCase
     {
         $compiler = new TableCompiler();
 
-        $table = $this->createTable();
-        $table->joinOn('1=1');
+        $table = $this->createJoinTable();
+        $table->getJoinMetadata()->setJoinOn('1=1');
 
-        static::assertSame('example ON 1=1', $compiler->compileTableDeclaration($table));
+        static::assertSame('JOIN example ON 1=1', $compiler->compileTableDeclaration($table));
     }
 }

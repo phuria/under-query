@@ -13,10 +13,11 @@ namespace Phuria\UnderQuery\QueryCompiler;
 
 use Phuria\UnderQuery\JoinType;
 use Phuria\UnderQuery\QueryBuilder\AbstractBuilder;
-use Phuria\UnderQuery\QueryBuilder\Component;
+use Phuria\UnderQuery\QueryBuilder\Clause;
 use Phuria\UnderQuery\QueryBuilder\DeleteBuilder;
 use Phuria\UnderQuery\QueryBuilder\SelectBuilder;
 use Phuria\UnderQuery\Table\AbstractTable;
+use Phuria\UnderQuery\Table\JoinMetadata;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -52,7 +53,7 @@ class TableCompiler
         $declaration = '';
 
         if ($table->isJoin()) {
-            $declaration .= $this->compileJoinName($table) . ' ';
+            $declaration .= $this->compileJoinName($table->getJoinMetadata()) . ' ';
         }
 
         $declaration .= $table->getTableName();
@@ -61,7 +62,7 @@ class TableCompiler
             $declaration .= ' AS ' . $alias;
         }
 
-        if ($joinOn = $table->getJoinOn()) {
+        if ($table->isJoin() && $joinOn = $table->getJoinMetadata()->getJoinOn()) {
             $declaration .= ' ON ' . $joinOn;
         }
 
@@ -69,17 +70,17 @@ class TableCompiler
     }
 
     /**
-     * @param AbstractTable $table
+     * @param JoinMetadata $metadata
      *
      * @return string
      */
-    private function compileJoinName(AbstractTable $table)
+    private function compileJoinName(JoinMetadata $metadata)
     {
         return implode(' ', array_filter([
-            $table->isNaturalJoin() ? 'NATURAL' : '',
-            $this->compileJoinPrefix($table->getJoinType()),
-            $table->isOuterJoin() ? 'OUTER' : '',
-            $this->compileJoinSuffix($table->getJoinType())
+            $metadata->isNaturalJoin() ? 'NATURAL' : '',
+            $this->compileJoinPrefix($metadata->getJoinType()),
+            $metadata->isOuterJoin() ? 'OUTER' : '',
+            $this->compileJoinSuffix($metadata->getJoinType())
         ]));
     }
 
@@ -137,7 +138,7 @@ class TableCompiler
     {
         $builder = $payload->getBuilder();
 
-        if ($builder instanceof Component\JoinComponentInterface) {
+        if ($builder instanceof Clause\JoinInterface) {
             $newSQL = implode(' ', array_map([$this, 'compileTableDeclaration'], $builder->getJoinTables()));
             return $payload->appendSQL($newSQL);
         }

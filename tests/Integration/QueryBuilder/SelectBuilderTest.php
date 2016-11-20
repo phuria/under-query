@@ -207,7 +207,7 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
         $exampleTable = $qb->from('example');
         $qb->addSelect('*');
         $testTable = $qb->leftJoin('test');
-        $testTable->joinOn("{$testTable->column('id')} = {$exampleTable->column('test_id')}");
+        $testTable->getJoinMetadata()->setJoinOn("{$testTable->column('id')} = {$exampleTable->column('test_id')}");
 
         static::assertSame('SELECT * FROM example LEFT JOIN test ON test.id = example.test_id', $qb->buildSQL());
     }
@@ -225,11 +225,11 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
         $qb->addSelect('*');
 
         $contactTable = $qb->leftJoin('contact');
-        $contactTable->joinOn("{$userTable->column('id')} = {$contactTable->column('user_id')}");
+        $contactTable->getJoinMetadata()->setJoinOn("{$userTable->column('id')} = {$contactTable->column('user_id')}");
         $contactTable->setAlias('c');
 
         $profileTable = $qb->innerJoin('profile');
-        $profileTable->joinOn("{$userTable->column('id')} = {$profileTable->column('user_id')}");
+        $profileTable->getJoinMetadata()->setJoinOn("{$userTable->column('id')} = {$profileTable->column('user_id')}");
         $profileTable->setAlias('p');
 
         $expectedSQL = 'SELECT * FROM users AS u'

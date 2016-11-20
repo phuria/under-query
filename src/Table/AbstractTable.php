@@ -17,27 +17,12 @@ abstract class AbstractTable implements TableInterface
     /**
      * @var string
      */
-    private $tableAlias;
+    private $alias;
 
     /**
-     * @var int
+     * @var null|JoinMetadata
      */
-    private $joinType;
-
-    /**
-     * @var string
-     */
-    private $joinOn;
-
-    /**
-     * @var bool
-     */
-    private $outerJoin = false;
-
-    /**
-     * @var bool
-     */
-    private $naturalJoin = false;
+    private $joinMetadata;
 
     /**
      * @param BuilderInterface $qb
@@ -64,6 +49,14 @@ abstract class AbstractTable implements TableInterface
     }
 
     /**
+     * @return bool
+     */
+    public function isJoin()
+    {
+        return null !== $this->joinMetadata;
+    }
+
+    /**
      * @return BuilderInterface
      */
     public function getQueryBuilder()
@@ -76,9 +69,17 @@ abstract class AbstractTable implements TableInterface
      */
     public function relative(callable $callback = null)
     {
-        $callback(new RelativeQueryBuilder($this->getQueryBuilder(), $this));
+        $callback($this->getRelativeBuilder());
 
         return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getRelativeBuilder()
+    {
+        return new RelativeQueryBuilder($this->getQueryBuilder(), $this);
     }
 
     /**
@@ -86,7 +87,7 @@ abstract class AbstractTable implements TableInterface
      */
     public function getAlias()
     {
-        return $this->tableAlias;
+        return $this->alias;
     }
 
     /**
@@ -96,81 +97,9 @@ abstract class AbstractTable implements TableInterface
      */
     public function setAlias($alias)
     {
-        $this->tableAlias = $alias;
+        $this->alias = $alias;
 
         return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isJoin()
-    {
-        return (bool) $this->joinType;
-    }
-
-    /**
-     * @return int
-     */
-    public function getJoinType()
-    {
-        return $this->joinType;
-    }
-
-    /**
-     * @param int $joinType
-     */
-    public function setJoinType($joinType)
-    {
-        $this->joinType = $joinType;
-    }
-
-    /**
-     * @param string $clause
-     */
-    public function joinOn($clause)
-    {
-        $this->joinOn = $clause;
-    }
-
-    /**
-     * @return string
-     */
-    public function getJoinOn()
-    {
-        return $this->joinOn;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isOuterJoin()
-    {
-        return $this->outerJoin;
-    }
-
-    /**
-     * @param boolean $outerJoin
-     */
-    public function setOuterJoin($outerJoin)
-    {
-        $this->outerJoin = $outerJoin;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isNaturalJoin()
-    {
-        return $this->naturalJoin;
-    }
-
-    /**
-     * @param boolean $naturalJoin
-     */
-    public function setNaturalJoin($naturalJoin)
-    {
-        $this->naturalJoin = $naturalJoin;
     }
 
     /**
@@ -181,5 +110,25 @@ abstract class AbstractTable implements TableInterface
     public function column($name)
     {
         return $this . '.' . $name;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getJoinMetadata()
+    {
+        return $this->joinMetadata;
+    }
+
+    /**
+     * @param JoinMetadata $joinMetadata
+     *
+     * @return AbstractTable
+     */
+    public function setJoinMetadata(JoinMetadata $joinMetadata)
+    {
+        $this->joinMetadata = $joinMetadata;
+
+        return $this;
     }
 }

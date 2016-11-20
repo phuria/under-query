@@ -9,15 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Phuria\UnderQuery\QueryBuilder\Component;
+namespace Phuria\UnderQuery\QueryBuilder\Clause;
 
 use Phuria\UnderQuery\JoinType;
+use Phuria\UnderQuery\Language\Expression\RelativeClause;
 use Phuria\UnderQuery\Table\AbstractTable;
+use Phuria\UnderQuery\Table\JoinMetadata;
+use Phuria\UnderQuery\Table\TableInterface;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-trait JoinComponentTrait
+trait JoinTrait
 {
     /**
      * @var array $joinTables
@@ -28,7 +31,7 @@ trait JoinComponentTrait
      * @param mixed       $table
      * @param string|null $alias
      *
-     * @return AbstractTable
+     * @return TableInterface
      */
     abstract public function createTable($table, $alias = null);
 
@@ -38,16 +41,24 @@ trait JoinComponentTrait
      * @param string|null $alias
      * @param string|null $joinOn
      *
-     * @return AbstractTable
+     * @return TableInterface
      */
     public function doJoin($joinType, $table, $alias = null, $joinOn = null)
     {
-        $this->joinTables[] = $table = $this->createTable($table, $alias);
+        $this->joinTables[] = $tableObject = $this->createTable($table, $alias);
 
-        null !== $joinType && $table->setJoinType($joinType);
-        null !== $joinOn && $table->joinOn($joinOn);
+        $joinMetadata = new JoinMetadata();
+        $joinMetadata->setJoinType($joinType);
 
-        return $table;
+        if ($joinOn) {
+            $relativeOn = new RelativeClause($tableObject, $joinOn, RelativeClause::SELF_DIRECTIVE);
+            $joinMetadata->setJoinOn($relativeOn);
+        }
+
+        $tableObject->setJoinMetadata($joinMetadata);
+        is_callable($table) && $table($tableObject, $joinMetadata);
+
+        return $tableObject;
     }
 
     /**
@@ -55,7 +66,7 @@ trait JoinComponentTrait
      * @param string|null $alias
      * @param string|null $joinOn
      *
-     * @return AbstractTable
+     * @return TableInterface
      */
     public function join($table, $alias = null, $joinOn = null)
     {

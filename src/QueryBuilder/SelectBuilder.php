@@ -17,18 +17,18 @@ namespace Phuria\UnderQuery\QueryBuilder;
 class SelectBuilder extends AbstractBuilder implements
     Clause\GroupByInterface,
     Clause\HavingInterface,
+    Clause\JoinInterface,
     Clause\LimitInterface,
     Clause\OrderByInterface,
     Clause\SelectInterface,
-    Clause\WhereInterface,
-    Component\JoinComponentInterface
+    Clause\WhereInterface
 {
     use Clause\GroupByTrait;
     use Clause\HavingTrait;
+    use Clause\JoinTrait;
     use Clause\LimitTrait;
     use Clause\OrderByTrait;
     use Clause\SelectTrait;
     use Clause\WhereTrait;
-    use Component\JoinComponentTrait;
     use Component\FromComponentTrait;
 }

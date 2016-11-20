@@ -18,6 +18,9 @@ use Phuria\UnderQuery\Table\TableInterface;
  */
 class RelativeClause
 {
+    const RELATIVE_DIRECTIVE = '@.';
+    const SELF_DIRECTIVE = '@self.';
+
     /**
      * @var TableInterface
      */
@@ -31,11 +34,13 @@ class RelativeClause
     /**
      * @param TableInterface $relatedTo
      * @param string         $clause
+     * @param string         $directive
      */
-    public function __construct(TableInterface $relatedTo, $clause)
+    public function __construct(TableInterface $relatedTo, $clause, $directive)
     {
         $this->relatedTable = $relatedTo;
         $this->clause = $clause;
+        $this->directive = $directive;
     }
 
     /**
@@ -60,5 +65,13 @@ class RelativeClause
     public function getClause()
     {
         return $this->clause;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDirective()
+    {
+        return $this->directive;
     }
 }

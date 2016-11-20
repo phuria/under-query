@@ -27,4 +27,12 @@ interface BuilderInterface
      * @return string
      */
     public function toReference($stuff);
+
+    /**
+     * @param string $name
+     * @param mixed  $value
+     *
+     * @return BuilderInterface
+     */
+    public function setParameter($name, $value);
 }

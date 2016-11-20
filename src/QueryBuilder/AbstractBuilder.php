@@ -82,16 +82,17 @@ abstract class AbstractBuilder implements BuilderInterface
     }
 
     /**
-     * @param mixed  $table
-     * @param string $alias
+     * @param mixed       $table
+     * @param null|string $alias
      *
      * @return AbstractTable
      */
     public function addRootTable($table, $alias = null)
     {
-        $this->rootTables[] = $table = $this->createTable($table, $alias);
+        $this->rootTables[] = $tableObject = $this->createTable($table, $alias);
+        is_callable($table) && $table($tableObject);
 
-        return $table;
+        return $tableObject;
     }
 
     /**
@@ -104,7 +105,7 @@ abstract class AbstractBuilder implements BuilderInterface
 
     /**
      * @param mixed       $table
-     * @param string|null $alias
+     * @param null|string $alias
      *
      * @return AbstractTable
      */
@@ -114,10 +115,6 @@ abstract class AbstractBuilder implements BuilderInterface
 
         if ($alias) {
             $tableObject->setAlias($alias);
-        }
-
-        if (is_callable($table)) {
-            $table($tableObject);
         }
 
         return $tableObject;

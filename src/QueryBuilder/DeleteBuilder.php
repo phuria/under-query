@@ -15,15 +15,15 @@ namespace Phuria\UnderQuery\QueryBuilder;
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
 class DeleteBuilder extends AbstractBuilder implements
+    Clause\JoinInterface,
     Clause\LimitInterface,
     Clause\OrderByInterface,
-    Clause\WhereInterface,
-    Component\JoinComponentInterface
+    Clause\WhereInterface
 {
+    use Clause\JoinTrait;
     use Clause\LimitTrait;
     use Clause\OrderByTrait;
     use Clause\WhereTrait;
-    use Component\JoinComponentTrait;
     use Component\FromComponentTrait;
 
     /**

@@ -74,29 +74,9 @@ class AbstractTableTest extends \PHPUnit_Framework_TestCase
     {
         $table = $this->createTestTable();
 
-        $table->setAlias('test');
+        $table->setAlias('foo');
 
-        static::assertSame('test', $table->getAlias());
-        static::assertSame('test', $table->getAliasOrName());
-    }
-
-    /**
-     * @test
-     * @covers \Phuria\UnderQuery\Table\AbstractTable
-     */
-    public function itShouldHaveConfigurableJoins()
-    {
-        $table = $this->createTestTable();
-
-        $table->setJoinType(JoinType::INNER_JOIN);
-        $table->setNaturalJoin(true);
-        $table->setOuterJoin(true);
-        $table->joinOn('0 = 0');
-
-        static::assertTrue($table->isJoin());
-        static::assertTrue($table->isNaturalJoin());
-        static::assertTrue($table->isOuterJoin());
-        static::assertSame(JoinType::INNER_JOIN, $table->getJoinType());
-        static::assertSame('0 = 0', $table->getJoinOn());
+        static::assertSame('foo', $table->getAlias());
+        static::assertSame('foo', $table->getAliasOrName());
     }
 }

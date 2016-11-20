@@ -29,6 +29,11 @@ interface TableInterface
     public function getAliasOrName();
 
     /**
+     * @return string
+     */
+    public function getAlias();
+
+    /**
      * @return BuilderInterface
      */
     public function getQueryBuilder();
@@ -39,4 +44,26 @@ interface TableInterface
      * @return TableInterface
      */
     public function relative(callable $callback);
+
+    /**
+     * @return RelativeQueryBuilder
+     */
+    public function getRelativeBuilder();
+
+    /**
+     * @return bool
+     */
+    public function isJoin();
+
+    /**
+     * @return null|JoinMetadata
+     */
+    public function getJoinMetadata();
+
+    /**
+     * @param JoinMetadata $metadata
+     *
+     * @return $this
+     */
+    public function setJoinMetadata(JoinMetadata $metadata);
 }

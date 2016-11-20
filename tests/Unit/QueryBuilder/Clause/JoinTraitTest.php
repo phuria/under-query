@@ -9,20 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace Phuria\UnderQuery\Tests\Unit\QueryBuilder\Component;
+namespace Phuria\UnderQuery\Tests\Unit\QueryBuilder\Clause;
 
+use Phuria\UnderQuery\Language\Expression\RelativeClause;
 use Phuria\UnderQuery\Tests\TestCase\UnderQueryTrait;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-class JoinComponentTraitTest extends \PHPUnit_Framework_TestCase
+class JoinTraitTest extends \PHPUnit_Framework_TestCase
 {
     use UnderQueryTrait;
 
     /**
      * @test
-     * @covers \Phuria\UnderQuery\QueryBuilder\Component\JoinComponentTrait
+     * @covers \Phuria\UnderQuery\QueryBuilder\Clause\JoinTrait
      */
     public function itCanJoin()
     {
@@ -42,7 +43,7 @@ class JoinComponentTraitTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \Phuria\UnderQuery\QueryBuilder\Component\JoinComponentTrait
+     * @covers \Phuria\UnderQuery\QueryBuilder\Clause\JoinTrait
      */
     public function itCanJoinWithAlias()
     {
@@ -57,7 +58,7 @@ class JoinComponentTraitTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \Phuria\UnderQuery\QueryBuilder\Component\JoinComponentTrait
+     * @covers \Phuria\UnderQuery\QueryBuilder\Clause\JoinTrait
      */
     public function itCanJoinWithOnClause()
     {
@@ -67,6 +68,10 @@ class JoinComponentTraitTest extends \PHPUnit_Framework_TestCase
 
         static::assertSame('table', $table->getTableName());
         static::assertNull($table->getAlias());
-        static::assertSame('1=1', $table->getJoinOn());
+
+        /** @var RelativeClause $relativeOn */
+        $relativeOn = $table->getJoinMetadata()->getJoinOn();
+        static::assertInstanceOf(RelativeClause::class, $relativeOn);
+        static::assertSame('1=1', $relativeOn->getClause());
     }
 }

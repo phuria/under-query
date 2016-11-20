@@ -11,6 +11,7 @@
 
 namespace Phuria\UnderQuery\Table;
 
+use Phuria\UnderQuery\JoinType;
 use Phuria\UnderQuery\Language\Expression\RelativeClause;
 use Phuria\UnderQuery\QueryBuilder\Clause as Clause;
 use Phuria\UnderQuery\QueryBuilder\BuilderInterface;
@@ -25,6 +26,7 @@ use Phuria\UnderQuery\Utils\RecursiveArgs;
 class RelativeQueryBuilder implements
     Clause\GroupByInterface,
     Clause\HavingInterface,
+    Clause\JoinInterface,
     Clause\LimitInterface,
     Clause\OrderByInterface,
     Clause\SelectInterface,
@@ -67,8 +69,18 @@ class RelativeQueryBuilder implements
     public function replaceSelfReference(array $args)
     {
         return RecursiveArgs::map($args, function ($arg) {
-            return new RelativeClause($this->wrappedTable, $arg);
+            return $this->createRelativeClause($arg);
         });
+    }
+
+    /**
+     * @param mixed $clause
+     *
+     * @return RelativeClause
+     */
+    private function createRelativeClause($clause)
+    {
+        return new RelativeClause($this->wrappedTable, $clause, RelativeClause::RELATIVE_DIRECTIVE);
     }
 
     /**
@@ -261,5 +273,74 @@ class RelativeQueryBuilder implements
         });
 
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getJoinTables()
+    {
+        return $this->getQueryBuilder(function (Clause\JoinInterface $qb) {
+            return $qb->getJoinTables();
+        });
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function doJoin($joinType, $table, $alias = null, $joinOn = null)
+    {
+        return $this->getQueryBuilder(function (Clause\JoinInterface $qb) use ($joinType, $table, $alias, $joinOn) {
+            $relativeJoin = $this->createRelativeClause($joinOn);
+            return $qb->doJoin($joinType, $table, $alias, $relativeJoin);
+        });
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function join($table, $alias = null, $joinOn = null)
+    {
+        return $this->doJoin(JoinType::JOIN, $table, $alias, $joinOn);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function straightJoin($table, $alias = null, $joinOn = null)
+    {
+        return $this->doJoin(JoinType::STRAIGHT_JOIN, $table, $alias, $joinOn);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function crossJoin($table, $alias = null, $joinOn = null)
+    {
+        return $this->doJoin(JoinType::CROSS_JOIN, $table, $alias, $joinOn);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function leftJoin($table, $alias = null, $joinOn = null)
+    {
+        return $this->doJoin(JoinType::LEFT_JOIN, $table, $alias, $joinOn);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function rightJoin($table, $alias = null, $joinOn = null)
+    {
+        return $this->doJoin(JoinType::RIGHT_JOIN, $table, $alias, $joinOn);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function innerJoin($table, $alias = null, $joinOn = null)
+    {
+        return $this->doJoin(JoinType::INNER_JOIN, $table, $alias, $joinOn);
     }
 }
