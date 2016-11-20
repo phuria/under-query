@@ -126,9 +126,9 @@ abstract class AbstractBuilder implements BuilderInterface
     /**
      * @inheritdoc
      */
-    public function objectToString($object)
+    public function toReference($stuff)
     {
-        return $this->getReferences()->createReference($object);
+        return $this->getReferences()->createReference($stuff);
     }
 
     /**

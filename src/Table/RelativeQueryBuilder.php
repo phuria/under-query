@@ -11,6 +11,7 @@
 
 namespace Phuria\UnderQuery\Table;
 
+use Phuria\UnderQuery\Language\Expression\RelativeClause;
 use Phuria\UnderQuery\QueryBuilder\Clause as Clause;
 use Phuria\UnderQuery\QueryBuilder\BuilderInterface;
 use Phuria\UnderQuery\QueryBuilder\Clause\OrderByInterface;
@@ -66,11 +67,7 @@ class RelativeQueryBuilder implements
     public function replaceSelfReference(array $args)
     {
         return RecursiveArgs::map($args, function ($arg) {
-            if (false === is_string($arg)) {
-                return $arg;
-            }
-
-            return str_replace('@.', $this->wrappedBuilder->objectToString($this->wrappedTable) . '.', $arg);
+            return new RelativeClause($this->wrappedTable, $arg);
         });
     }
 

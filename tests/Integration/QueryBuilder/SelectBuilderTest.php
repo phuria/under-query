@@ -11,6 +11,8 @@
 
 namespace Phuria\UnderQuery\Tests\Integration\QueryBuilder;
 
+use Phuria\UnderQuery\QueryBuilder\Clause\SelectInterface;
+use Phuria\UnderQuery\Tests\Fixtures\ExampleTable;
 use Phuria\UnderQuery\Tests\TestCase\UnderQueryTrait;
 
 /**
@@ -414,5 +416,25 @@ class SelectBuilderTest extends \PHPUnit_Framework_TestCase
         $qb->addSelect('1+1', '2+2');
 
         static::assertSame('SELECT 1+1, 2+2', $qb->buildSQL());
+    }
+
+    /**
+     * @test
+     * @coversNothing
+     */
+    public function itCanSelectRelativeColumn()
+    {
+        $qb = static::underQuery()->createSelect();
+
+        $fooTable = $qb->from('foo')->relative(function (SelectInterface $qb) {
+            $qb->addSelect('@.column1');
+            $qb->addSelect('@.column2');
+        });
+
+        static::assertSame('SELECT foo.column1, foo.column2 FROM foo', $qb->buildSQL());
+
+        $fooTable->setAlias('boo');
+
+        static::assertSame('SELECT boo.column1, boo.column2 FROM foo AS boo', $qb->buildSQL());
     }
 }

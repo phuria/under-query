@@ -22,9 +22,9 @@ interface BuilderInterface
     public function buildSQL();
 
     /**
-     * @param mixed $object
+     * @param mixed $stuff
      *
      * @return string
      */
-    public function objectToString($object);
+    public function toReference($stuff);
 }

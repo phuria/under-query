@@ -11,6 +11,7 @@
 
 namespace Phuria\UnderQuery\QueryCompiler;
 
+use Phuria\UnderQuery\Language\Expression\RelativeClause;
 use Phuria\UnderQuery\QueryBuilder\AbstractBuilder;
 use Phuria\UnderQuery\QueryBuilder\BuilderInterface;
 use Phuria\UnderQuery\Table\AbstractTable;
@@ -67,6 +68,9 @@ class ReferenceCompiler
             return $reference->getAliasOrName();
         } elseif ($reference instanceof BuilderInterface) {
             return $reference->buildSQL();
+        } elseif ($reference instanceof RelativeClause) {
+            $table = $this->convertReferenceToValue($reference->getRelatedTable());
+            return str_replace('@.', $table . '.', $reference->getClause());
         }
 
         return $reference;

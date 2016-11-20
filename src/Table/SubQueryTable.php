@@ -29,7 +29,7 @@ class SubQueryTable extends AbstractTable
      */
     public function getTableName()
     {
-        $ref = $this->getQueryBuilder()->objectToString($this->wrappedQueryBuilder);
+        $ref = $this->getQueryBuilder()->toReference($this->wrappedQueryBuilder);
 
         return '(' . $ref . ')';
     }

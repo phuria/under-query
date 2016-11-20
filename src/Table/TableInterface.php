@@ -11,6 +11,8 @@
 
 namespace Phuria\UnderQuery\Table;
 
+use Phuria\UnderQuery\QueryBuilder\BuilderInterface;
+
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
@@ -25,4 +27,16 @@ interface TableInterface
      * @return string
      */
     public function getAliasOrName();
+
+    /**
+     * @return BuilderInterface
+     */
+    public function getQueryBuilder();
+
+    /**
+     * @param callable $callback
+     *
+     * @return TableInterface
+     */
+    public function relative(callable $callback);
 }

@@ -56,7 +56,7 @@ class AbstractBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $qb = static::underQuery()->createSelect();
         $object = (object) ['test'];
-        $string = $qb->objectToString($object);
+        $string = $qb->toReference($object);
 
         static::assertTrue(is_string($string));
     }

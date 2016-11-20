@@ -52,7 +52,7 @@ abstract class AbstractTable implements TableInterface
      */
     public function __toString()
     {
-        return $this->getQueryBuilder()->objectToString($this);
+        return $this->getQueryBuilder()->toReference($this);
     }
 
     /**
@@ -64,25 +64,21 @@ abstract class AbstractTable implements TableInterface
     }
 
     /**
-     * @param callable|null $callback
-     *
      * @return BuilderInterface
      */
-    public function getQueryBuilder(callable $callback = null)
+    public function getQueryBuilder()
     {
-        $callback && $callback($this->qb);
-
         return $this->qb;
     }
 
     /**
-     * @param callable|null $callback
-     *
-     * @return mixed
+     * @inheritdoc
      */
     public function relative(callable $callback = null)
     {
-        return $callback(new RelativeQueryBuilder($this->getQueryBuilder(), $this));
+        $callback(new RelativeQueryBuilder($this->getQueryBuilder(), $this));
+
+        return $this;
     }
 
     /**
