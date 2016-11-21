@@ -64,3 +64,22 @@ Now when you are referring to this table, you get instance of implemented class.
 .. code-block:: mysql
 
     SELECT * FROM account WHERE acount.active
+
+
+Relative QueryBuilder
+~~~~~~~~~~~~~~~~~~~~~
+
+In order to receive instance of `RelativeQueryBuilder`, you have to call `AbstractTable::getRelativeBuilder()`.
+
+.. code-block:: php
+
+    $qb->from('account')->getRelativeBuilder()
+        ->addSelect('@.id');
+
+    echo $qb->buildSQL();
+
+.. code-block:: mysql
+
+    SELECT account.id FROM account
+
+Thanks to `RelativeQueryBuilder` every directive `@.` will be changed into related table's name.

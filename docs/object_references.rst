@@ -36,7 +36,7 @@ Column Reference
 ----------------
 
 Table reference is the most commonly used in table's column context.
-Therefore, here is helper method that which returns reference directly to column.
+Therefore, here is helper method that returns reference directly to column.
 
 .. code-block:: php
 

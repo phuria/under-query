@@ -6,11 +6,12 @@
 [![license](https://img.shields.io/github/license/phuria/under-query.svg?maxAge=2592000?style=flat-square)]()
 [![php](https://img.shields.io/badge/PHP-5.6-blue.svg?maxAge=2592000)]()
 
-The UnderQuery is primarily focused on
-building reusable SQL queries. We provide you object-oriented 
+UnderQuery is primarily focused on
+building reusable SQL queries. It use `doctrine\dbal` 
+package for providing database connection.
+We provide you object-oriented 
 inheritance behavior in database's tables. 
 We have everything you need to create complex queries.
-
 
 ## Installation 
 

@@ -52,7 +52,26 @@ class ReferenceCompiler
             $value = $this->convertReferenceToValue($value);
         }
 
-        return str_replace(array_keys($references), array_values($references), $rawSQL);
+        return $this->replace($rawSQL, $references);
+    }
+
+    /**
+     * TODO: hardfixed, refactor needed
+     *
+     * @param string $rawSQL
+     * @param array  $references
+     *
+     * @return string
+     */
+    private function replace($rawSQL, $references)
+    {
+        $result = str_replace(array_keys($references), array_values($references), $rawSQL);
+
+        if (false === strpos($result, '@ref[')) {
+            return $result;
+        } else {
+            return $this->replace($result, $references);
+        }
     }
 
     /**
