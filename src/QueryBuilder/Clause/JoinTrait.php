@@ -13,7 +13,6 @@ namespace Phuria\UnderQuery\QueryBuilder\Clause;
 
 use Phuria\UnderQuery\JoinType;
 use Phuria\UnderQuery\Language\Expression\RelativeClause;
-use Phuria\UnderQuery\Table\AbstractTable;
 use Phuria\UnderQuery\Table\JoinMetadata;
 use Phuria\UnderQuery\Table\TableInterface;
 
