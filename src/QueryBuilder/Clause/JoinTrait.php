@@ -78,7 +78,7 @@ trait JoinTrait
      * @param string|null $alias
      * @param string|null $joinOn
      *
-     * @return AbstractTable
+     * @return TableInterface
      */
     public function straightJoin($table, $alias = null, $joinOn = null)
     {
@@ -90,7 +90,7 @@ trait JoinTrait
      * @param string|null $alias
      * @param string|null $joinOn
      *
-     * @return AbstractTable
+     * @return TableInterface
      */
     public function crossJoin($table, $alias = null, $joinOn = null)
     {
@@ -102,7 +102,7 @@ trait JoinTrait
      * @param string|null $alias
      * @param string|null $joinOn
      *
-     * @return AbstractTable
+     * @return TableInterface
      */
     public function leftJoin($table, $alias = null, $joinOn = null)
     {
@@ -114,7 +114,7 @@ trait JoinTrait
      * @param string|null $alias
      * @param string|null $joinOn
      *
-     * @return AbstractTable
+     * @return TableInterface
      */
     public function rightJoin($table, $alias = null, $joinOn = null)
     {
@@ -126,7 +126,7 @@ trait JoinTrait
      * @param string|null $alias
      * @param string|null $joinOn
      *
-     * @return AbstractTable
+     * @return TableInterface
      */
     public function innerJoin($table, $alias = null, $joinOn = null)
     {
