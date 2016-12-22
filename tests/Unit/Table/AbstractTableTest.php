@@ -79,4 +79,24 @@ class AbstractTableTest extends \PHPUnit_Framework_TestCase
         static::assertSame('foo', $table->getAlias());
         static::assertSame('foo', $table->getAliasOrName());
     }
+
+    /**
+     * @test
+     * @covers \Phuria\UnderQuery\Table\AbstractTable
+     */
+    public function itCanHaveHints()
+    {
+        $table = $this->createTestTable();
+
+        static::assertFalse($table->hasHint('foo'));
+
+        $table->setHint('foo');
+
+        static::assertTrue($table->hasHint('foo'));
+        static::assertTrue($table->getHint('foo'));
+
+        $table->setHint('foo', 'boo');
+
+        static::assertSame('boo', $table->getHint('foo'));
+    }
 }

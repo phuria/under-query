@@ -25,13 +25,17 @@ abstract class AbstractTable implements TableInterface
     private $joinMetadata;
 
     /**
+     * @var array $hints
+     */
+    private $hints = [];
+
+    /**
      * @param BuilderInterface $qb
      */
     public function __construct(BuilderInterface $qb)
     {
         $this->qb = $qb;
     }
-
     /**
      * @return string
      */
@@ -131,4 +135,38 @@ abstract class AbstractTable implements TableInterface
 
         return $this;
     }
+
+    /**
+     * @param mixed $hint
+     *
+     * @return mixed
+     */
+    public function getHint($hint)
+    {
+        return $this->hints[$hint];
+    }
+
+    /**
+     * @param mixed $hint
+     *
+     * @return bool
+     */
+    public function hasHint($hint)
+    {
+        return array_key_exists($hint, $this->hints);
+    }
+
+    /**
+     * @param mixed $hint
+     * @param mixed $value
+     *
+     * @return $this
+     */
+    public function setHint($hint, $value = true)
+    {
+        $this->hints[$hint] = $value;
+
+        return $this;
+    }
+
 }
