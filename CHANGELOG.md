@@ -4,27 +4,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+0.8.5 [2016-12-22]
+---
+
+### Added
++ hints for table
+
+
 0.8.4 [2016-11-21]
------------------
+---
 
 ### Changed
 + fixed SQL compilation
 
 0.8.3 [2016-11-20]
------------------
+---
 
 ### Added
 + AbstractInsertBuilder::addColumn()
 
 0.8.2 [2016-11-20]
------------------
+---
 
 ### Added
 + JoinMetadata
 + Relative JOIN ON clauses
 
 0.8.1 [2016-11-20]
------------------
+---
 
 ### Added
 + SelectInterface
@@ -36,7 +43,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
 0.8.0 [2016-11-20]
------------------
+---
 
 ### Changed
 + TableRecognizer logic moved to TableFactory
@@ -46,13 +53,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 + TableRegistry
 
 0.7.4 [2016-11-18]
-----------------
+---
 
 ### Added
 + callback in getQueryBuilder, to mark what QueryBuilder we expect
 
 0.7.2 [2016-11-15]
------------------
+---
 
 ### Changed
 + Query::getResult() renamed to Query::execute()
@@ -60,13 +67,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 + fixed overwriting join settings
 
 0.7.1 [2016-11-14]
------------------
+---
 
 ### Changed
 + AbstractBuilder::createTable() now calls given callback
 
 0.7.0 [2016-11-13]
------------------
+---
 
 ### Added
 + doctrine/dbal package
@@ -79,13 +86,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
 0.6.1 [2016-11-13]
------------------
+---
 
 ### Added
 + Full implementation PDOStatement
 
 0.6.0 [2016-11-13]
------------------
+---
 
 ### Added
 + StatementInterface and PDO implementation
@@ -104,7 +111,7 @@ and other library components
 + ConnectionManagerInterface
 
 0.5.0 [2016-10-26]
------------------
+---
 
 ### Added
 + container-interop/container-interop
@@ -123,20 +130,20 @@ and other library components
 + ParameterManager
 
 0.4.0 [2016-10-17]
------------------
+---
 
 ### Added
 + Query::execute() for the proper execute INSERT, DELETE AND UPDATE queries
 + ConnectionInterface::execute() 
 
 0.3.1 [2016-10-17]
------------------
+---
 
 ### Changed
 + Fixed UPDATE query joins
 
 0.3.0 [2016-10-17]
------------------
+---
 
 ### Added
 + Code coverage annotations in tests
@@ -154,7 +161,7 @@ by fetch(), fetchScalar(), fetchAll()
 + StatementInterface
 
 0.2.0 [2016-10-16]
---------------------
+---
 
 ### Added
 + ConnectionManager to handling more that one connection
@@ -168,7 +175,7 @@ now will be prefixed 'create'
 + QueryBuilder::buildQuery() now accepts as a parameter connection name
 
 0.1.0 [2016-10-01]
------------------
+---
 
 ### Added
 + Configuration for travis, scrutinizer, phpunit and composer
